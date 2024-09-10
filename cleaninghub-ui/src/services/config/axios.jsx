@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // Set the base URL for your API
-axios.defaults.baseURL = "http://localhost:8081/api";
+axios.defaults.baseURL = "http://localhost:8080/api";
 
 // Create an axios instance with custom headers
 const axiosClient = axios.create({
