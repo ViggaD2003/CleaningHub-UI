@@ -28,7 +28,7 @@ const SignUp = () => {
 
         setTimeout(() => {
           setLoading(false);
-          nagative("/login");
+          nagative("/activate-account");
         }, 2000);
     } catch (error) {
       message.error("Sign up fail");
@@ -94,9 +94,15 @@ const SignUp = () => {
               submit
             </Button>
           </Form.Item>
-
-          
         </Form>
+        <div className="text-center mt-4">
+          <p>
+          You have an account, right?
+            <a href="/login" className="text-yellow-600">
+              Login
+            </a>
+          </p>
+        </div>
       </div>
     </div>
   );
