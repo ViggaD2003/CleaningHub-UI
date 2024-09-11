@@ -9,6 +9,12 @@ const LoginPage = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
 
+  const handleGoogleLogin = async () => {
+    window.location.href =
+      "http://localhost:8080/oauth2/authorization/google";
+  };
+
+
   const handleSubmit = async (values) => {
     setLoading(true);
     try {
@@ -44,10 +50,6 @@ const LoginPage = () => {
       message.error("Login failed");
       console.error("Login failed", error);
     }
-  };
-
-  const handleGoogleLogin = () => {
-    message.info("Google login not implemented.");
   };
 
   return (
