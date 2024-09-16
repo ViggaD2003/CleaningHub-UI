@@ -40,8 +40,29 @@ const Header = () => {
           Đăng xuất
         </a>
       ),
+
+      
+    },
+    {
+      key: "2",
+      label: (
+        <a
+          onClick={(e) => {
+            e.preventDefault();
+            getInfoUser();
+          }}
+        >
+          Profile
+        </a>
+      ),
+
+      
     },
   ];
+
+  const getInfoUser = () => {
+    navigate("/getInformation")
+  }
 
   const handleLogout = async () => {
     const token = localStorage.getItem("token");
