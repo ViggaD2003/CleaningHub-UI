@@ -11,11 +11,11 @@ const { Footer: FooterAntd } = Layout;
 
 const Footer = () => {
   return (
-    <FooterAntd className="bg-green-400 text-white p-8">
+    <FooterAntd className="bg-black text-white p-8">
       <div className="container mx-auto flex justify-between items-center">
         {/* Left Section: Company Info */}
         <div>
-          <h3 className="text-xl font-bold">Company Name</h3>
+          <h3 className="text-xl font-bold">Clean Nest</h3>
           <p className="text-sm">© 2024 FPT University. All Rights Reserved.</p>
         </div>
 
