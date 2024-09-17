@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getStorage } from "firebase/storage"; // Đúng cách để import getStorage
+import { getStorage } from "firebase/storage"; 
 
 const firebaseConfig = {
   apiKey: "AIzaSyB0vomVGoXf8ruta4koj2cZtUhs3uBH9J0",
@@ -13,4 +13,4 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 
-export const storage = getStorage(app); // Đúng cách để lấy storage
+export const storage = getStorage(app); 
