@@ -89,7 +89,7 @@ const Header = () => {
 
       // Xóa token
       localStorage.removeItem("token");
-      localStorage.removeItem("refresh_token");
+      localStorage.removeItem("refreshToken");
 
       // Điều hướng về trang chủ sau khi đăng xuất
       navigate("/");

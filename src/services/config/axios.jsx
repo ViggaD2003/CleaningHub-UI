@@ -28,21 +28,28 @@ axiosClient.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
-    if (error.response?.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
-      try {
-        const response = await axiosClient.post("/v1/auth/refresh", {}, { withCredentials: true });
-        if (response.status === 200) {
-          const newToken = response.data.token;
-          localStorage.setItem("token", newToken);
-          axiosClient.defaults.headers.common["Authorization"] = `Bearer ${newToken}`;
-          return axiosClient(originalRequest);
+    // Kiểm tra xem API trả về lỗi có chứa error response và status code
+    if (error.response) {
+      const { data, status } = error.response;
+
+      // Nếu status code là 401 hoặc businessErrorCode là 304 (đăng nhập sai)
+      if (status === 401 && data.businessErrorCode === 304 && !originalRequest._retry) {
+        originalRequest._retry = true;
+        try {
+          const response = await axiosClient.post("/v1/auth/refresh", {}, { withCredentials: true });
+          
+          if (response.status === 200) {
+            const newToken = response.data.token;
+            localStorage.setItem("token", newToken);
+            axiosClient.defaults.headers.common["Authorization"] = `Bearer ${newToken}`;
+            return axiosClient(originalRequest);
+          }
+        } catch (err) {
+          // Xử lý khi refresh token thất bại (ví dụ: chuyển hướng tới trang đăng nhập)
+          return Promise.reject(err);
         }
-      } catch (err) {
-        // Handle token refresh failure (e.g., redirect to login)
-        return Promise.reject(err);
       }
-    }
+    } 
     return Promise.reject(error);
   }
 );

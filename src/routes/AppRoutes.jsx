@@ -6,6 +6,7 @@ import SignUp from "../components/LoginAndRegister/Register";
 import SignInGoogle from "../components/LoginAndRegister/LoginGoogle";
 import ActivateAccount from "../components/LoginAndRegister/Activate-account";
 import GetInfo from "../components/ProfileIser/ProfilePage";
+import ChangePassword from "../components/ChangePassword/ChangePassword";
 
 export default function AppRoutes() {
   // const { auth } = useAuth();
@@ -19,8 +20,9 @@ export default function AppRoutes() {
         <Route path="activate-account" element={<ActivateAccount/>}/>
 
           <Route path="/" element={<HomeLayout />}>
-          <Route path="getInformation" element={<GetInfo/>}/>
-          <Route index element={<HomePage/>}/>
+           <Route path="getInformation" element={<GetInfo/>}/>
+           <Route index element={<HomePage/>}/>
+           <Route path="change-password" element={<ChangePassword/>}/>
           </Route>
           
         </Routes>

@@ -7,6 +7,7 @@ import { UploadOutlined } from "@ant-design/icons";
 import { storage } from "../../services/config/firebase";
 import { DatePicker } from "antd";
 import moment from "moment";
+import { useNavigate } from "react-router-dom";
 
 const GetInfo = () => {
   const [userInfo, setUserInfo] = useState({
@@ -20,6 +21,7 @@ const GetInfo = () => {
     phoneNumber: "",
   });
 
+  const navigate = useNavigate();
   const [img, setImg] = useState("");
   const [loading, setLoading] = useState(false);
   const [photoLoading, setPhotoLoading] = useState(false);
@@ -100,6 +102,10 @@ const GetInfo = () => {
       editPhoto(file);
     }
   };
+
+  const handleChangePassword = () => {
+    navigate("/change-password");
+  }
 
   return (
     <div className="profile-container max-w-lg mx-auto p-6 bg-white shadow-lg rounded-lg">
@@ -213,6 +219,12 @@ const GetInfo = () => {
           Change Photo
         </Button>
       </Upload>
+
+      <Button onClick={handleChangePassword} className="bg-blue-500 text-white">
+        Change Password
+      </Button>
+        
+     
     </div>
   );
 };

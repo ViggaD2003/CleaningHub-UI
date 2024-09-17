@@ -44,9 +44,11 @@ const LoginPage = () => {
           navigate("/"); // Điều hướng sau khi hiển thị thông báo
         }, 2000); // Trì hoãn 2 giây để người dùng có thể thấy thông báo
       } else {
+        setLoading(false);
         message.error("Invalid credentials");
       }
     } catch (error) {
+      setLoading(false);
       message.error("Login failed");
       console.error("Login failed", error);
     }
