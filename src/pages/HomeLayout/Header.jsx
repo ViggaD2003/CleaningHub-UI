@@ -74,7 +74,7 @@ const Header = () => {
 
       setIsLoggedIn(false);
       localStorage.removeItem("token");
-      localStorage.removeItem("refreshToken");
+      localStorage.removeItem("refresh_token");
 
       // Điều hướng về trang chủ sau khi đăng xuất
       navigate("/");
@@ -87,7 +87,7 @@ const Header = () => {
   };
 
   return (
-    <HeaderAntd className="flex justify-between items-center bg-white h-24 px-8 shadow-md">
+    <HeaderAntd className="flex justify-between items-center h-24 px-8 shadow-md" style={{backgroundColor: "#CF881D"}}>
       {/* Logo */}
       <div className="flex items-center">
         <Link to="/">
@@ -103,19 +103,19 @@ const Header = () => {
 
       {/* Middle Menu */}
       <div className="flex space-x-8">
-        <a href="#home" className="text-gray-700 hover:text-black">
+        <a href="#home" className="text-white hover:text-orange-800 font-bold text-xl">
           Home
         </a>
-        <a href="#about" className="text-gray-700 hover:text-black">
+        <a href="#about" className="text-white hover:text-orange-800 font-bold text-xl">
           About
         </a>
-        <a href="#pricing" className="text-gray-700 hover:text-black">
+        <a href="#pricing" className="text-white hover:text-orange-800 font-bold text-xl">
           Pricing
         </a>
-        <a href="#service" className="text-gray-700 hover:text-black">
+        <a href="#service" className="text-white hover:text-orange-800 font-bold text-xl">
           Service
         </a>
-        <a href="#contact" className="text-gray-700 hover:text-black">
+        <a href="#contact" className="text-white hover:text-orange-800 font-bold text-xl">
           Contact
         </a>
       </div>

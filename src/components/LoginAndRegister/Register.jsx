@@ -37,7 +37,7 @@ const SignUp = () => {
   }
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
+    <div className="flex justify-center items-center min-h-screen">
       <div className="bg-white p-8 rounded-lg shadow-lg w-96">
         <h2 className="text-2x1 font-blod text-center mb-6">
           Create New Account
@@ -98,7 +98,7 @@ const SignUp = () => {
         <div className="text-center mt-4">
           <p>
           You have an account, right?
-            <a href="/login" className="text-yellow-600">
+            <a href="/login" className="text-yellow-600 hover:text-orange-800">
               Login
             </a>
           </p>

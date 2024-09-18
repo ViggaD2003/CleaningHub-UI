@@ -12,7 +12,6 @@ import { useNavigate } from "react-router-dom";
 const GetInfo = () => {
   const [userInfo, setUserInfo] = useState({
     email: "",
-    password: "",
     gender: false, // Boolean field
     dob: "",
     firstName: "",
@@ -51,7 +50,6 @@ const GetInfo = () => {
       setLoading(true);
       const response = await axiosClient.get("/v1/auth/account");
       const data = response.data.data;
-      
       setUserInfo(data); // Cập nhật userInfo trong state
       form.setFieldsValue({
         ...data,
@@ -75,6 +73,8 @@ const GetInfo = () => {
   const onFinish = async (values) => {
     try {
       setLoading(true);
+
+      
 
       const formattedValues = {
         ...values,
@@ -108,7 +108,7 @@ const GetInfo = () => {
   }
 
   return (
-    <div className="profile-container max-w-lg mx-auto p-6 bg-white shadow-lg rounded-lg">
+    <div className="mt-8 max-w-lg mx-auto p-6 bg-white shadow-lg rounded-lg">
       <h2 className="profile-title text-center text-2xl font-bold mb-6">
         User Information
       </h2>
@@ -140,15 +140,6 @@ const GetInfo = () => {
             placeholder="Email"
             value={userInfo.email}
             className="border border-gray-300 rounded p-2 w-full"
-          />
-        </Form.Item>
-
-        <Form.Item label="Password" name="password">
-          <Input.Password
-            placeholder="Password"
-            value={userInfo.password}
-            className="border border-gray-300 rounded p-2 w-full"
-            readOnly
           />
         </Form.Item>
 

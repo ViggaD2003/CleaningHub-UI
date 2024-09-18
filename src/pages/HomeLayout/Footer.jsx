@@ -11,7 +11,7 @@ const { Footer: FooterAntd } = Layout;
 
 const Footer = () => {
   return (
-    <FooterAntd className="bg-black text-white p-8">
+    <FooterAntd className="text-white p-8" style={{backgroundColor: "#CF881D"}}>
       <div className="container mx-auto flex justify-between items-center">
         {/* Left Section: Company Info */}
         <div>

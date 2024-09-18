@@ -8,11 +8,11 @@ const SignInGoogle = () => {
 
         const urlParams = new URLSearchParams(window.location.search);
         const token = urlParams.get("token");
-        const refreshToken = urlParams.get("refreshToken");
+        const refreshToken = urlParams.get("refresh_token");
         if(token && refreshToken){
             axiosClient.defaults.headers.common["Authorization"] = `Bearer ${token}`;
             localStorage.setItem("token", token);
-            localStorage.setItem("refreshToken", refreshToken);
+            localStorage.setItem("refresh_token", refreshToken);
             window.location.href = "/";
         } 
     }, [navigate]);

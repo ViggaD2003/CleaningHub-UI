@@ -20,7 +20,7 @@ const ChangePassword = () => {
   };
 
   return (
-    <div className="change-password-container max-w-lg mx-auto p-6 bg-white shadow-lg rounded-lg">
+    <div className="change-password-container max-w-lg mt-52 mx-auto p-6 bg-white shadow-lg rounded-lg">
       <h2 className="text-center text-2xl font-bold mb-6">Change Password</h2>
 
       <Form

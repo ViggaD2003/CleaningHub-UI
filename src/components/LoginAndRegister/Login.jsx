@@ -57,7 +57,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
+    <div className="flex justify-center items-center min-h-screen">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-4xl flex flex-col md:flex-row">
         <div className="w-full md:w-1/2 flex items-center justify-center bg-gray-100 rounded-l-lg">
         <img
@@ -102,14 +102,14 @@ const LoginPage = () => {
 
             <Form.Item>
               <Checkbox>Remember Me</Checkbox>
-              <a href="/" className="float-right text-yellow-600">Forgot Password?</a>
+              <a href="/confirm-email" className="float-right text-yellow-600 hover:text-orange-800">Forgot Password?</a>
             </Form.Item>
 
             <Form.Item>
               <Button
                 type="primary"
                 htmlType="submit"
-                className="w-full bg-blue-500"
+                className="w-full bg-[#CF881D] hover:bg-orange-800"
                 loading={loading}
               >
                 Login
@@ -120,7 +120,7 @@ const LoginPage = () => {
           <div className="text-center mt-4">
             <p>
               Not Registered Yet?
-              <a href="/register" className="text-yellow-600"> Create an account</a>
+              <a href="/register" className="text-yellow-600 hover:text-orange-800"> Create an account</a>
             </p>
           </div>
         </div>

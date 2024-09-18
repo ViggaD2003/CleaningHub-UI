@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
 import CodeInput from 'react-code-input';
 import axiosClient from '../../services/config/axios';
 
-const ActivateAccount = () => {
+const ActivateEmail = () => {
     const [token, setToken] = useState('');
     const navigate = useNavigate();
   
@@ -16,15 +16,13 @@ const ActivateAccount = () => {
       
       try {
         // Gửi token như là query parameter
-        const response = await axiosClient.get('/v1/auth/activate-account', {
+        const response = await axiosClient.get('/v1/auth/activate-email', {
             params: { token } // Token được gửi dưới dạng query parameter
         });
-
-        console.log(response);
   
         if (response.status === 200) { // Kiểm tra mã trạng thái HTTP
           // Kích hoạt thành công, chuyển hướng người dùng tới trang đăng nhập hoặc thông báo thành công
-          navigate('/login');
+          navigate('/forgot-password');
         } else {
           // Xử lý lỗi, ví dụ như hiển thị thông báo mã kích hoạt không hợp lệ
           alert('Mã kích hoạt không hợp lệ. Vui lòng thử lại.');
@@ -34,6 +32,14 @@ const ActivateAccount = () => {
         alert('Đã xảy ra lỗi khi kích hoạt tài khoản.');
       }
     };
+
+    useEffect(() => {
+      setTimeout(() => {
+       localStorage.removeItem("email");
+      }, 150000);
+    }, []);
+    
+
   
     return (
       <div className="flex items-center justify-center h-screen">
@@ -63,7 +69,7 @@ const ActivateAccount = () => {
               type="submit"
               className="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600"
             >
-              Activate Account
+              Activate Email
             </button>
           </form>
         </div>
@@ -71,4 +77,4 @@ const ActivateAccount = () => {
     );
 };
 
-export default ActivateAccount;
+export default ActivateEmail;
