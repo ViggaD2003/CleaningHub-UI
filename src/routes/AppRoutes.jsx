@@ -11,6 +11,8 @@ import ConfirmEmail from "../components/ForgotPassowrd/ConfirmEmail";
 import PageLayout from "../pages/HomeLayout/PageLayOut";
 import ActivateEmail from "../components/ForgotPassowrd/Activate-email";
 import ForgotPassowrd from "../components/ForgotPassowrd/ForgotPassword";
+import ServiceDetail from "../components/Service/ServiceDetail.jsx";
+import AllServicesPage from "../components/Service/AllServicesPage.jsx";
 
 export default function AppRoutes() {
   // const { auth } = useAuth();
@@ -31,6 +33,8 @@ export default function AppRoutes() {
 
           <Route path="/" element={<HomeLayout />}>
            <Route path="getInformation" element={<GetInfo/>}/>
+           <Route path="/services/:id" element={<ServiceDetail />} />
+           <Route path="/services/all" element={<AllServicesPage />} />
            <Route index element={<HomePage/>}/>
            <Route path="change-password" element={<ChangePassword/>}/>
           </Route>

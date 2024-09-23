@@ -1,8 +1,46 @@
+import { useState, useEffect } from "react";
+import axiosClient from "../../services/config/axios";
 import image from "../../assets/image/image.png";
-
+import { useNavigate } from "react-router-dom";
+import homepage1 from "../../assets/image/homepage1.jpg";
+import homepage2 from "../../assets/image/homepage2.jpg";
+import video from "../../assets/image/video.mp4";
 const HomePage = () => {
+  const [services, setServices] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const response = await axiosClient.get("/v1/services/available");
+        if (Array.isArray(response.data.data.content)) {
+          const shuffledServices = response.data.data.content
+            .sort(() => 0.5 - Math.random())
+            .slice(0, 4);
+          setServices(shuffledServices);
+        } else {
+          console.error(
+            "Expected an array in 'content', but got:",
+            response.data.data
+          );
+        }
+      } catch (error) {
+        console.error("Error fetching services:", error);
+      }
+    };
+    fetchServices();
+  }, []);
+
+  const handleServiceClick = (id) => {
+    console.log("Navigating to service with id:", id);
+    navigate(`/services/${id}`);
+  };
+  const handleAllServicesClick = () => {
+    navigate("/services/all");
+  };
+
   return (
-    <div className="bg-yellow-50">
+    <div className="bg-white">
       {/* Hero Section */}
       <section
         className="relative bg-cover bg-center h-[500px]"
@@ -18,73 +56,83 @@ const HomePage = () => {
           </button>
         </div>
       </section>
-
-      {/* Services Section */}
-      <section className="container mx-auto py-12">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold">Our Services</h2>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
-          <div className="p-6 border rounded-lg">
-            <div className="mb-4 text-yellow-500">
-              <i className="fas fa-carpet"></i>
-            </div>
-            <h3 className="font-bold text-lg">Carpet Cleaning</h3>
-            <p className="text-gray-600 mt-2">
-              Description of carpet cleaning service.
-            </p>
-          </div>
-          <div className="p-6 border rounded-lg">
-            <div className="mb-4 text-yellow-500">
-              <i className="fas fa-bed"></i>
-            </div>
-            <h3 className="font-bold text-lg">Bedroom Cleaning</h3>
-            <p className="text-gray-600 mt-2">
-              Description of bedroom cleaning service.
-            </p>
-          </div>
-          <div className="p-6 border rounded-lg">
-            <div className="mb-4 text-yellow-500">
-              <i className="fas fa-couch"></i>
-            </div>
-            <h3 className="font-bold text-lg">Sofa Cleaning</h3>
-            <p className="text-gray-600 mt-2">
-              Description of sofa cleaning service.
-            </p>
-          </div>
-          <div className="p-6 border rounded-lg">
-            <div className="mb-4 text-yellow-500">
-              <i className="fas fa-toilet"></i>
-            </div>
-            <h3 className="font-bold text-lg">Toilet Cleaning</h3>
-            <p className="text-gray-600 mt-2">
-              Description of toilet cleaning service.
-            </p>
+      {/* Video Section */}
+      <section className="py-12">
+        <div className="container mx-auto text-center">
+          <h2 className="text-3xl font-bold mb-8">
+            Watch Our Introduction Video
+          </h2>
+          <div className="flex justify-center">
+            <video width="900" autoPlay muted loop>
+              <source src={video} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
           </div>
         </div>
       </section>
 
+      {/* Services Section */}
+<section className="container mx-auto py-12">
+  <div className="text-center mb-12">
+    <h2 className="text-3xl font-bold">Our Services</h2>
+  </div>
+  <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
+    {services.map((service) => (
+      <div
+        key={service.id}
+        className="p-6 border rounded-lg hover:shadow-lg transition-shadow duration-300"
+        onClick={() => handleServiceClick(service.id)}
+      >
+        <div className="mb-4">
+          <img
+            src={service.img || image}
+            alt={service.name}
+            className="w-full h-40 object-cover rounded-lg"
+          />
+        </div>
+        <h3 className="font-bold text-lg">{service.name}</h3>
+        <p className="text-gray-600 mt-2">{service.description}</p>
+        <p className="text-gray-800 font-bold mt-2">${service.basePrice}</p>
+      </div>
+    ))}
+  </div>
+  
+  {/* View All Services Button */}
+  <div className="text-center mt-12">
+    <button
+      className="px-8 py-3 bg-[#CF881D] text-white rounded-full hover:bg-orange-800 transition-colors duration-300 font-semibold shadow-md hover:shadow-lg"
+      onClick={handleAllServicesClick}
+    >
+      View All Services
+    </button>
+  </div>
+</section>
+
+
       {/* Testimonials Section */}
-      <section className="bg-gray-900 py-12 text-white">
+      <section className="bg-white py-12 text-black">
         <div className="container mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-8">Client Feedback</h2>
+          <h2 className="text-2xl font-bold mb-8">Client Feedback</h2>
+          <h1 className="text-3xl font-bold mb-8">
+            What Do They Say About Cleaning Services?
+          </h1>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="p-6 border rounded-lg bg-gray-800">
-              <p className="text-gray-400">
+            <div className="p-6 border rounded-lg bg-gray-100">
+              <p className="text-gray-600">
                 "Great service and friendly staff!"
               </p>
               <div className="mt-4 text-yellow-500">⭐⭐⭐⭐⭐</div>
               <p className="mt-2">- Customer Name</p>
             </div>
-            <div className="p-6 border rounded-lg bg-gray-800">
-              <p className="text-gray-400">
+            <div className="p-6 border rounded-lg bg-gray-100">
+              <p className="text-gray-600">
                 "Highly recommend for anyone needing a clean home."
               </p>
               <div className="mt-4 text-yellow-500">⭐⭐⭐⭐⭐</div>
               <p className="mt-2">- Customer Name</p>
             </div>
-            <div className="p-6 border rounded-lg bg-gray-800">
-              <p className="text-gray-400">"Affordable and efficient!"</p>
+            <div className="p-6 border rounded-lg bg-gray-100">
+              <p className="text-gray-600">"Affordable and efficient!"</p>
               <div className="mt-4 text-yellow-500">⭐⭐⭐⭐⭐</div>
               <p className="mt-2">- Customer Name</p>
             </div>
@@ -93,30 +141,54 @@ const HomePage = () => {
       </section>
 
       {/* FAQ Section */}
-      <section className="py-12">
-        <div className="container mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-8">
-            Frequently Asked Questions
-          </h2>
-          <div className="space-y-4">
-            <div className="border p-4 rounded-md hover:bg-gray-100">
-              <h3 className="font-bold">What do you not clean?</h3>
+      <section className="py-12 bg-white text-black">
+        <div className="container mx-auto flex flex-col md:flex-row items-center">
+          <div className="flex-1">
+            <h2 className="text-3xl font-bold mb-8 text-[#CF881D]">
+              Frequently Asked Questions
+            </h2>
+            <div className="space-y-4">
+              <div className="border p-4 rounded-md bg-gray-100 text-black hover:bg-gray-200">
+                <h3 className="font-bold flex justify-between">
+                  What do you not clean?
+                  <span className="text-[#CF881D]">▼</span>
+                </h3>
+              </div>
+              <div className="border p-4 rounded-md bg-gray-100 text-black hover:bg-gray-200">
+                <h3 className="font-bold flex justify-between">
+                  Do I need to be home for every cleaning service?
+                  <span className="text-[#CF881D]">▼</span>
+                </h3>
+              </div>
+              <div className="border p-4 rounded-md bg-gray-100 text-black hover:bg-gray-200">
+                <h3 className="font-bold flex justify-between">
+                  How will our relationship work?
+                  <span className="text-[#CF881D]">▼</span>
+                </h3>
+              </div>
+              <div className="border p-4 rounded-md bg-gray-100 text-black hover:bg-gray-200">
+                <h3 className="font-bold flex justify-between">
+                  What time does your team arrive?
+                  <span className="text-[#CF881D]">▼</span>
+                </h3>
+              </div>
             </div>
-            <div className="border p-4 rounded-md hover:bg-gray-100">
-              <h3 className="font-bold">
-                Do I need to be home for every cleaning service?
-              </h3>
-            </div>
-            <div className="border p-4 rounded-md hover:bg-gray-100">
-              <h3 className="font-bold">How will our relationship work?</h3>
-            </div>
-            <div className="border p-4 rounded-md hover:bg-gray-100">
-              <h3 className="font-bold">What time does your team arrive?</h3>
-            </div>
+            <button className="mt-6 bg-[#CF881D] hover:bg-orange-800 text-white px-6 py-3 rounded-md">
+              View All FAQ
+            </button>
           </div>
-          <button className="mt-6 bg-[#CF881D] hover:bg-orange-800 text-white px-6 py-3 rounded-md">
-            View All FAQ
-          </button>
+          <div className="flex-1 hidden md:flex justify-center items-center mt-8 md:mt-0">
+            <img
+              src={homepage1}
+              alt="FAQ Image 1"
+              className="w-1/2 h-auto rounded-lg mr-4"
+            />
+            <img
+              src={homepage2}
+              alt="FAQ Image 2"
+              className="w-1/2 h-auto rounded-lg"
+            />
+          </div>
         </div>
       </section>
     </div>
