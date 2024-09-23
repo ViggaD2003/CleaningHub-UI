@@ -1,4 +1,3 @@
-import React from "react";
 import { useState } from "react";
 import { Button, Input, Form, message } from "antd";
 import { useNavigate } from "react-router-dom";
@@ -37,7 +36,7 @@ const SignUp = () => {
   }
 
   return (
-    <div className="flex justify-center items-center min-h-screen">
+    <div className="flex justify-center items-center min-h-screen bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-lg w-96">
         <h2 className="text-2x1 font-blod text-center mb-6">
           Create New Account
@@ -97,8 +96,8 @@ const SignUp = () => {
         </Form>
         <div className="text-center mt-4">
           <p>
-          You have an account, right?
-            <a href="/login" className="text-yellow-600 hover:text-orange-800">
+          Already have an account?
+            <a href="/login" className="text-yellow-600">
               Login
             </a>
           </p>
