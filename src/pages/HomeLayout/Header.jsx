@@ -1,14 +1,42 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Avatar, Button, Dropdown, Space, notification } from "antd";
-import { UserOutlined, DownOutlined } from "@ant-design/icons";
+import { DownOutlined } from "@ant-design/icons";
 import { Header as HeaderAntd } from "antd/es/layout/layout";
 import { useNavigate } from "react-router-dom";
 import axiosClient from "../../services/config/axios";
+import { Spin } from "antd"; // Optional: for loading spinner if needed
 
 const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
+  const [userInfo, setUserInfo] = useState({});
+  const [img, setImg] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      fetchUserInfo();
+    }
+  }, [isLoggedIn]);
+
+  const fetchUserInfo = async () => {
+    setLoading(true);
+    try {
+      const response = await axiosClient.get("/v1/auth/account");
+      const data = response.data.data;
+      setUserInfo(data);
+      setImg(data.img); // Set the user's profile image
+    } catch (error) {
+      console.error("Failed to fetch user info:", error);
+      notification.error({
+        message: "Lỗi",
+        description: "Không thể tải thông tin người dùng.",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleLoginPage = () => {
     navigate("/login");
@@ -16,6 +44,35 @@ const Header = () => {
 
   const handleRegisterPage = () => {
     navigate("/register");
+  };
+
+  const handleLogout = async () => {
+    const token = localStorage.getItem("token");
+    try {
+      await axiosClient.post(
+        "/v1/auth/logout",
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      notification.success({
+        message: "Đăng xuất thành công",
+        description: "Bạn đã đăng xuất thành công.",
+        duration: 2,
+      });
+      setIsLoggedIn(false);
+      localStorage.removeItem("token");
+      localStorage.removeItem("refresh_token");
+      navigate("/");
+    } catch (error) {
+      notification.error({
+        message: "Lỗi đăng xuất",
+        description: error?.message || "Đã xảy ra sự cố. Vui lòng thử lại sau!",
+      });
+    }
   };
 
   const items = [
@@ -39,7 +96,7 @@ const Header = () => {
         <a
           onClick={(e) => {
             e.preventDefault();
-            getInfoUser();
+            navigate("/getInformation");
           }}
         >
           Profile
@@ -48,51 +105,14 @@ const Header = () => {
     },
   ];
 
-  const getInfoUser = () => {
-    navigate("/getInformation");
-  };
-
-  const handleLogout = async () => {
-    const token = localStorage.getItem("token");
-
-    try {
-      await axiosClient.post(
-        "/v1/auth/logout",
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      notification.success({
-        message: "Đăng xuất thành công",
-        description: "Bạn đã đăng xuất thành công.",
-        duration: 2,
-      });
-
-      setIsLoggedIn(false);
-      localStorage.removeItem("token");
-      localStorage.removeItem("refresh_token");
-
-      // Điều hướng về trang chủ sau khi đăng xuất
-      navigate("/");
-    } catch (error) {
-      notification.error({
-        message: "Lỗi đăng xuất",
-        description: error?.message || "Đã xảy ra sự cố. Vui lòng thử lại sau!",
-      });
-    }
-  };
-
   return (
-    <HeaderAntd className="flex justify-between items-center h-24 px-8 shadow-md" style={{backgroundColor: "#CF881D"}}>
+    <HeaderAntd
+      className="flex justify-between items-center h-24 px-8 shadow-md"
+      style={{ backgroundColor: "#CF881D" }}
+    >
       {/* Logo */}
       <div className="flex items-center">
         <Link to="/">
-          {" "}
-          {/* Wrap the logo with Link */}
           <img
             src="https://www.btaskee.com/wp-content/uploads/2020/10/btaskee_logo_02.png"
             alt="Logo"
@@ -120,12 +140,20 @@ const Header = () => {
         </a>
       </div>
 
-      {/* Right side: Login, Register */}
+      {/* Right side: Login, Register, or User Menu */}
       {isLoggedIn ? (
         <Dropdown menu={{ items }}>
           <a onClick={(e) => e.preventDefault()}>
             <Space>
-              <Avatar size={42} className="ml-5" icon={<UserOutlined />} />
+              {loading ? (
+                <Spin />
+              ) : (
+                <Avatar
+                  size={42}
+                  src={img || "https://joeschmoe.io/api/v1/random"}
+                  className="ml-5"
+                />
+              )}
               <DownOutlined className="text-xl ml-2" />
             </Space>
           </a>
