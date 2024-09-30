@@ -13,33 +13,53 @@ import ActivateEmail from "../components/ForgotPassowrd/Activate-email";
 import ForgotPassowrd from "../components/ForgotPassowrd/ForgotPassword";
 import ServiceDetail from "../components/Service/ServiceDetail.jsx";
 import AllServicesPage from "../components/Service/AllServicesPage.jsx";
+import Map from "../components/Map/Map.jsx";
+
+// Import các thành phần cho trang Admin
+import Sidebar from "../pages/Admin/Sidebar.jsx";
+import OverviewPage from "../pages/Admin/OverviewPage.jsx";
 
 export default function AppRoutes() {
-  // const { auth } = useAuth();
-
   return (
     <>
-        <Routes>
-
-        <Route element={<PageLayout/>}>
-        <Route path="login" element={<SignIn/>}/>
-        <Route path="register" element={<SignUp/>}/>
-        <Route path="login-success" element={<SignInGoogle/>}/>
-        <Route path="activate-account" element={<ActivateAccount/>}/>
-        <Route path="confirm-email" element={<ConfirmEmail/>}/>
-        <Route path="activate-email" element={<ActivateEmail/>}/>
-        <Route path="forgot-password" element={<ForgotPassowrd/>}/>
+      <Routes>
+        {/* Các route cho người dùng */}
+        <Route element={<PageLayout />}>
+          <Route path="login" element={<SignIn />} />
+          <Route path="register" element={<SignUp />} />
+          <Route path="login-success" element={<SignInGoogle />} />
+          <Route path="activate-account" element={<ActivateAccount />} />
+          <Route path="confirm-email" element={<ConfirmEmail />} />
+          <Route path="activate-email" element={<ActivateEmail />} />
+          <Route path="forgot-password" element={<ForgotPassowrd />} />
         </Route>
 
-          <Route path="/" element={<HomeLayout />}>
-           <Route path="getInformation" element={<GetInfo/>}/>
-           <Route path="/services/:id" element={<ServiceDetail />} />
-           <Route path="/services/all" element={<AllServicesPage />} />
-           <Route index element={<HomePage/>}/>
-           <Route path="change-password" element={<ChangePassword/>}/>
-          </Route>
-          
-        </Routes>
+        <Route path="/" element={<HomeLayout />}>
+          <Route path="getInformation" element={<GetInfo />} />
+          <Route path="/services/:id" element={<ServiceDetail />} />
+          <Route path="/services/all" element={<AllServicesPage />} />
+          <Route index element={<HomePage />} />
+          <Route path="change-password" element={<ChangePassword />} />
+          <Route path="map" element={<Map />} />
+        </Route>
+
+        {/* Các route cho trang Admin */}
+        <Route
+          path="/admin/*"
+          element={
+            <div className="flex h-screen bg-gray-900 text-gray-100 overflow-hidden">
+              <div className="fixed inset-0 z-0">
+                <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 opacity-80" />
+                <div className="absolute inset-0 backdrop-blur-sm" />
+              </div>
+              <Sidebar />
+              <Routes>
+                <Route path="overview" element={<OverviewPage />} />
+              </Routes>
+            </div>
+          }
+        />
+      </Routes>
     </>
   );
 }

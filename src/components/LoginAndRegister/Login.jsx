@@ -14,7 +14,7 @@ const LoginPage = () => {
 
   const handleGoogleLogin = async () => {
     window.location.href =
-      "http://localhost:8080/oauth2/authorization/google";
+      "https://cleaning-hub.onrend  er.com/oauth2/authorization/google";
   };
 
   const handleSubmit = async (values) => {
