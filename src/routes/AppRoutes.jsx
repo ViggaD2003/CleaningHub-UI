@@ -38,7 +38,6 @@ export default function AppRoutes() {
            <Route index element={<HomePage/>}/>
            <Route path="change-password" element={<ChangePassword/>}/>
           </Route>
-          
         </Routes>
     </>
   );
