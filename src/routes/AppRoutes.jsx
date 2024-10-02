@@ -5,7 +5,7 @@ import SignIn from "../components/LoginAndRegister/Login";
 import SignUp from "../components/LoginAndRegister/Register";
 import SignInGoogle from "../components/LoginAndRegister/LoginGoogle";
 import ActivateAccount from "../components/LoginAndRegister/Activate-account";
-import GetInfo from "../components/ProfileIser/ProfilePage";
+import GetInfo from "../components/ProfileUser/ProfilePage.jsx";
 import ChangePassword from "../components/ChangePassword/ChangePassword";
 import ConfirmEmail from "../components/ForgotPassowrd/ConfirmEmail";
 import PageLayout from "../pages/HomeLayout/PageLayOut";
@@ -18,6 +18,7 @@ import Map from "../components/Map/Map.jsx";
 // Import các thành phần cho trang Admin
 import Sidebar from "../pages/Admin/Sidebar.jsx";
 import OverviewPage from "../pages/Admin/OverviewPage.jsx";
+import PaymentHistory from "../components/PaymentHistory/PaymentHIstory.jsx";
 
 export default function AppRoutes() {
   return (
@@ -34,13 +35,15 @@ export default function AppRoutes() {
           <Route path="forgot-password" element={<ForgotPassowrd />} />
         </Route>
 
-        <Route path="/" element={<HomeLayout />}>
+        <Route element={<HomeLayout />}>
+          <Route path="/"/>
           <Route path="getInformation" element={<GetInfo />} />
           <Route path="/services/:id" element={<ServiceDetail />} />
           <Route path="/services/all" element={<AllServicesPage />} />
           <Route index element={<HomePage />} />
           <Route path="change-password" element={<ChangePassword />} />
           <Route path="map" element={<Map />} />
+          <Route path="/history" element={<PaymentHistory/>}/>
         </Route>
 
         {/* Các route cho trang Admin */}

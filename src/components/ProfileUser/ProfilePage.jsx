@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import axiosClient from "../../services/config/axios";
 import { Button, Input, Form, message, Upload, Spin, Radio } from "antd";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
@@ -54,9 +55,9 @@ const GetInfo = () => {
       form.setFieldsValue({
         ...data,
         dob: data.dob ? moment.utc(data.dob, "YYYY-MM-DD") : null,
-        gender: data.gender // Đảm bảo giá trị gender là boolean
+        gender: data.gender, // Đảm bảo giá trị gender là boolean
       }); // Cập nhật giá trị vào form
-  
+
       setImg(data.img); // Cập nhật hình ảnh nếu cần
       message.success("User info loaded successfully.");
     } catch (error) {
@@ -74,11 +75,9 @@ const GetInfo = () => {
     try {
       setLoading(true);
 
-      
-
       const formattedValues = {
         ...values,
-        dob: values.dob ? (values.dob).format('YYYY-MM-DD') : null
+        dob: values.dob ? values.dob.format("YYYY-MM-DD") : null,
       };
 
       const userId = userInfo.id;
@@ -105,10 +104,15 @@ const GetInfo = () => {
 
   const handleChangePassword = () => {
     navigate("/change-password");
-  }
+  };
 
   return (
-    <div className="mt-8 max-w-lg mx-auto p-6 bg-white shadow-lg rounded-lg">
+    <motion.div
+      className="mt-8 max-w-screen-lg mx-auto p-6 shadow-lg rounded-lg"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.2, duration: 0.5 }}
+    >
       <h2 className="profile-title text-center text-2xl font-bold mb-6">
         User Information
       </h2>
@@ -125,12 +129,7 @@ const GetInfo = () => {
         )}
       </div>
 
-      <Form
-        form={form}
-        layout="vertical"
-        initialValues={userInfo}
-        onFinish={onFinish}
-      >
+      <Form form={form} layout="vertical" initialValues={userInfo} onFinish={onFinish}>
         <Form.Item name="id" initialValue={userInfo.id} style={{ display: "none" }}>
           <Input type="hidden" />
         </Form.Item>
@@ -168,10 +167,10 @@ const GetInfo = () => {
 
         <Form.Item label="Date of Birth" name="dob">
           <DatePicker
-             className="border border-gray-300 rounded p-2 w-full"
-              format="YYYY-MM-DD" // Định dạng ngày
-           />
-          </Form.Item>
+            className="border border-gray-300 rounded p-2 w-full"
+            format="YYYY-MM-DD" // Định dạng ngày
+          />
+        </Form.Item>
 
         <Form.Item label="Address" name="address">
           <Input
@@ -194,7 +193,7 @@ const GetInfo = () => {
             type="primary"
             htmlType="submit"
             loading={loading}
-            className="w-full bg-blue-500 text-white"
+            className="px-8 py-3 bg-gradient-to-r from-orange-400 to-red-500 text-white rounded-md transition-colors duration-300 font-semibold hover:from-yellow-400 hover:to-pink-500"
           >
             Update Info
           </Button>
@@ -206,17 +205,15 @@ const GetInfo = () => {
         beforeUpload={() => false}
         onChange={handleFileChange}
       >
-        <Button icon={<UploadOutlined />} className="bg-blue-500 text-white">
+        <Button icon={<UploadOutlined />} className="px-8 py-3 bg-gradient-to-r from-orange-400 to-red-500 text-white rounded-md transition-colors duration-300 font-semibold hover:from-yellow-400 hover:to-pink-500">
           Change Photo
         </Button>
       </Upload>
 
-      <Button onClick={handleChangePassword} className="bg-blue-500 text-white">
+      <Button onClick={handleChangePassword} className="px-8 py-3 bg-gradient-to-r from-orange-400 to-red-500 text-white rounded-md transition-colors duration-300 font-semibold hover:from-yellow-400 hover:to-pink-500">
         Change Password
       </Button>
-        
-     
-    </div>
+    </motion.div>
   );
 };
 

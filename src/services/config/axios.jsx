@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // Set the base URL for your API
-axios.defaults.baseURL = "https://cleaning-hub.onrender.com/api";
+axios.defaults.baseURL = "http://localhost:8080/api";
 
 // Create an axios instance with custom headers
 const axiosClient = axios.create({
