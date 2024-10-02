@@ -9,7 +9,7 @@ import Footer from "./Footer";
 
 export default function HomeLayout() {
   return (
-    <Layout>
+    <Layout className="">
       <Header />
       <Content >
         <Outlet />

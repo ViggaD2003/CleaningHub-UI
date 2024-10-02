@@ -8,7 +8,7 @@ import "./styles/PageLayout.scss"
 export default function PageLayout() {
   return (
     <Layout className="layout-background">
-      <Content >
+      <Content>
         <Outlet />
       </Content>
     </Layout>

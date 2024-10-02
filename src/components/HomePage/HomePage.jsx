@@ -51,7 +51,7 @@ const HomePage = () => {
           <h1 className="text-4xl font-bold mb-4">
             Professional Residential and Commercial Cleaning Services
           </h1>
-          <button className="mt-6 px-6 py-3 rounded-md bg-[#CF881D] hover:bg-orange-800 transition-colors duration-300">
+          <button className="mt-6 px-8 py-3 bg-gradient-to-r from-orange-400 to-red-500 text-white rounded-md transition-colors duration-300 font-semibold hover:from-yellow-400 hover:to-pink-500">
             Book Now
           </button>
         </div>
@@ -100,7 +100,7 @@ const HomePage = () => {
   {/* View All Services Button */}
   <div className="text-center mt-12">
     <button
-      className="px-8 py-3 bg-[#CF881D] text-white rounded-full hover:bg-orange-800 transition-colors duration-300 font-semibold shadow-md hover:shadow-lg"
+     className="px-8 py-3 bg-gradient-to-r from-orange-400 to-red-500 text-white rounded-full transition-colors duration-300 font-semibold hover:from-yellow-400 hover:to-pink-500"
       onClick={handleAllServicesClick}
     >
       View All Services
@@ -173,7 +173,7 @@ const HomePage = () => {
                 </h3>
               </div>
             </div>
-            <button className="mt-6 bg-[#CF881D] hover:bg-orange-800 text-white px-6 py-3 rounded-md">
+            <button className="px-8 py-3 mt-6 bg-gradient-to-r from-orange-400 to-red-500 text-white rounded-md transition-colors duration-300 font-semibold hover:from-yellow-400 hover:to-pink-500">
               View All FAQ
             </button>
           </div>
