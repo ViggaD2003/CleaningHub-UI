@@ -19,6 +19,7 @@ import Map from "../components/Map/Map.jsx";
 import Sidebar from "../pages/Admin/Sidebar.jsx";
 import OverviewPage from "../pages/Admin/OverviewPage.jsx";
 import PaymentHistory from "../components/PaymentHistory/PaymentHIstory.jsx";
+import CalendarComponent from "../pages/Calendar/Calendar.jsx";
 
 export default function AppRoutes() {
   return (
@@ -35,14 +36,35 @@ export default function AppRoutes() {
           <Route path="forgot-password" element={<ForgotPassowrd />} />
         </Route>
 
-          <Route path="/" element={<HomeLayout />}>
-           <Route path="getInformation" element={<GetInfo/>}/>
-           <Route path="/services/:id" element={<ServiceDetail />} />
-           <Route path="/services/all" element={<AllServicesPage />} />
-           <Route index element={<HomePage/>}/>
-           <Route path="change-password" element={<ChangePassword/>}/>
-          </Route>
-        </Routes>
+        <Route element={<HomeLayout />}>
+          <Route path="/"/>
+          <Route path="getInformation" element={<GetInfo />} />
+          <Route path="/services/:id" element={<ServiceDetail />} />
+          <Route path="/services/all" element={<AllServicesPage />} />
+          <Route index element={<HomePage />} />
+          <Route path="change-password" element={<ChangePassword />} />
+          <Route path="map" element={<Map />} />
+          <Route path="/history" element={<PaymentHistory/>}/>
+        </Route>
+
+        {/* Các route cho trang Admin */}
+        <Route
+          path="/admin/*"
+          element={
+            <div className="flex h-screen bg-gray-900 text-gray-100 overflow-hidden">
+              <div className="fixed inset-0 z-0">
+                <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 opacity-80" />
+                <div className="absolute inset-0 backdrop-blur-sm" />
+              </div>
+              <Sidebar />
+              <Routes>
+                <Route path="overview" element={<OverviewPage />} />
+                <Route path="calendar" element={<CalendarComponent/>}/>
+              </Routes>
+            </div>
+          }
+        />
+      </Routes>
     </>
   );
 }

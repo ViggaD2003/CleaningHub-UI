@@ -137,19 +137,34 @@ const Header = () => {
 
       {/* Middle Menu */}
       <div className="flex space-x-8">
-        <a href="#home" className="text-white hover:text-orange-800 font-bold text-xl">
+        <a
+          href="#home"
+          className="text-white hover:text-orange-800 font-bold text-xl"
+        >
           Home
         </a>
-        <a href="#about" className="text-white hover:text-orange-800 font-bold text-xl">
+        <a
+          href="#about"
+          className="text-white hover:text-orange-800 font-bold text-xl"
+        >
           About
         </a>
-        <a href="#pricing" className="text-white hover:text-orange-800 font-bold text-xl">
+        <a
+          href="#pricing"
+          className="text-white hover:text-orange-800 font-bold text-xl"
+        >
           Pricing
         </a>
-        <a href="#service" className="text-white hover:text-orange-800 font-bold text-xl">
+        <a
+          href="#service"
+          className="text-white hover:text-orange-800 font-bold text-xl"
+        >
           Service
         </a>
-        <a href="#contact" className="text-white hover:text-orange-800 font-bold text-xl">
+        <a
+          href="#contact"
+          className="text-white hover:text-orange-800 font-bold text-xl"
+        >
           Contact
         </a>
       </div>
@@ -174,21 +189,21 @@ const Header = () => {
         </Dropdown>
       ) : (
         <div className="flex items-center space-x-4">
-          <Button
-            type="default"
-            className="text-yellow-700 border-yellow-700 hover:bg-yellow-800"
-            onClick={handleLoginPage}
-          >
-            Login
-          </Button>
-          <Button
-            type="primary"
-            className="bg-yellow-700 border-none hover:bg-yellow-800"
-            onClick={handleRegisterPage}
-          >
-            Sign Up
-          </Button>
-        </div>
+  <Button
+    type="primary"
+    className="login-btn px-6 py-2 text-white font-bold rounded-lg bg-gradient-to-r from-red-900 to-amber-700 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 ease-in-out"
+    onClick={handleLoginPage}
+  >
+    Login
+  </Button>
+  <Button
+    type="primary"
+    className="signup-btn px-6 py-2 text-white font-bold rounded-lg bg-gradient-to-r from-red-900 to-amber-700   shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 ease-in-out"
+    onClick={handleRegisterPage}
+  >
+    Sign Up
+  </Button>
+</div>
       )}
     </HeaderAntd>
   );
