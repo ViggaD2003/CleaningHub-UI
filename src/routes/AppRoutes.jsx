@@ -13,6 +13,7 @@ import ActivateEmail from "../components/ForgotPassowrd/Activate-email";
 import ForgotPassowrd from "../components/ForgotPassowrd/ForgotPassword";
 import ServiceDetail from "../components/Service/ServiceDetail.jsx";
 import AllServicesPage from "../components/Service/AllServicesPage.jsx";
+import BookingHistory from "../components/BookingHistoryByUser/BookingHistory.jsx";
 import Map from "../components/Map/Map.jsx";
 
 // Import các thành phần cho trang Admin
@@ -45,6 +46,7 @@ export default function AppRoutes() {
           <Route path="change-password" element={<ChangePassword />} />
           <Route path="map" element={<Map />} />
           <Route path="/history" element={<PaymentHistory/>}/>
+          <Route path="/booking-history" element={<BookingHistory />} />
         </Route>
 
         {/* Các route cho trang Admin */}
