@@ -14,7 +14,9 @@ import ForgotPassowrd from "../components/ForgotPassowrd/ForgotPassword";
 import ServiceDetail from "../components/Service/ServiceDetail.jsx";
 import AllServicesPage from "../components/Service/AllServicesPage.jsx";
 import BookingHistory from "../components/BookingHistoryByUser/BookingHistory.jsx";
+import Booking from "../components/Booking/Booking.jsx";
 import Map from "../components/Map/Map.jsx";
+import BookingSuccess from "../components/Booking/BookingSuccess.jsx";
 
 // Import các thành phần cho trang Admin
 import Sidebar from "../pages/Admin/Sidebar.jsx";
@@ -47,6 +49,8 @@ export default function AppRoutes() {
           <Route path="map" element={<Map />} />
           <Route path="/history" element={<PaymentHistory/>}/>
           <Route path="/booking-history" element={<BookingHistory />} />
+          <Route path="/bookings/:id" element={<Booking />} />
+          <Route path="/booking-success" element={<BookingSuccess />} />
         </Route>
 
         {/* Các route cho trang Admin */}
