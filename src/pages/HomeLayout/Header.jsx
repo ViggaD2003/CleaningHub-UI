@@ -103,14 +103,26 @@ const Header = () => {
         </a>
       ),
     },
-
     {
-      key: "3",
+      key: "bookingHistory",
       label: (
         <a
           onClick={(e) => {
             e.preventDefault();
-            navigate("/history");
+            navigate("/booking-history");
+          }}
+        >
+          Booking History
+        </a>
+      ),
+    },
+    {
+      key: "paymentHistory",
+      label: (
+        <a
+          onClick={(e) => {
+            e.preventDefault();
+            navigate("/history")
           }}
         >
           Payment History
@@ -118,11 +130,12 @@ const Header = () => {
       ),
     },
   ];
+  
 
   return (
     <HeaderAntd
-      className="flex justify-between items-center h-24 px-8 shadow-md bg-gradient-to-r from-orange-400 to-red-500"
-      // style={{ backgroundColor: "#CF881D" }}
+      className="flex justify-between items-center h-24 px-8 shadow-md"
+      style={{ backgroundColor: "#CF881D" }}
     >
       {/* Logo */}
       <div className="flex items-center">
@@ -176,7 +189,7 @@ const Header = () => {
         <div className="flex items-center space-x-4">
           <Button
             type="default"
-            className="text-yellow-700 border-yellow-700 hover:bg-yellow-800"
+            className="text-yellow-700 border-yellow-700 hover:bg-yellow-50"
             onClick={handleLoginPage}
           >
             Login
