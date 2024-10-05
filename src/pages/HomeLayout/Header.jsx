@@ -150,19 +150,34 @@ const Header = () => {
 
       {/* Middle Menu */}
       <div className="flex space-x-8">
-        <a href="#home" className="text-white hover:text-orange-800 font-bold text-xl">
+        <a
+          href="#home"
+          className="text-white hover:text-orange-800 font-bold text-xl"
+        >
           Home
         </a>
-        <a href="#about" className="text-white hover:text-orange-800 font-bold text-xl">
+        <a
+          href="#about"
+          className="text-white hover:text-orange-800 font-bold text-xl"
+        >
           About
         </a>
-        <a href="#pricing" className="text-white hover:text-orange-800 font-bold text-xl">
+        <a
+          href="#pricing"
+          className="text-white hover:text-orange-800 font-bold text-xl"
+        >
           Pricing
         </a>
-        <a href="#service" className="text-white hover:text-orange-800 font-bold text-xl">
+        <a
+          href="#service"
+          className="text-white hover:text-orange-800 font-bold text-xl"
+        >
           Service
         </a>
-        <a href="#contact" className="text-white hover:text-orange-800 font-bold text-xl">
+        <a
+          href="#contact"
+          className="text-white hover:text-orange-800 font-bold text-xl"
+        >
           Contact
         </a>
       </div>

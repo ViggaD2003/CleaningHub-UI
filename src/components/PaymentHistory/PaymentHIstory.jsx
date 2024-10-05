@@ -49,7 +49,7 @@ const PaymentHistory = () => {
   
     return (
       <motion.div
-        className="w-full h-screen  shadow-xl p-8 border border-gray-700 flex flex-col"
+        className="w-full h-screen  shadow-xl p-8 border flex flex-col"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.4 }}

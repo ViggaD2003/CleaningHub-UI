@@ -20,6 +20,7 @@ import Map from "../components/Map/Map.jsx";
 import Sidebar from "../pages/Admin/Sidebar.jsx";
 import OverviewPage from "../pages/Admin/OverviewPage.jsx";
 import PaymentHistory from "../components/PaymentHistory/PaymentHIstory.jsx";
+import CalendarComponent from "../pages/Calendar/Calendar.jsx";
 
 export default function AppRoutes() {
   return (
@@ -60,6 +61,7 @@ export default function AppRoutes() {
               <Sidebar />
               <Routes>
                 <Route path="overview" element={<OverviewPage />} />
+                <Route path="calendar" element={<CalendarComponent/>}/>
               </Routes>
             </div>
           }
