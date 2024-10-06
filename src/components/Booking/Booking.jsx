@@ -1,5 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import SockJS from "sockjs-client";
+import Stomp from "stompjs";
 import axiosClient from "../../services/config/axios";
 
 const Booking = () => {
@@ -8,6 +10,7 @@ const Booking = () => {
   const [durations, setDurations] = useState([]);
   const [loading, setLoading] = useState(true); // Track loading state
   const [error, setError] = useState(null); // Track error state
+  const [stompClient, setStompClient] = useState(null);
 
   const [bookingDetails, setBookingDetails] = useState({
     serviceId: parseInt(id, 10),
@@ -42,6 +45,22 @@ const Booking = () => {
     fetchDurations();
   }, [id]);
 
+  useEffect(() => {
+    const socket = new SockJS('http://localhost:8080/ws'); // Connect to WebSocket endpoint
+    const stompClientInstance = Stomp.over(socket);
+
+    const jwtToken = localStorage.getItem('token');
+    
+    stompClientInstance.connect({ Authorization: `Bearer ${jwtToken}` }, (frame) => {
+      console.log('Connected: ' + frame);
+      setStompClient(stompClientInstance);  // Set the stompClient instance in the state
+    });
+
+    return () => {
+      if (stompClientInstance) stompClientInstance.disconnect();
+    };
+  }, []);
+  
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     let updatedValue = value;
@@ -97,6 +116,7 @@ const Booking = () => {
         console.log("Booking Response:", response);
 
         if (response.status === 201 || response.status === 200) {
+          stompClient.send("/app/notifications", {}, JSON.stringify(response.data.data));
           navigate("/booking-success");
         } else {
           setError("Failed to create booking. Please try again.");
