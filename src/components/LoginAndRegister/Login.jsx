@@ -30,9 +30,9 @@ const LoginPage = () => {
       );
 
       if (response.data && response.data.token) {
-        axiosClient.defaults.headers.common["Authorization"] = `Bearer ${response.data.token}`;
+        // axiosClient.defaults.headers.common["Authorization"] = `Bearer ${response.data.refreshToken}`;
         localStorage.setItem("token", response.data.token);
-        localStorage.setItem("refresh_token", response.data.refreshToken);
+        localStorage.setItem("refresh_token", `Bearer ${response.data.refreshToken}`);
 
         // Success message
         message.success({

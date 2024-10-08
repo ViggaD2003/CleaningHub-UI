@@ -33,7 +33,6 @@ const GetInfo = () => {
       const imgRef = ref(storage, `file/${uuidv4()}`);
       await uploadBytes(imgRef, file);
       const downloadURL = await getDownloadURL(imgRef);
-      console.log(downloadURL);
       await axiosClient.put("/v1/auth/update/img", downloadURL);
 
       setImg(downloadURL);
@@ -96,7 +95,6 @@ const GetInfo = () => {
 
   const handleFileChange = (info) => {
     const file = info.file;
-    console.log(info);
     if (file) {
       editPhoto(file);
     }

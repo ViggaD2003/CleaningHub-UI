@@ -1,12 +1,15 @@
 /* Đặt màu nền cho các ô của lịch */
-.rbc-month-view .rbc-day-slot {
+.rbc-day-slot {
     background-color: #ffffff; /* Màu nền trắng cho các ô ngày */
+}
+.rbc-time-view {
+    background-color: #ffffff;
 }
 
 /* Đặt màu nền cho các ô có sự kiện */
 .rbc-event {
     background-color: #3b82f6; /* Màu xanh cho sự kiện */
-    color: #ffffff; /* Màu chữ trắng cho sự kiện */
+    color: #d67474; /* Màu chữ trắng cho sự kiện */
 }
 
 /* Đặt màu cho các ô hiện tại */

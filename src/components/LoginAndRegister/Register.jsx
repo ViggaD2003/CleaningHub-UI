@@ -18,8 +18,6 @@ const SignUp = () => {
           "/v1/auth/signup",
           {firstName, lastName, email, password, roleId},
         )
-
-        console.log(response)
         message.success({
           content: "Create successfully !",
           duration: 2,

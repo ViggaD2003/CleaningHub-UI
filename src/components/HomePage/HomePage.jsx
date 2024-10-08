@@ -34,7 +34,6 @@ const HomePage = () => {
     const fetchTopStaff = async () => {
       try {
         const response = await axiosClient.get("/v1/user/get-highest-average-staff"); // Lấy dữ liệu từ API top 5 staff
-        console.log(response)
         setTopStaff(response.data.data);
       } catch (error) {
         console.error("Error fetching top staff:", error);

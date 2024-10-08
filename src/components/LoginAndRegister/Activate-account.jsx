@@ -18,10 +18,7 @@ const ActivateAccount = () => {
         // Gửi token như là query parameter
         const response = await axiosClient.get('/v1/auth/activate-account', {
             params: { token } // Token được gửi dưới dạng query parameter
-        });
-
-        console.log(response);
-  
+        });  
         if (response.status === 200) { // Kiểm tra mã trạng thái HTTP
           // Kích hoạt thành công, chuyển hướng người dùng tới trang đăng nhập hoặc thông báo thành công
           navigate('/login');
