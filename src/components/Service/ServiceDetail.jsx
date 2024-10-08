@@ -1,10 +1,11 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axiosClient from "../../services/config/axios";
 
 const ServiceDetail = () => {
   const { id } = useParams();
   const [service, setService] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchServiceDetails = async () => {
@@ -22,6 +23,10 @@ const ServiceDetail = () => {
   if (!service) {
     return <p>Loading...</p>;
   }
+
+  const handleBookNow = () => {
+    navigate(`/bookings/${id}`);  // Navigate to booking page with service id
+  };
 
   return (
     <div className="container mx-auto py-12">
@@ -53,7 +58,10 @@ const ServiceDetail = () => {
 
       {/* Booking Button */}
       <div className="text-center">
-        <button className="bg-yellow-500 text-white px-8 py-4 rounded-md hover:bg-yellow-600">
+        <button
+          className="bg-yellow-500 text-white px-8 py-4 rounded-md hover:bg-yellow-600"
+          onClick={handleBookNow}
+        >
           Book Now
         </button>
       </div>
