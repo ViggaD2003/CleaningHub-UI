@@ -23,7 +23,6 @@ import Sidebar from "../pages/Admin/Sidebar.jsx";
 import OverviewPage from "../pages/Admin/OverviewPage.jsx";
 import PaymentHistory from "../components/PaymentHistory/PaymentHIstory.jsx";
 import CalendarComponent from "../pages/Calendar/Calendar.jsx";
-import StaffDashboard from "../pages/Staff/StaffDashboard.jsx";
 
 export default function AppRoutes() {
   return (
