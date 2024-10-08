@@ -9,29 +9,14 @@ const BookingList = () => {
 	const [page, setPage] = useState(0);
 	const [size, setSize] = useState(10);
 	const [totalPages, setTotalPages] = useState(1);
-	const [bookingStatus, setBookingStatus] = useState("PENDING");
-	const [staffId, setStaffId] = useState(null);
-  
-	useEffect(() => {
-	  const token = localStorage.getItem("token");
-	  if (token) {
-		try {
-		  const decodedToken = jwtDecode(token);
-		  setStaffId(decodedToken.id);
-		} catch (error) {
-		  console.error("Invalid token", error);
-		}
-	  }
-	}, []);
+	const [bookingStatus, setBookingStatus] = useState("PENDING");  
   
 	useEffect(() => {
 	  const fetchBookings = async () => {
-		if (!staffId) return;
   
 		try {
 		  const response = await axiosClient.get("/v1/bookings/get-by-current-staff", {
 			params: {
-			  staffId,
 			  page,
 			  size,
 			  bookingStatus,
@@ -46,7 +31,7 @@ const BookingList = () => {
 	  };
   
 	  fetchBookings();
-	}, [staffId, page, size, bookingStatus]);
+	}, [page, size, bookingStatus]);
   
 	const handlePreviousPage = () => {
 	  if (page > 0) {

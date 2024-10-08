@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import homepage1 from "../../assets/image/homepage1.jpg";
 import homepage2 from "../../assets/image/homepage2.jpg";
 import video from "../../assets/image/video.mp4";
+import { motion } from "framer-motion";
 
 const HomePage = () => {
   const [services, setServices] = useState([]);
@@ -52,6 +53,11 @@ const HomePage = () => {
   };
 
   return (
+    <motion.div
+    initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.2, duration: 0.5 }}
+  >
     <div className="bg-white">
       {/* Hero Section */}
       <section
@@ -219,6 +225,7 @@ const HomePage = () => {
         </div>
       </section>
     </div>
+    </motion.div>
   );
 };
 

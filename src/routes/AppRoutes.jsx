@@ -47,7 +47,6 @@ export default function AppRoutes() {
           <Route index element={<HomePage />} />
           <Route path="change-password" element={<ChangePassword />} />
           <Route path="map" element={<Map />} />
-          <Route path="/history" element={<PaymentHistory/>}/>
           <Route path="/booking-history" element={<BookingHistory />} />
           <Route path="/bookings/:id" element={<Booking />} />
           <Route path="/booking-success" element={<BookingSuccess />} />
