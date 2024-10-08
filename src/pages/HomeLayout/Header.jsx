@@ -115,20 +115,7 @@ const Header = () => {
           Booking History
         </a>
       ),
-    },
-    {
-      key: "paymentHistory",
-      label: (
-        <a
-          onClick={(e) => {
-            e.preventDefault();
-            navigate("/history");
-          }}
-        >
-          Payment History
-        </a>
-      ),
-    },
+    }
   ];
 
   return (

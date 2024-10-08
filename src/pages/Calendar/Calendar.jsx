@@ -1,30 +1,75 @@
-// src/components/CalendarComponent.jsx
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import { motion } from 'framer-motion'; // Import motion
+import { motion } from 'framer-motion';
 import './CalendarComponent.css';
+import axiosClient from '../../services/config/axios';
+import { notification, Modal } from "antd";
 
 const localizer = momentLocalizer(moment);
 
 const CalendarComponent = () => {
+  const [loading, setLoading] = useState(false);
+  const [events, setEvents] = useState([]);
+  const [selectedBooking, setSelectedBooking] = useState(null); // State để lưu thông tin booking đã chọn
+
+  const fetchBookingByStaffPending = async () => {
+    setLoading(true);
+    try {
+      const response = await axiosClient.get("/v1/bookings/get-by-current-staff-pending");
+      const bookings = response.data.data;
+
+      const formattedEvents = bookings.map(booking => ({
+        id: booking.id,
+        title: `${booking.service.name} - ${booking.user.username}`,
+        start: new Date(booking.startDate),
+        end: new Date(booking.endDate),
+        allDay: false,
+        details: booking, // Lưu thông tin chi tiết booking
+      }));
+
+      setEvents(formattedEvents);
+    } catch (error) {
+      console.error("Failed to fetch user info:", error);
+      notification.error({
+        message: "Lỗi",
+        description: "Không thể tải thông tin người dùng.",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchBookingByStaffPending();
+  }, []);
+
+  const handleSelectEvent = (event) => {
+    setSelectedBooking(event.details); // Lưu thông tin booking đã chọn
+  };
+
+  const handleCloseModal = () => {
+    setSelectedBooking(null); // Đóng modal
+  };
+
   return (
     <motion.div
       className="bg-gray-900 text-black p-10 flex-1 relative"
-      initial={{ opacity: 0 }} // Hiệu ứng ban đầu
-      animate={{ opacity: 1 }} // Hiệu ứng khi xuất hiện
-      transition={{ duration: 0.5 }} // Thời gian chuyển đổi
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
     >
       <Calendar
         localizer={localizer}
         startAccessor="start"
         endAccessor="end"
-        style={{ height: "50vh" }} // Chiều cao của lịch
+        events={events}
+        style={{ height: "50vh" }}
+        onSelectEvent={handleSelectEvent} // Thêm sự kiện khi chọn booking
         components={{
           toolbar: (props) => (
             <div className="flex justify-between items-center mb-4">
-              {/* Các nút điều hướng */}
               <div>
                 <button
                   onClick={() => props.onNavigate('TODAY')}
@@ -45,11 +90,9 @@ const CalendarComponent = () => {
                   Next
                 </button>
               </div>
-              {/* Hiển thị ngày tháng hiện tại */}
               <div className="text-white text-lg font-bold">
                 {moment(props.date).format('MMMM YYYY')}
               </div>
-              {/* Các chế độ hiển thị */}
               <div>
                 <button
                   onClick={() => props.onView('month')}
@@ -80,6 +123,24 @@ const CalendarComponent = () => {
           ),
         }}
       />
+      
+      {/* Modal hiển thị thông tin booking */}
+      <Modal
+        title="Thông tin booking"
+        visible={!!selectedBooking}
+        onCancel={handleCloseModal}
+        footer={null}
+      >
+        {selectedBooking && (
+          <div>
+            <p><strong>Dịch vụ:</strong> {selectedBooking.service.name}</p>
+            <p><strong>Người dùng:</strong> {selectedBooking.user.username}</p>
+            <p><strong>Thời gian bắt đầu:</strong> {moment(selectedBooking.startDate).format('YYYY-MM-DD HH:mm')}</p>
+            <p><strong>Thời gian kết thúc:</strong> {moment(selectedBooking.endDate).format('YYYY-MM-DD HH:mm')}</p>
+            {/* Bạn có thể thêm các thông tin khác của booking nếu cần */}
+          </div>
+        )}
+      </Modal>
     </motion.div>
   );
 };

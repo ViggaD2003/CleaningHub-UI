@@ -1,27 +1,30 @@
 /* Đặt màu nền cho các ô của lịch */
-.rbc-day-slot {
-    background-color: #ffffff; /* Màu nền trắng cho các ô ngày */
-}
+
 .rbc-time-view {
     background-color: #ffffff;
 }
 
-/* Đặt màu nền cho các ô có sự kiện */
-.rbc-event {
-    background-color: #3b82f6; /* Màu xanh cho sự kiện */
-    color: #d67474; /* Màu chữ trắng cho sự kiện */
-}
-
 /* Đặt màu cho các ô hiện tại */
-.rbc-current {
-    background-color: #9efd93; /* Màu nền xanh nhạt cho ngày hiện tại */
-}
-
-.rbc-btn {
-    @apply bg-blue-500 text-white rounded-md px-3 py-2 hover:bg-blue-700;
-}
 
 .rbc-month-view {
     background-color: white;
     border-radius: 0.37rem
 }
+
+
+/* CalendarComponent.css */
+
+/* Tô màu cho các ngày có booking */
+.rbc-event {
+    background-color: #d1fae5 !important; /* Màu nền cho sự kiện */
+    border: none; /* Xóa viền */
+    color: #000; /* Màu chữ */
+  }
+  
+  /* Tô màu cho ô ngày khi có sự kiện */
+  .rbc-day-slot .rbc-event {
+    background-color: #d1fae5 !important; /* Màu nền cho ô ngày */
+  }
+  
+  /* Bạn có thể tùy chỉnh thêm các thuộc tính khác nếu cần */
+  
