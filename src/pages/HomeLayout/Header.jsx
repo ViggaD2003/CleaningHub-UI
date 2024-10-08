@@ -122,7 +122,7 @@ const Header = () => {
         <a
           onClick={(e) => {
             e.preventDefault();
-            navigate("/history")
+            navigate("/history");
           }}
         >
           Payment History
@@ -130,12 +130,11 @@ const Header = () => {
       ),
     },
   ];
-  
 
   return (
     <HeaderAntd
-      className="flex justify-between items-center h-24 px-8 shadow-md"
-      style={{ backgroundColor: "#CF881D" }}
+      className="flex justify-between items-center h-24 px-8 shadow-md bg-gradient-to-r from-orange-400 to-red-500"
+      // style={{ backgroundColor: "#CF881D" }}
     >
       {/* Logo */}
       <div className="flex items-center">
@@ -203,15 +202,15 @@ const Header = () => {
       ) : (
         <div className="flex items-center space-x-4">
           <Button
-            type="default"
-            className="text-yellow-700 border-yellow-700 hover:bg-yellow-50"
+            type="primary"
+            className="login-btn px-6 py-2 text-white font-bold rounded-lg bg-gradient-to-r from-red-900 to-amber-700 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 ease-in-out"
             onClick={handleLoginPage}
           >
             Login
           </Button>
           <Button
             type="primary"
-            className="bg-yellow-700 border-none hover:bg-yellow-800"
+            className="signup-btn px-6 py-2 text-white font-bold rounded-lg bg-gradient-to-r from-red-900 to-amber-700   shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 ease-in-out"
             onClick={handleRegisterPage}
           >
             Sign Up
