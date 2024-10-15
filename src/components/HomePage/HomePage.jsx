@@ -69,7 +69,7 @@ const HomePage = () => {
           <h1 className="text-4xl font-bold mb-4">
             Professional Residential and Commercial Cleaning Services
           </h1>
-          <button className="mt-6 px-8 py-3 bg-gradient-to-r from-orange-400 to-red-500 text-white rounded-md transition-colors duration-300 font-semibold hover:from-yellow-400 hover:to-pink-500">
+          <button onClick={handleAllServicesClick} className="mt-6 px-8 py-3 bg-gradient-to-r from-orange-400 to-red-500 text-white rounded-md transition-colors duration-300 font-semibold hover:from-yellow-400 hover:to-pink-500" >
             Book Now
           </button>
         </div>
