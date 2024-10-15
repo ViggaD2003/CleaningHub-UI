@@ -3,13 +3,15 @@ import { useState, useEffect } from "react";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
 import axiosClient from "../../services/config/axios";
+import { toast, ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';  
 
 const Booking = () => {
-  const { id } = useParams(); // serviceId from the route
+  const { id } = useParams(); 
   const navigate = useNavigate();
   const [durations, setDurations] = useState([]);
-  const [loading, setLoading] = useState(true); // Track loading state
-  const [error, setError] = useState(null); // Track error state
+  const [loading, setLoading] = useState(true); 
+  const [error, setError] = useState(null); 
   const [stompClient, setStompClient] = useState(null);
 
   const [bookingDetails, setBookingDetails] = useState({
@@ -25,7 +27,7 @@ const Booking = () => {
   useEffect(() => {
     const fetchDurations = async () => {
       try {
-        const response = await axiosClient.get(`/v1/durations/${id}`);
+        const response = await axiosClient.get(`/v1/durations/getAll`);
         if (response.status === 204) {
           setDurations([]);
         } else if (Array.isArray(response.data)) {
@@ -104,14 +106,12 @@ const Booking = () => {
 
         console.log("PayOS Response:", payOSResponse);
 
-        // Check for successful response
         if (payOSResponse.status === 201 && payOSResponse.data.code === 200) {
             window.location.href = payOSResponse.data.data; 
         } else {
           setError("Failed to initiate PayOS payment. Please try again.");
         }
       } else {
-        // Send request to create booking
         const response = await axiosClient.post("/v1/bookings", payload);
         console.log("Booking Response:", response);
 
@@ -125,9 +125,9 @@ const Booking = () => {
     } catch (error) {
       console.error("Error processing booking:", error);
       const errorMessage =
-        error.response?.data?.message ||
-        "Failed to process your request. Please try again.";
-      setError(errorMessage);
+        error.response?.data?.error || "Failed to process your request. Please try again.";
+      
+      toast.error(errorMessage); // Show error message using toast
     }
   };
 
@@ -245,6 +245,9 @@ const Booking = () => {
           </button>
         </div>
       </form>
+
+      {/* Toast Container for showing toast notifications */}
+      <ToastContainer />
     </div>
   );
 };
