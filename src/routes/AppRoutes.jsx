@@ -21,8 +21,9 @@ import BookingSuccess from "../components/Booking/BookingSuccess.jsx";
 // Import các thành phần cho trang Admin
 import Sidebar from "../pages/Admin/Sidebar.jsx";
 import OverviewPage from "../pages/Admin/OverviewPage.jsx";
-import PaymentHistory from "../components/PaymentHistory/PaymentHIstory.jsx";
 import CalendarComponent from "../pages/Calendar/Calendar.jsx";
+import CategoryComponent from "../pages/CategoryManagement/Category.jsx";
+import ServiceComponent from "../pages/ServiceManagement/service.jsx";
 
 export default function AppRoutes() {
   return (
@@ -65,6 +66,8 @@ export default function AppRoutes() {
               <Routes>
                 <Route path="overview" element={<OverviewPage />} />
                 <Route path="calendar" element={<CalendarComponent/>}/>
+                <Route path="categories" element={<CategoryComponent/>}/>
+                <Route path="services" element={<ServiceComponent/>}/>
               </Routes>
             </div>
           }
