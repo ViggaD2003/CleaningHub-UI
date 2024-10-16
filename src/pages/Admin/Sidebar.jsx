@@ -1,4 +1,4 @@
-import { BarChart2, Menu, Calendar, LogOut} from "lucide-react";
+import { BarChart2, Menu, Calendar, LogOut, AppWindowIcon, BookCheck} from "lucide-react";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Link } from "react-router-dom";
@@ -60,6 +60,20 @@ const Sidebar = () => {
 		},
 		{
 			id: 3,
+			name: "Category",
+			icon: AppWindowIcon,
+			color: "#6366f1",
+			href: "/admin/categories",
+		},
+		{
+			id: 4,
+			name: "Service",
+			icon: BookCheck,
+			color: "#6366f1",
+			href: "/admin/services",
+		},
+		{
+			id: 5,
 			name: "Log Out",
 			icon: LogOut,
 			color: "#6366f1",
