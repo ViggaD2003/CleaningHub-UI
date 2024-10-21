@@ -4,15 +4,9 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import {notification } from "antd";
 import axiosClient from "../../services/config/axios";
-import { useNavigate } from "react-router-dom";
-
-
-
-
 
 const Sidebar = () => {
 	const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-	const navigate = useNavigate();
 
 	const handleLogout = async () => {
 		const token = localStorage.getItem("token");
@@ -33,7 +27,8 @@ const Sidebar = () => {
 		  });
 		  localStorage.removeItem("token");
 		  localStorage.removeItem("refresh_token");
-		  navigate("/login");
+		  
+		  window.location.href = "/login";
 		} catch (error) {
 		  notification.error({
 			message: "Lỗi đăng xuất",
@@ -49,14 +44,14 @@ const Sidebar = () => {
 			name: "Overview",
 			icon: BarChart2,
 			color: "#6366f1",
-			href: "/admin/",
+			href: "/",
 		},
 		{
 			id: 2,
 			name: "Calendar",
 			icon: Calendar,
 			color: "#6366f1",
-			href: "/admin/calendar",
+			href: "/calendar",
 		},
 		{
 			id: 3,

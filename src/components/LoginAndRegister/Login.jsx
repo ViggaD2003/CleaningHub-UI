@@ -1,16 +1,12 @@
-import { useState } from "react";
 import { Button, Input, Form, Checkbox, message } from "antd";
 import { GoogleOutlined } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
 import axiosClient from "../../services/config/axios";
 import loginImage from "../../assets/image/login.jpg";
 
 
 
 const LoginPage = () => {
-  const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
-  const navigate = useNavigate();
 
   const handleGoogleLogin = async () => {
     window.location.href =
@@ -18,43 +14,37 @@ const LoginPage = () => {
   };
 
   const handleSubmit = async (values) => {
-    setLoading(true);
+    const { email, password } = values;
+  
     try {
-      const { email, password } = values;
-
-      // API login call
       const response = await axiosClient.post(
         "/v1/auth/signin",
         { email, password },
         { withCredentials: true }
       );
-
+  
+      // Kiểm tra nếu đăng nhập thành công
       if (response.data && response.data.token) {
-        // axiosClient.defaults.headers.common["Authorization"] = `Bearer ${response.data.refreshToken}`;
+        axiosClient.defaults.headers.common["Authorization"] = `Bearer ${response.data.refreshToken}`;
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("refresh_token", `Bearer ${response.data.refreshToken}`);
-
-        // Success message
+  
         message.success({
           content: "Đăng nhập thành công. Đang chuyển trang...",
-          duration: 2,
         });
-
-        // Navigate after delay
-        setTimeout(() => {
-          setLoading(false);
-          navigate("/");
-        }, 2000);
-      } else {
-        setLoading(false);
-        message.error("Invalid credentials");
+  
+       setTimeout(() => {
+        window.location.href = "/"
+       }, 1000);
       }
     } catch (error) {
-      setLoading(false);
-      message.error("Login failed");
-      console.error("Login failed", error);
+      message.error({
+        content: `${error.response.data.businessErrorCode} ${error.response.data.error}`,
+        duration: 2,
+      });
     }
   };
+  
 
   return (
     <div className="flex justify-center items-center min-h-screen">
@@ -110,7 +100,6 @@ const LoginPage = () => {
                 type="primary"
                 htmlType="submit"
                 className="w-full bg-[#CF881D] hover:bg-orange-800"
-                loading={loading}
               >
                 Login
               </Button>

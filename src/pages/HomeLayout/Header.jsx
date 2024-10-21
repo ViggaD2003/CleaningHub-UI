@@ -39,11 +39,11 @@ const Header = () => {
   };
 
   const handleLoginPage = () => {
-    navigate("/login");
+    window.location.href = "/login";
   };
 
   const handleRegisterPage = () => {
-    navigate("/register");
+    window.location.href = "/register";
   };
 
   const handleLogout = async () => {
@@ -66,7 +66,7 @@ const Header = () => {
       setIsLoggedIn(false);
       localStorage.removeItem("token");
       localStorage.removeItem("refresh_token");
-      navigate("/");
+      window.location.href = "/login"
     } catch (error) {
       notification.error({
         message: "Lỗi đăng xuất",
@@ -210,7 +210,6 @@ const Header = () => {
             // type="primary"
             className="signup-btn px-6 py-2 text-white font-bold rounded-lg bg-gradient-to-r from-red-900 to-amber-700   shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 ease-in-out"
             onClick={handleRegisterPage}
-            defaultHoverColor={{color: "red"}}
           >
             Sign Up
           </Button>
