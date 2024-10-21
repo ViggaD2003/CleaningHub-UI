@@ -24,6 +24,8 @@ import useAuth from "../services/config/provider/useAuth.jsx";
 import ErrorPage from "../pages/ErrorPage/ErrorPage.jsx";
 import Loading from "../pages/HomeLayout/Loading.jsx";
 import RequireAuth from "../services/config/provider/RequireAuth.jsx";
+import CategoryComponent from "../pages/CategoryManagement/Category.jsx";
+import ServiceComponent from "../pages/ServiceManagement/service.jsx";
 export default function AppRoutes() {
   const { auth, loading } = useAuth(); // Kiểm tra trạng thái loading từ useAuth
   console.log("loading " + loading);
@@ -48,15 +50,16 @@ export default function AppRoutes() {
           </>
         ) : auth.role === "ROLE_USER" ? (
           <Route element={<HomeLayout />}>
-            <Route path="/" />
-            <Route path="getInformation" element={<GetInfo />} />
-            <Route path="/services/:id" element={<ServiceDetail />} />
-            <Route path="/services/all" element={<AllServicesPage />} />
-            <Route index element={<HomePage />} />
-            <Route path="change-password" element={<ChangePassword />} />
-            <Route path="/booking-history" element={<BookingHistory />} />
-            <Route path="/bookings/:id" element={<Booking />} />
-            <Route path="/booking-success" element={<BookingSuccess />} />
+          <Route path="/"/>
+          <Route path="getInformation" element={<GetInfo />} />
+          <Route path="/services/:id" element={<ServiceDetail />} />
+          <Route path="/services/all" element={<AllServicesPage />} />
+          <Route index element={<HomePage />} />
+          <Route path="change-password" element={<ChangePassword />} />
+          <Route path="map" element={<Map />} />
+          <Route path="/booking-history" element={<BookingHistory />} />
+          <Route path="/bookings/:id" element={<Booking />} />
+          <Route path="/booking-success" element={<BookingSuccess />} />
             <Route
               path="/map"
               element={
@@ -80,8 +83,10 @@ export default function AppRoutes() {
                     </div>
                     <Sidebar />
                     <Routes>
-                      <Route path="" element={<OverviewPage />} />
-                      <Route path="calendar" element={<CalendarComponent />} />
+                    <Route path="overview" element={<OverviewPage />} />
+                <Route path="calendar" element={<CalendarComponent/>}/>
+                <Route path="categories" element={<CategoryComponent/>}/>
+                <Route path="services" element={<ServiceComponent/>}/>
                     </Routes>
                   </div>
                 </>
