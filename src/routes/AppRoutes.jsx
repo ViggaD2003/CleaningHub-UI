@@ -26,6 +26,9 @@ import Loading from "../pages/HomeLayout/Loading.jsx";
 import RequireAuth from "../services/config/provider/RequireAuth.jsx";
 import CategoryComponent from "../pages/CategoryManagement/Category.jsx";
 import ServiceComponent from "../pages/ServiceManagement/service.jsx";
+import StaffLayout from "../pages/Staff/StaffLayout.jsx";
+import BookingStaff from "../components/Booking/BookingStaff.jsx";
+import BookingDetailStaff from "../components/BookingDetail/BookingDetailStaff.jsx";
 export default function AppRoutes() {
   const { auth, loading } = useAuth(); // Kiểm tra trạng thái loading từ useAuth
   console.log("loading " + loading);
@@ -97,6 +100,16 @@ export default function AppRoutes() {
 
         {/* Route cho trang lỗi 404 */}
         <Route path="*" element={<ErrorPage />} />
+        <Route path="/staff"
+          element={
+            <StaffLayout />
+          }>
+          <Route path="bookings" element={<BookingStaff/>}/>
+          <Route path="bookings/booking/:id" element={<BookingDetailStaff/>}/>
+          <Route path="feedbacks"/>
+          <Route path="dashboard" />
+          <Route path="getInformation" element={<GetInfo/>}/>
+        </Route>
       </Routes>
     </>
   );
