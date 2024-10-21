@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Avatar, Button, Dropdown, Space, notification } from "antd";
+import { Avatar, Button, ConfigProvider, Dropdown, Space, notification } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 import { Header as HeaderAntd } from "antd/es/layout/layout";
 import { useNavigate } from "react-router-dom";
@@ -39,11 +39,11 @@ const Header = () => {
   };
 
   const handleLoginPage = () => {
-    navigate("/login");
+    window.location.href = "/login";
   };
 
   const handleRegisterPage = () => {
-    navigate("/register");
+    window.location.href = "/register";
   };
 
   const handleLogout = async () => {
@@ -66,7 +66,7 @@ const Header = () => {
       setIsLoggedIn(false);
       localStorage.removeItem("token");
       localStorage.removeItem("refresh_token");
-      navigate("/");
+      window.location.href = "/login"
     } catch (error) {
       notification.error({
         message: "Lỗi đăng xuất",
@@ -188,20 +188,32 @@ const Header = () => {
         </Dropdown>
       ) : (
         <div className="flex items-center space-x-4">
+        <ConfigProvider
+  theme={{
+    token: {
+      colorPrimaryHover:"#333",
+      colorPrimaryBgHover:"#333",
+      // colorPrimaryHover:"#333",
+      },
+  }}
+>
+  
           <Button
-            type="primary"
+            // type="primary"
             className="login-btn px-6 py-2 text-white font-bold rounded-lg bg-gradient-to-r from-red-900 to-amber-700 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 ease-in-out"
             onClick={handleLoginPage}
           >
             Login
           </Button>
+
           <Button
-            type="primary"
+            // type="primary"
             className="signup-btn px-6 py-2 text-white font-bold rounded-lg bg-gradient-to-r from-red-900 to-amber-700   shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 ease-in-out"
             onClick={handleRegisterPage}
           >
             Sign Up
           </Button>
+</ConfigProvider>
         </div>
       )}
     </HeaderAntd>
