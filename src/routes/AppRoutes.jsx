@@ -23,6 +23,9 @@ import Sidebar from "../pages/Admin/Sidebar.jsx";
 import OverviewPage from "../pages/Admin/OverviewPage.jsx";
 import PaymentHistory from "../components/PaymentHistory/PaymentHIstory.jsx";
 import CalendarComponent from "../pages/Calendar/Calendar.jsx";
+import StaffLayout from "../pages/Staff/StaffLayout.jsx";
+import BookingStaff from "../components/Booking/BookingStaff.jsx";
+import BookingDetailStaff from "../components/BookingDetail/BookingDetailStaff.jsx";
 
 export default function AppRoutes() {
   return (
@@ -40,7 +43,7 @@ export default function AppRoutes() {
         </Route>
 
         <Route element={<HomeLayout />}>
-          <Route path="/"/>
+          <Route path="/" />
           <Route path="getInformation" element={<GetInfo />} />
           <Route path="/services/:id" element={<ServiceDetail />} />
           <Route path="/services/all" element={<AllServicesPage />} />
@@ -64,11 +67,22 @@ export default function AppRoutes() {
               <Sidebar />
               <Routes>
                 <Route path="overview" element={<OverviewPage />} />
-                <Route path="calendar" element={<CalendarComponent/>}/>
+                <Route path="calendar" element={<CalendarComponent />} />
               </Routes>
             </div>
           }
         />
+
+        <Route path="/staff"
+          element={
+            <StaffLayout />
+          }>
+          <Route path="bookings" element={<BookingStaff/>}/>
+          <Route path="bookings/booking/:id" element={<BookingDetailStaff/>}/>
+          <Route path="feedbacks"/>
+          <Route path="dashboard" />
+          <Route path="getInformation" element={<GetInfo/>}/>
+        </Route>
       </Routes>
     </>
   );
