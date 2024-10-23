@@ -29,35 +29,34 @@ import ServiceComponent from "../pages/ServiceManagement/service.jsx";
 import StaffLayout from "../pages/Staff/StaffLayout.jsx";
 import BookingStaff from "../components/Booking/BookingStaff.jsx";
 import BookingDetailStaff from "../components/BookingDetail/BookingDetailStaff.jsx";
+
 export default function AppRoutes() {
-  const { auth, loading } = useAuth(); // Kiểm tra trạng thái loading từ useAuth
+  const { auth, loading } = useAuth();
   console.log("loading " + loading);
+
   if (loading) {
-    return <Loading />; // Hiển thị Loading khi đang lấy thông tin auth
+    return <Loading />;
   }
 
   return (
     <>
       <Routes>
         {!auth?.role ? (
-          <>
-            <Route element={<PageLayout />}>
-              <Route path="login" element={<SignIn />} />
-              <Route path="register" element={<SignUp />} />
-              <Route path="login-success" element={<SignInGoogle />} />
-              <Route path="activate-account" element={<ActivateAccount />} />
-              <Route path="confirm-email" element={<ConfirmEmail />} />
-              <Route path="activate-email" element={<ActivateEmail />} />
-              <Route path="forgot-password" element={<ForgotPassowrd />} />
-            </Route>
-          </>
+          <Route element={<PageLayout />}>
+            <Route path="login" element={<SignIn />} />
+            <Route path="register" element={<SignUp />} />
+            <Route path="login-success" element={<SignInGoogle />} />
+            <Route path="activate-account" element={<ActivateAccount />} />
+            <Route path="confirm-email" element={<ConfirmEmail />} />
+            <Route path="activate-email" element={<ActivateEmail />} />
+            <Route path="forgot-password" element={<ForgotPassowrd />} />
+          </Route>
         ) : auth.role === "ROLE_USER" ? (
           <Route element={<HomeLayout />}>
-            <Route path="/" />
+            <Route index element={<HomePage />} />
             <Route path="getInformation" element={<GetInfo />} />
             <Route path="/services/:id" element={<ServiceDetail />} />
             <Route path="/services/all" element={<AllServicesPage />} />
-            <Route index element={<HomePage />} />
             <Route path="change-password" element={<ChangePassword />} />
             <Route path="map" element={<Map />} />
             <Route path="/booking-history" element={<BookingHistory />} />
@@ -72,42 +71,42 @@ export default function AppRoutes() {
               }
             />
           </Route>
-        ) : auth?.role === "ROLE_STAFF" ? (
-          <>
-            <Route path="/staff"
-              element={
-                <StaffLayout />
-              }>
+        ) : auth.role === "ROLE_STAFF" ? (
+          <Route path="/staff/*" element={<StaffLayout />}>
+            <Route element={<RequireAuth allowedRoles={["ROLE_STAFF"]} />}>
               <Route path="bookings" element={<BookingStaff />} />
               <Route path="bookings/booking/:id" element={<BookingDetailStaff />} />
               <Route path="feedbacks" />
               <Route path="dashboard" />
               <Route path="getInformation" element={<GetInfo />} />
             </Route>
-          </>
-        ) : <Route
-          path="/*"
-          element={
-            <>
-              <RequireAuth allowedRoles={["ROLE_STAFF"]} />
-              <div className="flex h-screen bg-gray-900 text-gray-100 overflow-hidden">
-                <div className="fixed inset-0 z-0">
-                  <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 opacity-80" />
-                  <div className="absolute inset-0 backdrop-blur-sm" />
+          </Route>
+        ) : auth.role === "ROLE_ADMIN" ? (
+          <Route
+            path="/admin/*"
+            element={
+              <>
+                <RequireAuth allowedRoles={["ROLE_ADMIN"]} />
+                <div className="flex h-screen bg-gray-900 text-gray-100 overflow-hidden">
+                  <div className="fixed inset-0 z-0">
+                    <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 opacity-80" />
+                    <div className="absolute inset-0 backdrop-blur-sm" />
+                  </div>
+                  <Sidebar />
+                  <div className="flex-grow">
+                    <Routes>
+                      <Route path="overview" element={<OverviewPage />} />
+                      <Route path="calendar" element={<CalendarComponent />} />
+                      <Route path="categories" element={<CategoryComponent />} />
+                      <Route path="services" element={<ServiceComponent />} />
+                    </Routes>
+                  </div>
                 </div>
-                <Sidebar />
-                <Routes>
-                  <Route path="overview" element={<OverviewPage />} />
-                  <Route path="calendar" element={<CalendarComponent />} />
-                  <Route path="categories" element={<CategoryComponent />} />
-                  <Route path="services" element={<ServiceComponent />} />
-                </Routes>
-              </div>
-            </>
-          }
-        />}
+              </>
+            }
+          />
+        ) : null}
 
-        {/* Route cho trang lỗi 404 */}
         <Route path="*" element={<ErrorPage />} />
       </Routes>
     </>

@@ -4,7 +4,7 @@ import ReactMapGL, { Marker, GeolocateControl } from "react-map-gl";
 const MAPBOX_TOKEN =
   "pk.eyJ1IjoibWluaGh1eTI0MTEiLCJhIjoiY20yYTc1cHRqMDl6azJuczk1ejNmb2RueSJ9.CKdZs3r2gSbrPwUpgb9Ocw";
 
-const Mapbox = () => {
+const Mapbox = ({ onSelectedAddress }) => {
   const [viewport, setViewport] = useState({
     width: "100vw",
     height: "100vh",
@@ -29,15 +29,24 @@ const Mapbox = () => {
         `https://api.mapbox.com/geocoding/v5/mapbox.places/${longitude},${latitude}.json?access_token=${MAPBOX_TOKEN}`
       );
       if (response.data.features.length > 0) {
-        setPresentLocation(response.data.features[0].place_name);
-        setSearchQuery(response.data.features[0].place_name);
+
+        const fetchedAddress = response.data.features[0].place_name
+        setPresentLocation(fetchedAddress);
+        setSearchQuery(fetchedAddress);
+        if (onSelectedAddress) {
+          onSelectedAddress({
+            latitude: longitude,
+            longtitude: latitude,
+            address: fetchedAddress
+          });
+        }
       }
     } catch (error) {
       console.error("Error fetching address from coordinates:", error);
     }
   };
 
-  const handleMapClick = (event) => {
+  const handleMapClick = async (event) => {
     const [longitude, latitude] = event.lngLat;
     setSelectedLocation({ longitude, latitude });
     fetchAddressFromCoordinates(longitude, latitude);
@@ -59,14 +68,14 @@ const Mapbox = () => {
   };
 
   useEffect(() => {
-    
-    if(searchQuery.length == 0 && presentLocation){
+
+    if (searchQuery.length == 0 && presentLocation) {
       setPresentLocation("");
       setSelectedLocation(null);
       return;
     }
 
-    if(searchQuery && presentLocation && selectedLocation){
+    if (searchQuery && presentLocation && selectedLocation) {
       return;
     }
 
@@ -110,84 +119,88 @@ const Mapbox = () => {
     setPresentLocation(place_name)
     setSelectedLocation({ longitude: center[0], latitude: center[1] });
     setIsDropdownVisible(false);
+
+    fetchAddressFromCoordinates(center[0], center[1]);
   };
 
+
   return (
-    <div className="relative">
-      <div className="absolute top-10 left-16 z-10 flex space-x-4">
-        <form>
-          <input
-            type="text"
-            placeholder="Nhập địa chỉ cần tìm"
-            value={searchQuery}
-            onChange={(e) => {
-              setSearchQuery(e.target.value);
-            }}
-            className="px-4 py-2 w-72 border border-gray-300 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-200"
-          />
-        </form>
+    <div className="relative w-full max-w-lg mx-auto"> {/* Limited the width to keep the map smaller */}
+  <div className="absolute top-4 left-4 z-10 flex space-x-4">
+    <form>
+      <input
+        type="text"
+        placeholder="Nhập địa chỉ cần tìm"
+        value={searchQuery}
+        onChange={(e) => {
+          setSearchQuery(e.target.value);
+        }}
+        className="px-4 py-2 w-60 border border-gray-300 rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-200"
+      />
+    </form>
 
-        {selectedLocation && (
-          <div className="bg-white p-4 rounded-lg shadow-md max-w-xs">
-            <p className="text-gray-700">
-              <strong>Địa chỉ:</strong> {presentLocation}
-            </p>
-            <p className="text-gray-700">
-              <strong>Tọa độ:</strong> {selectedLocation.latitude}, {selectedLocation.longitude}
-            </p>
-          </div>
-        )}
+    {selectedLocation && (
+      <div className="bg-white p-3 rounded-md shadow-md max-w-sm">
+        <p className="text-gray-700">
+          <strong>Địa chỉ:</strong> {presentLocation}
+        </p>
+        <p className="text-gray-700">
+          <strong>Tọa độ:</strong> {selectedLocation.latitude}, {selectedLocation.longitude}
+        </p>
       </div>
+    )}
+  </div>
 
-      {isDropdownVisible && searchResults.length > 0 && (
-        <ul className="absolute top-20 left-16 z-10 bg-white rounded-lg shadow-md w-72 max-h-52 overflow-y-auto divide-y divide-gray-200">
-          {searchResults.map((result) => (
-            <li
-              key={result.id}
-              onClick={() => handleResultClick(result)}
-              className="px-4 py-2 cursor-pointer hover:bg-gray-100 transition-colors"
-            >
-              {result.place_name}
-            </li>
-          ))}
-        </ul>
-      )}
+  {isDropdownVisible && searchResults.length > 0 && (
+    <ul className="absolute top-14 left-4 z-10 bg-white rounded-md shadow-md w-60 max-h-40 overflow-y-auto divide-y divide-gray-200"> {/* Adjusted position and size */}
+      {searchResults.map((result) => (
+        <li
+          key={result.id}
+          onClick={() => handleResultClick(result)}
+          className="px-3 py-2 cursor-pointer hover:bg-gray-100 transition-colors"
+        >
+          {result.place_name}
+        </li>
+      ))}
+    </ul>
+  )}
 
-      <ReactMapGL
-        {...viewport}
-        mapStyle="mapbox://styles/mapbox/streets-v12"
-        onViewportChange={handleViewportChange}
-        mapboxApiAccessToken={MAPBOX_TOKEN}
-        onClick={handleMapClick}
-        className="rounded-lg"
+  <ReactMapGL
+    {...viewport}
+    width="100%" // Adjusted to fit within the container
+    height="300px" // Set a fixed height for the map
+    mapStyle="mapbox://styles/mapbox/streets-v12"
+    onViewportChange={handleViewportChange}
+    mapboxApiAccessToken={MAPBOX_TOKEN}
+    onClick={handleMapClick}
+    className="rounded-lg mt-8" // Added top margin for better spacing
+  >
+    <GeolocateControl
+      className="absolute top-4 left-4"
+      positionOptions={{ enableHighAccuracy: true }}
+      trackUserLocation={true}
+      showUserLocation={true}
+      onGeolocate={handleGeolocate}
+      onError={handleGeolocateError}
+    />
+
+    {selectedLocation && (
+      <Marker
+        latitude={selectedLocation.latitude}
+        longitude={selectedLocation.longitude}
+        offsetLeft={-15}
+        offsetTop={-15}
       >
-        <GeolocateControl
-          className="absolute top-10 left-4"
-          positionOptions={{ enableHighAccuracy: true }}
-          trackUserLocation={true}
-          showUserLocation={true}
-          onGeolocate={handleGeolocate}
-          onError={handleGeolocateError}
+        <img
+          className="h-8 w-8 rounded-full border-2 border-blue-500"
+          src="https://docs.mapbox.com/mapbox-gl-js/assets/custom_marker.png"
+          alt="Selected Location"
         />
+      </Marker>
+    )}
+  </ReactMapGL>
+</div>
 
-        {selectedLocation && (
-          <Marker
-            latitude={selectedLocation.latitude}
-            longitude={selectedLocation.longitude}
-            offsetLeft={-20}
-            offsetTop={-30}
-          >
-            <img
-              className="h-12 w-12 rounded-full border-2 border-blue-500"
-              src="https://docs.mapbox.com/mapbox-gl-js/assets/custom_marker.png"
-              alt="Selected Location"
-            />
-          </Marker>
-        )}
-      </ReactMapGL>
-
-      
-    </div>
   );
 };
 

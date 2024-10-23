@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Layout, Menu, Dropdown, message, Space } from 'antd';
+import { Layout, Menu, Dropdown, message, notification } from 'antd';
 import { UserOutlined, LaptopOutlined, BookOutlined, MessageOutlined, LogoutOutlined, DownOutlined } from '@ant-design/icons';
 import 'antd/dist/reset.css'; // Import Ant Design styles
-import { Content, Header } from "antd/es/layout/layout";
+import { Content } from "antd/es/layout/layout";
 import { Outlet, Link, useNavigate } from "react-router-dom";
 import BookingNotificationComponent from '../../components/BookingNotification/BookingNotificationComponent';
 import { jwtDecode } from 'jwt-decode'; // Correct import
+import axios from 'axios';
 
 const { Sider } = Layout;
 
@@ -40,7 +41,33 @@ const StaffLayout = () => {
         setCollapsed(collapsed);
     };
 
-    const customFontFamily = "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
+    const handleLogout = async () => {
+        const token = localStorage.getItem("token");
+        try {
+            await axios.post(
+                "/v1/auth/logout",
+                {},
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+            notification.success({
+                message: "Logout Successful",
+                description: "You have been logged out successfully.",
+                duration: 2,
+            });
+            localStorage.removeItem("token");
+            localStorage.removeItem("refresh_token");
+            window.location.href = "/login";
+        } catch (error) {
+            notification.error({
+                message: "Logout Error",
+                description: error?.message || "An error occurred. Please try again later!",
+            });
+        }
+    };
 
     // Define the menu items using the `items` prop with icons
     const menuItems = [
@@ -51,7 +78,17 @@ const StaffLayout = () => {
                     menu={{
                         items: [
                             { key: 'profile', label: <Link to="/staff/getInformation">Profile</Link>, icon: <UserOutlined /> },
-                            { key: 'logout', label: <div style={{ backgroundColor: 'red', padding: 10 }}><Link to="/staff/logout">Logout</Link></div>, icon: <LogoutOutlined /> },
+                            {
+                                key: 'logout',
+                                label: (
+                                    <button onClick={handleLogout}>
+                                        <LogoutOutlined className="mr-2" /> Logout
+                                    </button>
+                                ),
+                                style: {
+                                    backgroundColor: 'red',
+                                    color: 'white'}                                    
+                            },
                         ],
                     }}
                     trigger={['click']}
@@ -59,12 +96,6 @@ const StaffLayout = () => {
                     <a
                         onClick={(e) => e.preventDefault()}
                         className="text-white flex space-x-2"
-                        style={{
-                            fontSize: '16px',
-                            fontWeight: 'bold',
-                            fontFamily: customFontFamily,
-                            display: 'block',
-                        }}
                     >
                         <UserOutlined /><span>Account</span><DownOutlined />
                     </a>
@@ -112,20 +143,13 @@ const StaffLayout = () => {
                 onCollapse={onCollapse}
                 style={{ position: 'fixed', height: '100vh', left: 0, backgroundColor: '#fb923c' }} // Make the Sider fixed with a consistent background
             >
-                <div className="logo p-4 text-center text-white font-bold" style={{ fontFamily: customFontFamily }}>
+                <div className="logo p-4 text-center text-white font-bold">
                     Logo {/* Replace with actual logo */}
                 </div>
                 <Menu
                     selectedKeys={[selectedKey]}
                     mode="inline"
-                    style={{
-                        backgroundColor: '#fb923c',
-                        borderRight: 0,
-                        fontFamily: customFontFamily,
-                        fontSize: '16px', // Set font size for all menu items
-                        fontWeight: 'bold', // Set font weight to bold
-                        color: '#ffffff' // Set the default text color to white
-                    }}
+                    className="bg-[#fb923c] text-white font-bold"
                     onClick={(e) => {
                         setSelectedKey(e.key);
                     }}

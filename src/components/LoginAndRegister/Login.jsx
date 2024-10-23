@@ -2,7 +2,7 @@ import { Button, Input, Form, Checkbox, message } from "antd";
 import { GoogleOutlined } from "@ant-design/icons";
 import axiosClient from "../../services/config/axios";
 import loginImage from "../../assets/image/login.jpg";
-import { jwtDecode } from 'jwt-decode';
+
 
 
 const LoginPage = () => {
@@ -50,10 +50,10 @@ const LoginPage = () => {
     <div className="flex justify-center items-center min-h-screen">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-4xl flex flex-col md:flex-row">
         <div className="w-full md:w-1/2 flex items-center justify-center bg-gray-100 rounded-l-lg">
-          <img
-            src={loginImage}
-            alt="Cleaning Service"
-            className="object-cover w-full h-full md:h-auto rounded-lg" />
+        <img
+          src={loginImage}
+          alt="Cleaning Service"
+          className="object-cover w-full h-full md:h-auto rounded-lg"/>
         </div>
         <div className="w-full md:w-1/2 p-8">
           <h2 className="text-2xl font-bold text-center mb-2">Login to your Account</h2>
@@ -67,7 +67,7 @@ const LoginPage = () => {
           </Button>
           <div className="text-center mb-4">
             <h6>or Sign in with Email</h6>
-          </div>
+            </div>
           <Form
             form={form}
             layout="vertical"
