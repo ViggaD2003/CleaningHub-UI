@@ -58,14 +58,14 @@ const Sidebar = () => {
 			name: "Category",
 			icon: AppWindowIcon,
 			color: "#6366f1",
-			href: "/admin/categories",
+			href: "/categories",
 		},
 		{
 			id: 4,
 			name: "Service",
 			icon: BookCheck,
 			color: "#6366f1",
-			href: "/admin/services",
+			href: "/services",
 		},
 		{
 			id: 5,

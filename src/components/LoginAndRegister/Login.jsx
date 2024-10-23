@@ -99,7 +99,7 @@ const LoginPage = () => {
               <Button
                 type="primary"
                 htmlType="submit"
-                className="w-full bg-[#CF881D] hover:bg-orange-800"
+                className="w-full bg-[#7fc7f7] "
               >
                 Login
               </Button>

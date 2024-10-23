@@ -120,7 +120,7 @@ const Header = () => {
 
   return (
     <HeaderAntd
-      className="flex justify-between items-center h-24 px-8 shadow-md bg-gradient-to-r from-orange-400 to-red-500"
+      className="flex justify-between items-center h-24 px-8 shadow-md bg-gradient-to-r from-blue-100 to-blue-300 p-4"
       // style={{ backgroundColor: "#CF881D" }}
     >
       {/* Logo */}
@@ -138,31 +138,31 @@ const Header = () => {
       <div className="flex space-x-8">
         <a
           href="#home"
-          className="text-white hover:text-orange-800 font-bold text-xl"
+          className="text-white hover:text-blue-300 font-bold text-xl"
         >
           Home
         </a>
         <a
           href="#about"
-          className="text-white hover:text-orange-800 font-bold text-xl"
+          className="text-white hover:text-blue-300 font-bold text-xl"
         >
           About
         </a>
         <a
           href="#pricing"
-          className="text-white hover:text-orange-800 font-bold text-xl"
+          className="text-white hover:text-blue-300 font-bold text-xl"
         >
           Pricing
         </a>
         <a
           href="#service"
-          className="text-white hover:text-orange-800 font-bold text-xl"
+          className="text-white hover:text-blue-300 font-bold text-xl"
         >
           Service
         </a>
         <a
           href="#contact"
-          className="text-white hover:text-orange-800 font-bold text-xl"
+          className="text-white hover:text-blue-300 font-bold text-xl"
         >
           Contact
         </a>
@@ -200,7 +200,7 @@ const Header = () => {
   
           <Button
             // type="primary"
-            className="login-btn px-6 py-2 text-white font-bold rounded-lg bg-gradient-to-r from-red-900 to-amber-700 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 ease-in-out"
+            className="px-10 py-6 text-white  font-extrabold bg-gradient-to-r from-blue-500 to-green-500 shadow-lg"
             onClick={handleLoginPage}
           >
             Login
@@ -208,7 +208,7 @@ const Header = () => {
 
           <Button
             // type="primary"
-            className="signup-btn px-6 py-2 text-white font-bold rounded-lg bg-gradient-to-r from-red-900 to-amber-700   shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 ease-in-out"
+            className="px-8 py-6 text-white font-extrabold   bg-gradient-to-r from-blue-500 to-green-500 shadow-lg"
             onClick={handleRegisterPage}
           >
             Sign Up

@@ -6,8 +6,8 @@ const MAPBOX_TOKEN =
 
 const Mapbox = () => {
   const [viewport, setViewport] = useState({
-    width: "100vw",
-    height: "100vh",
+    width: "100%",
+    height: "90vh",
     latitude: 10.80139886141051,
     longitude: 106.62771841014414,
     zoom: 16,
