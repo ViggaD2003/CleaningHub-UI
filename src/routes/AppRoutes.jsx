@@ -27,11 +27,16 @@ import RequireAuth from "../services/config/provider/RequireAuth.jsx";
 import CategoryComponent from "../pages/CategoryManagement/Category.jsx";
 import ServiceComponent from "../pages/ServiceManagement/service.jsx";
 import RatingPage from "../components/Rating/RatingPage.jsx";
+import StaffLayout from "../pages/Staff/StaffLayout.jsx";
+import BookingStaff from "../components/Booking/BookingStaff.jsx";
+import BookingDetailStaff from "../components/BookingDetail/BookingDetailStaff.jsx";
+
 export default function AppRoutes() {
-  const { auth, loading } = useAuth(); // Kiểm tra trạng thái loading từ useAuth
+  const { auth, loading } = useAuth();
   console.log("loading " + loading);
+
   if (loading) {
-    return <Loading />; // Hiển thị Loading khi đang lấy thông tin auth
+    return <Loading />;
   }
 
   return (
@@ -83,12 +88,9 @@ export default function AppRoutes() {
           </Route>
           </>
         ) : auth?.role === "ROLE_STAFF" ? (
-          <>
             <Route
               path="/*"
               element={
-                <>
-                  {/* <RequireAuth allowedRoles={["ROLE_STAFF"]} /> */}
                   <div className="flex h-screen bg-gray-900 text-gray-100 overflow-hidden">
                     <div className="fixed inset-0 z-0">
                       <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 opacity-80" />
@@ -96,19 +98,24 @@ export default function AppRoutes() {
                     </div>
                     <Sidebar />
                     <Routes>
-                    <Route index path="/" element={<OverviewPage />} />
-                <Route path="calendar" element={<CalendarComponent/>}/>
-                <Route path="categories" element={<CategoryComponent/>}/>
-                <Route path="services" element={<ServiceComponent/>}/>
-                    </Routes>
-                  </div>
-                </>
-              }
-            />
-          </>
+                       <Route index path="/" element={<OverviewPage />} />
+                       <Route path="calendar" element={<CalendarComponent/>} />
+                      <Route path="categories" element={<CategoryComponent/>} />
+                       <Route path="services" element={<ServiceComponent/>} />   
+                    </Routes>       
+                       </div>
+                }/>
+        ) : auth.role === "ROLE_STAFF" ? (
+          <Route path="/staff/*" element={<StaffLayout />}>
+            <Route element={<RequireAuth allowedRoles={["ROLE_STAFF"]} />}>
+              <Route path="bookings" element={<BookingStaff />} />
+              <Route path="bookings/booking/:id" element={<BookingDetailStaff />} />
+              <Route path="feedbacks" />
+              <Route path="dashboard" />
+              <Route path="getInformation" element={<GetInfo />} />
+            </Route>
+          </Route>
         ) : null}
-
-        {/* Route cho trang lỗi 404 */}
         <Route path="*" element={<ErrorPage />} />
       </Routes>
     </>
