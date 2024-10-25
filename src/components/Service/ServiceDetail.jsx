@@ -1,6 +1,8 @@
-import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import axiosClient from "../../services/config/axios";
+import image from "../../assets/image/image.png";
+import { motion } from "framer-motion";
 
 const ServiceDetail = () => {
   const { id } = useParams();
@@ -25,47 +27,73 @@ const ServiceDetail = () => {
   }
 
   const handleBookNow = () => {
-    navigate(`/bookings/${id}`);  // Navigate to booking page with service id
+    navigate(`/bookings/${id}`); // Điều hướng tới trang booking
   };
 
   return (
-    <div className="container mx-auto py-12">
-      {/* Hero Section */}
+    <motion.div className="flex justify-center py-24"
+    initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.2, duration: 0.5 }}
+    >
       <div
-        className="relative bg-cover bg-center h-[400px] mb-12 flex justify-center items-center"
-        style={{ backgroundImage: `url(${service.img || "path_to_default_image"})` }}
+        className="shadow-gray-400 bg-slate-200  rounded-lg shadow-lg p-6 w-full max-w-screen-2xl flex flex-col md:flex-row"
+        style={{ height: "800px" }}
       >
-        <div className="absolute inset-0 bg-black opacity-50"></div>
-        <h1 className="relative text-white text-4xl font-bold">{service.name}</h1>
-      </div>
+        {/* Image Section - Left */}
+        <div className="md:w-1/2 mb-6 md:mb-0 md:mr-6">
+          <div className="rounded-lg overflow-hidden w-full h-full flex items-center justify-center">
+            <img
+              src={image}
+              className="w-full h-full object-cover"
+              alt="Service"
+            />
+          </div>
+        </div>
 
-      {/* Features Section (Description) */}
-      <div className="text-center mb-12">
-        <h2 className="text-xl font-bold mb-4">Service Description</h2>
-        <p className="text-gray-600">{service.description}</p>
-      </div>
+        {/* Information Section - Right */}
+        <div className="md:w-1/2 flex flex-col justify-start"> {/* Aligns content to the top */}
+          <div className="space-y-6">
+            {/* Service Name */}
+            <div className="text-center"> {/* Aligned text to the left */}
+              <h1 className="text-3xl font-bold text-gray-700 mb-4">
+                {service.name}
+              </h1>
+            </div>
 
-      {/* Pricing Section */}
-      <div className="text-center mb-12">
-        <h2 className="text-xl font-bold mb-4">Service Pricing</h2>
-        <div className="flex justify-center">
-          <div className="flex flex-col items-center justify-center p-6 border rounded-lg">
-            <h4 className="text-lg font-bold mb-2">Basic Package</h4>
-            <p className="text-xl font-bold">${service.basePrice}</p>
+            {/* Description Section */}
+            <div className="border-b border-gray-200 pb-4">
+              <h2 className="text-lg font-semibold text-gray-700 mb-2">
+                Description
+              </h2>
+              <p className="text-gray-800 text-xl font-bold">
+                {service.description}
+              </p>
+            </div>
+
+            {/* Pricing Section */}
+            <div className="border-b border-gray-200 pb-4">
+              <h2 className="text-lg font-semibold text-gray-700 mb-2">
+                Basic Package
+              </h2>
+              <p className="text-gray-800 text-xl font-bold">
+                ${service.basePrice}
+              </p>
+            </div>
+
+            {/* Booking Button */}
+            <div className="text-center mt-4"> {/* Moved the button to the left */}
+              <button
+                className="bg-gradient-to-r from-blue-500 to-green-500 text-white font-extrabold py-3 px-6 rounded-lg transition duration-300"
+                onClick={handleBookNow}
+              >
+                Book Now
+              </button>
+            </div>
           </div>
         </div>
       </div>
-
-      {/* Booking Button */}
-      <div className="text-center">
-        <button
-          className="bg-yellow-500 text-white px-8 py-4 rounded-md hover:bg-yellow-600"
-          onClick={handleBookNow}
-        >
-          Book Now
-        </button>
-      </div>
-    </div>
+    </motion.div>
   );
 };
 

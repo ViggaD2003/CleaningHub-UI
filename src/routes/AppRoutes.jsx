@@ -87,7 +87,7 @@ export default function AppRoutes() {
           <Route path="/rating" element={<RatingPage/>}/>
           </Route>
           </>
-        ) : auth?.role === "ROLE_STAFF" ? (
+        ) : auth?.role === "ROLE_ADMIN" ? (
             <Route
               path="/*"
               element={

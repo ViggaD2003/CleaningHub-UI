@@ -130,13 +130,13 @@ const BookingHistory = () => {
       transition={{ delay: 0.4 }}
     >
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-3xl font-bold text-center text-amber-500">Booking History</h2>
+        <h2 className="text-3xl text-center text-gray-600 font-extrabold">Booking History</h2>
         <input
           type="text"
           placeholder="Search..."
           value={searchTerm}
           onChange={handleSearchChange}
-          className="bg-white text-gray-700 px-4 py-2 rounded-md shadow-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500 w-1/3"
+          className="bg-white text-gray-700 px-4 py-2 rounded-md shadow-lg border border-gray-300  w-1/3"
         />
       </div>
 
@@ -155,7 +155,7 @@ const BookingHistory = () => {
             <button
               onClick={handlePreviousPage}
               disabled={pageIndex === 0}
-              className="bg-gradient-to-r from-orange-400 to-red-500 text-white px-6 py-2 rounded-md shadow-lg duration-300 disabled:opacity-50 hover:from-yellow-400 hover:to-pink-500"
+              className="bg-gradient-to-r bg-sky-200 hover:bg-gray-200 text-gray-600 font-bold px-6 py-2 rounded-md hover:from-blue-300  hover:to-gray-200"
             >
               Previous
             </button>
@@ -165,7 +165,7 @@ const BookingHistory = () => {
             <button
               onClick={handleNextPage}
               disabled={pageIndex >= totalPages - 1}
-              className="bg-gradient-to-r from-orange-400 to-red-500 text-white px-6 py-2 rounded-md shadow-lg duration-300 disabled:opacity-50 hover:from-yellow-400 hover:to-pink-500"
+              className="bg-gradient-to-r bg-sky-200 hover:bg-gray-200 text-gray-600 font-bold px-6 py-2 rounded-md hover:from-blue-300  hover:to-gray-200"
             >
               Next
             </button>
