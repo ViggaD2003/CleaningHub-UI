@@ -155,7 +155,7 @@ const BookingHistory = () => {
             <button
               onClick={handlePreviousPage}
               disabled={pageIndex === 0}
-              className="bg-gradient-to-r bg-sky-200 hover:bg-gray-200 text-gray-600 font-bold px-6 py-2 rounded-md hover:from-blue-300  hover:to-gray-200"
+              className="bg-gradient-to-r from-blue-300  to-gray-200 hover:from-gray-300  hover:to-gray-200 text-gray-600 font-bold px-6 py-2 rounded-md cursor-pointer"
             >
               Previous
             </button>
@@ -165,7 +165,7 @@ const BookingHistory = () => {
             <button
               onClick={handleNextPage}
               disabled={pageIndex >= totalPages - 1}
-              className="bg-gradient-to-r bg-sky-200 hover:bg-gray-200 text-gray-600 font-bold px-6 py-2 rounded-md hover:from-blue-300  hover:to-gray-200"
+              className="bg-gradient-to-r from-blue-300  to-gray-200 hover:from-gray-300  hover:to-gray-200 text-gray-600 font-bold px-6 py-2 rounded-md cursor-pointer"
             >
               Next
             </button>

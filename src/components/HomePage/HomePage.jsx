@@ -111,7 +111,7 @@ const HomePage = () => {
           {services.map((service) => (
             <div
               key={service.id}
-              className="p-6 border rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 transform bg-gradient-to-r from-sky-200 to-blue-50 hover:scale-105"
+              className="p-6 border rounded-lg shadow-sm cursor-pointer hover:shadow-lg transition-shadow duration-300 transform bg-gradient-to-r from-sky-200 to-blue-50 hover:scale-105"
               onClick={() => handleServiceClick(service.id)}
             >
               <div className="mb-4">

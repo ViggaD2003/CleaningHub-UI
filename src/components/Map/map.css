@@ -1,5 +1,5 @@
 /* styles.css */
 .leaflet-container {
-    cursor: default; /* Chỉnh sửa con trỏ mặc định cho bản đồ */
+    cursor: auto; /* Chỉnh sửa con trỏ mặc định cho bản đồ */
   }
   

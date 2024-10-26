@@ -84,7 +84,8 @@ const ServiceDetail = () => {
             {/* Booking Button */}
             <div className="text-center mt-4"> {/* Moved the button to the left */}
               <button
-                className="bg-gradient-to-r from-blue-500 to-green-500 text-white font-extrabold py-3 px-6 rounded-lg transition duration-300"
+                className="bg-gradient-to-r text-gray-600 font-extrabold py-3 px-6 rounded-lg transition duration-300 from-blue-300  to-gray-200 hover:from-gray-300  hover:to-gray-200"
+                // bg-gradient-to-r bg-sky-200 hover:bg-gray-200 text-gray-600 font-bold px-6 py-2 rounded-md hover:from-blue-300  hover:to-gray-200
                 onClick={handleBookNow}
               >
                 Book Now
