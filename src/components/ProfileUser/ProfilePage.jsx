@@ -106,7 +106,7 @@ const GetInfo = () => {
 
   return (
     <motion.div
-      className="mt-8 max-w-screen-lg mx-auto p-6 shadow-lg rounded-lg"
+      className="mt-8 max-w-screen-lg mx-auto p-6 shadow-md shadow-gray-400 rounded-lg bg-slate-200"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.2, duration: 0.5 }}

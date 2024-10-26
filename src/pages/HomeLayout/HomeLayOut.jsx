@@ -5,13 +5,13 @@ import { Content } from "antd/es/layout/layout";
 import { Outlet } from "react-router-dom";
 import Header from "./Header";
 import Footer from "./Footer";
-import "./styles/HomeLayout.scss"
+import "./styles/HomeLayout.scss";
 
 export default function HomeLayout() {
   return (
-    <Layout >
+    <Layout>
       <Header />
-      <Content className="layout-background">
+      <Content className="layout-background" style={{ padding: `0` }}>
         <Outlet />
       </Content>
       <Footer />

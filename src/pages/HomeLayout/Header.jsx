@@ -135,37 +135,26 @@ const Header = () => {
       </div>
 
       {/* Middle Menu */}
-      <div className="flex space-x-8">
-        <a
-          href="#home"
+      <div className="flex text-center space-x-36">
+        <Link
+          to="/"
           className="text-white hover:text-blue-300 font-bold text-xl"
         >
           Home
-        </a>
+        </Link>
         <a
-          href="#about"
+          href="https://www.facebook.com/profile.php?id=61566508168892"
           className="text-white hover:text-blue-300 font-bold text-xl"
         >
           About
         </a>
-        <a
-          href="#pricing"
-          className="text-white hover:text-blue-300 font-bold text-xl"
-        >
-          Pricing
-        </a>
-        <a
-          href="#service"
+       
+        <Link
+          to="/services/all"
           className="text-white hover:text-blue-300 font-bold text-xl"
         >
           Service
-        </a>
-        <a
-          href="#contact"
-          className="text-white hover:text-blue-300 font-bold text-xl"
-        >
-          Contact
-        </a>
+        </Link>
       </div>
 
       {/* Right side: Login, Register, or User Menu */}

@@ -11,7 +11,6 @@ const RatingPage = () => {
 
   const handleSubmit = () => {
     setSubmitted(true);
-    console.log(`User rated ${rating} stars`);
   };
 
   return (

@@ -14,15 +14,10 @@ const BookingNotificationComponent = () => {
     const jwtToken = localStorage.getItem('token');
 
     stompClient.connect({ Authorization: `Bearer ${jwtToken}` }, (frame) => {
-      console.log("Connected: " + frame);
-
       // Đăng ký lắng nghe thông báo dành cho staff với đường dẫn /user/topic/notifications
       stompClient.subscribe("/user/queue/notifications", (message) => {
-        console.log(message);
         if (message.body) {
           const booking = JSON.parse(message.body);
-          console.log(booking);
-
           notification.success({
             message: 'New Booking Information',
             description: (
@@ -47,7 +42,6 @@ const BookingNotificationComponent = () => {
     return () => {
       if (stompClient) {
         stompClient.disconnect(() => {
-          console.log("Disconnected");
         });
       }
     };
