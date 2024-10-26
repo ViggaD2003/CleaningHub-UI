@@ -127,8 +127,17 @@ const GetInfo = () => {
         )}
       </div>
 
-      <Form form={form} layout="vertical" initialValues={userInfo} onFinish={onFinish}>
-        <Form.Item name="id" initialValue={userInfo.id} style={{ display: "none" }}>
+      <Form
+        form={form}
+        layout="vertical"
+        initialValues={userInfo}
+        onFinish={onFinish}
+      >
+        <Form.Item
+          name="id"
+          initialValue={userInfo.id}
+          style={{ display: "none" }}
+        >
           <Input type="hidden" />
         </Form.Item>
 
@@ -203,12 +212,18 @@ const GetInfo = () => {
         beforeUpload={() => false}
         onChange={handleFileChange}
       >
-        <Button icon={<UploadOutlined />} className="px-8 py-3 bg-gradient-to-r from-orange-400 to-red-500 text-white rounded-md transition-colors duration-300 font-semibold hover:from-yellow-400 hover:to-pink-500">
+        <Button
+          icon={<UploadOutlined />}
+          className="px-8 py-3 bg-gradient-to-r from-orange-400 to-red-500 text-white rounded-md transition-colors duration-300 font-semibold hover:from-yellow-400 hover:to-pink-500"
+        >
           Change Photo
         </Button>
       </Upload>
 
-      <Button onClick={handleChangePassword} className="px-8 py-3 bg-gradient-to-r from-orange-400 to-red-500 text-white rounded-md transition-colors duration-300 font-semibold hover:from-yellow-400 hover:to-pink-500">
+      <Button
+        onClick={handleChangePassword}
+        className="px-8 py-3 bg-gradient-to-r from-orange-400 to-red-500 text-white rounded-md transition-colors duration-300 font-semibold hover:from-yellow-400 hover:to-pink-500"
+      >
         Change Password
       </Button>
     </motion.div>
