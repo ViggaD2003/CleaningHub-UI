@@ -33,7 +33,6 @@ import BookingDetailStaff from "../components/BookingDetail/BookingDetailStaff.j
 
 export default function AppRoutes() {
   const { auth, loading } = useAuth();
-  console.log("loading " + loading);
 
   if (loading) {
     return <Loading />;
@@ -79,7 +78,6 @@ export default function AppRoutes() {
           <Route path="/services/all" element={<AllServicesPage />} />
           <Route index element={<HomePage />} />
           <Route path="/bookings/:id" element={<Booking />} />
-          <Route path="/map" element={<Map/>}/>
           <Route path="getInformation" element={<GetInfo />} />
           <Route path="change-password" element={<ChangePassword />} />
           <Route path="/booking-history" element={<BookingHistory />} />
@@ -87,7 +85,7 @@ export default function AppRoutes() {
           <Route path="/rating" element={<RatingPage/>}/>
           </Route>
           </>
-        ) : auth?.role === "ROLE_STAFF" ? (
+        ) : auth?.role === "ROLE_ADMIN" ? (
             <Route
               path="/*"
               element={

@@ -20,7 +20,6 @@ const CalendarComponent = () => {
       const response = await axiosClient.get("/v1/bookings/get-by-current-staff-pending");
       const bookings = response.data.data;
 
-      console.log(response)
       const formattedEvents = bookings.map(booking => ({
         id: booking.id,
         title: `${booking.service.name} - ${booking.user.username}`,

@@ -8,7 +8,6 @@ const StaffLocationTracker = () => {
     useEffect(() => {
         // Chỉ chạy khi role là "ROLE_STAFF"
         if (auth?.role === "ROLE_STAFF") {
-            console.log("was in")
             // Cập nhật vị trí mỗi 60 giây
             const intervalId = setInterval(updateLocation, 60000);
 
@@ -24,7 +23,6 @@ const StaffLocationTracker = () => {
                     const lat = position.coords.latitude;
                     const lon = position.coords.longitude;
 
-                    console.log(position)
                     // Gửi yêu cầu cập nhật vị trí đến backend
                     axiosClient
                         .patch("/v1/user/update-location-staff", {
