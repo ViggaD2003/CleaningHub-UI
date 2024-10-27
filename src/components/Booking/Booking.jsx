@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
 import axiosClient from "../../services/config/axios";
@@ -8,15 +8,16 @@ import Mapbox from "../../components/Map/Map";
 import "react-toastify/dist/ReactToastify.css";
 import { DollarOutlined } from "@ant-design/icons";
 import { message, Card, Tag, Radio, Button } from "antd";
+import { WebSocketContext } from "../../services/config/provider/WebSocketProvider";
 
 const Booking = () => {
   
+  const { stompClient } = useContext(WebSocketContext)
   const navigate = useNavigate();
   const [durations, setDurations] = useState([]);
   const [vourchers, setVourchers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [stompClient, setStompClient] = useState(null);
   const [address, setAddress] = useState(null);
   const [longitude, setLongitude] = useState(null);
   const [latitude, setLatitude] = useState(null);
@@ -60,21 +61,6 @@ const Booking = () => {
           setService(null); // Clear the service if there's an error
         }
 
-        // Initialize WebSocket connection
-        const socket = new SockJS("http://localhost:8080/ws");
-        const stompClientInstance = Stomp.over(socket);
-        const jwtToken = localStorage.getItem("token");
-        stompClientInstance.connect(
-          { Authorization: `Bearer ${jwtToken}` },
-          (frame) => {
-            setStompClient(stompClientInstance);
-          }
-        );
-
-        // Cleanup WebSocket connection on unmount
-        return () => {
-          if (stompClientInstance) stompClientInstance.disconnect();
-        };
       } catch (error) {
         console.error(
           "Error during data fetching or WebSocket initialization:",
@@ -153,6 +139,7 @@ const Booking = () => {
           paymentMethod: bookingDetails.paymentMethod,
           startTime: isoStartTime,
         });
+        console.log(response.data);
         if (response.status === 201 || response.status === 200) {
           stompClient.send(
             "/app/notifications",
