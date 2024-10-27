@@ -1,13 +1,12 @@
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { jwtDecode } from "jwt-decode"; // Sửa lại import
 import axiosClient from "../../services/config/axios";
 import { format } from "date-fns";
 
 const BookingList = () => {
 	const [bookings, setBookings] = useState([]);
 	const [page, setPage] = useState(0);
-	const [size, setSize] = useState(10);
+	const [size] = useState(10);
 	const [totalPages, setTotalPages] = useState(1);
 	const [bookingStatus, setBookingStatus] = useState("PENDING");  
   

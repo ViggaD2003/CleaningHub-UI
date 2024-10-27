@@ -133,8 +133,17 @@ const GetInfo = () => {
         </Upload>
       </div>
 
-      <Form form={form} layout="vertical" initialValues={userInfo} onFinish={onFinish}>
-        <Form.Item name="id" initialValue={userInfo.id} style={{ display: "none" }}>
+      <Form
+        form={form}
+        layout="vertical"
+        initialValues={userInfo}
+        onFinish={onFinish}
+      >
+        <Form.Item
+          name="id"
+          initialValue={userInfo.id}
+          style={{ display: "none" }}
+        >
           <Input type="hidden" />
         </Form.Item>
 
@@ -180,7 +189,6 @@ const GetInfo = () => {
           </button>
         </Form.Item>
       </Form>
-
       <div className="flex justify-between mt-4">
         <button
           onClick={handleChangePassword}

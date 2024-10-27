@@ -1,22 +1,28 @@
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { motion } from "framer-motion";
-
-const salesData = [
-	{ name: "Jul", sales: 4200 },
-	{ name: "Aug", sales: 3800 },
-	{ name: "Sep", sales: 5100 },
-	{ name: "Oct", sales: 4600 },
-	{ name: "Nov", sales: 5400 },
-	{ name: "Dec", sales: 7200 },
-	{ name: "Jan", sales: 6100 },
-	{ name: "Feb", sales: 5900 },
-	{ name: "Mar", sales: 6800 },
-	{ name: "Apr", sales: 6300 },
-	{ name: "May", sales: 7100 },
-	{ name: "Jun", sales: 7500 },
-];
+import { useEffect, useState } from "react";
+import axiosClient from "../../services/config/axios";
 
 const SalesOverviewChart = () => {
+	const [salesData, setSalesData] = useState([]);
+
+	useEffect(() => {
+		const fetchSalesData = async () => {
+			try {
+				const response = await axiosClient.get("/v1/payments/over-review");
+				// Map data to match { name: "Month", sales: finalPrice }
+				const formattedData = response.data.map((item) => ({
+					name: new Date(item.createDate).toLocaleString("default", { month: "short" }),
+					sales: item.finalPrice,
+				}));
+				setSalesData(formattedData);
+			} catch (error) {
+				console.error("Error fetching sales data:", error);
+			}
+		};
+		fetchSalesData();
+	}, []);
+
 	return (
 		<motion.div
 			className='bg-gray-800 bg-opacity-50 backdrop-blur-md shadow-lg rounded-xl p-6 border border-gray-700'
