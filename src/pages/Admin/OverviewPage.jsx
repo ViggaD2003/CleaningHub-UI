@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axiosClient from "../../services/config/axios";
-import { Zap,BarChart2, Star } from "lucide-react"; 
+import { Zap, Star } from "lucide-react";
 import { motion } from "framer-motion";
 
 import Header from "../Admin/Header";
@@ -10,22 +10,19 @@ import CategoryDistributionChart from "../overview/CategoryDistributionChart";
 import BookingList from "../overview/SalesChannelChart";
 
 const OverviewPage = () => {
-  const [setTotalRevenue] = useState(0);
-  const [totalRevenue ,totalBookings, setTotalBookings] = useState(0);
-  const [averageRating, setAverageRating] = useState(null); // Initially null to handle no data scenario
+  const [totalRevenue, setTotalRevenue] = useState(0); // Corrected
+  const [averageRating, setAverageRating] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchAdminData = async () => {
       try {
-        const [revenueResponse, bookingsResponse, ratingResponse] = await Promise.all([
+        const [revenueResponse, ratingResponse] = await Promise.all([
           axiosClient.get("/v1/admin/total-revenue"),
-          axiosClient.get("/v1/admin/total-bookings"),
           axiosClient.get("/v1/admin/average-rating"),
         ]);
 
-        setTotalRevenue(revenueResponse.data.totalRevenue);
-        setTotalBookings(bookingsResponse.data.totalBookings);
+        setTotalRevenue(revenueResponse.data.totalRevenue); // Corrected usage of setter
         setAverageRating(ratingResponse.data.averageRating);
       } catch (error) {
         console.error("Error fetching admin data:", error);
@@ -42,10 +39,10 @@ const OverviewPage = () => {
   }
 
   const renderStars = (rating) => {
-    const fullStars = Math.floor(rating); 
+    const fullStars = Math.floor(rating);
     const stars = [];
     for (let i = 0; i < fullStars; i++) {
-      stars.push(<Star key={i} className="text-yellow-500" />); 
+      stars.push(<Star key={i} className="text-yellow-500" />);
     }
     return stars;
   };
@@ -62,22 +59,19 @@ const OverviewPage = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
         >
-		<StatCard
+          <StatCard
             name="Total Revenue"
             icon={Zap}
-            value={`$${totalRevenue.toLocaleString()}`} // Format the value
+            value={`$${(totalRevenue || 0).toLocaleString()}`} // Use a fallback value if totalRevenue is undefined
             color="#6366F1"
-        />
-          <StatCard
-            name="Total Bookings"
-            icon={BarChart2}
-            value={totalBookings}
-            color="#10B981"
           />
+
           <StatCard
             name="Average Rating"
-            icon={() => renderStars(averageRating || 0)} // Ensure stars are displayed even if rating is 0 or null
-            value={averageRating !== null ? `${averageRating.toFixed(1)} / 5` : 'N/A'} // Display N/A if rating is not available
+            icon={() => renderStars(averageRating || 0)} // Display stars based on rating or default to 0
+            value={
+              averageRating != null ? `${averageRating.toFixed(1)} / 5` : "N/A"
+            } // Handle both null and undefined
             color="#F59E0B"
           />
         </motion.div>

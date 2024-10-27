@@ -30,6 +30,7 @@ import RatingPage from "../components/Rating/RatingPage.jsx";
 import StaffLayout from "../pages/Staff/StaffLayout.jsx";
 import BookingStaff from "../components/Booking/BookingStaff.jsx";
 import BookingDetailStaff from "../components/BookingDetail/BookingDetailStaff.jsx";
+import AccountComponent from "../pages/AccountManagement/AccountManagement.jsx";
 
 export default function AppRoutes() {
   const { auth, loading } = useAuth();
@@ -100,6 +101,7 @@ export default function AppRoutes() {
                        <Route path="calendar" element={<CalendarComponent/>} />
                       <Route path="categories" element={<CategoryComponent/>} />
                        <Route path="services" element={<ServiceComponent/>} />   
+                       <Route path="accounts" element={<AccountComponent/>} />
                     </Routes>       
                        </div>
                 }/>
