@@ -4,7 +4,7 @@ import { UserOutlined, LaptopOutlined, BookOutlined, MessageOutlined, LogoutOutl
 import 'antd/dist/reset.css'; // Import Ant Design styles
 import { Content } from "antd/es/layout/layout";
 import { Outlet, Link, useNavigate } from "react-router-dom";
-import BookingNotificationComponent from '../../components/BookingNotification/BookingNotificationComponent';
+import BookingNotificationComponent from '../../components/Notifications/BookingNotification/BookingNotificationComponent';
 import { jwtDecode } from 'jwt-decode'; // Correct import
 import axios from 'axios';
 
@@ -158,7 +158,7 @@ const StaffLayout = () => {
             </Sider>
             <Layout style={{ marginLeft: collapsed ? 80 : 200 }}>
                 <Content>
-                    <BookingNotificationComponent />
+                    <BookingNotificationComponent></BookingNotificationComponent>
                     <Outlet />
                 </Content>
             </Layout>

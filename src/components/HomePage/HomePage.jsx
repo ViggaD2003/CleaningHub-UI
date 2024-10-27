@@ -11,6 +11,14 @@ const HomePage = () => {
   const [services, setServices] = useState([]);
   const [topStaff, setTopStaff] = useState([]);
   const navigate = useNavigate();
+  const [openQuestions, setOpenQuestions] = useState({});
+
+  const toggleQuestion = (question) => {
+    setOpenQuestions((prev) => ({
+      ...prev,
+      [question]: !prev[question],
+    }));
+  };
 
   useEffect(() => {
     const fetchServices = async () => {
@@ -210,24 +218,37 @@ const HomePage = () => {
               Frequently Asked Questions
             </h2>
             <div className="space-y-4">
-              <div className="p-4 rounded-md bg-sky-200 hover:bg-gray-200 text-gray-700">
-                <h3 className="font-bold flex justify-between">
-                  What do you not clean?
-                  <span className="text-[#CF881D]">▼</span>
-                </h3>
-              </div>
-              <div className="p-4 rounded-md bg-sky-200 hover:bg-gray-200 text-gray-700">
-                <h3 className="font-bold flex justify-between">
-                  What is your refund policy?
-                  <span className="text-[#CF881D]">▼</span>
-                </h3>
-              </div>
-              <div className="p-4 rounded-md bg-sky-200 hover:bg-gray-200 text-gray-700">
-                <h3 className="font-bold flex justify-between">
-                  Do you guarantee your service?
-                  <span className="text-[#CF881D]">▼</span>
-                </h3>
-              </div>
+              {[
+                {
+                  question: "What do you not clean?",
+                  answer: "We do not clean hazardous materials or personal items.",
+                },
+                {
+                  question: "What is your refund policy?",
+                  answer: "You can request a refund within 30 days of service.",
+                },
+                {
+                  question: "Do you guarantee your service?",
+                  answer: "Yes, we offer a satisfaction guarantee.",
+                },
+              ].map((item, index) => (
+                <div
+                  key={index}
+                  className="p-4 rounded-md bg-sky-200 hover:bg-gray-200 text-gray-700"
+                  onClick={() => toggleQuestion(item.question)}
+                >
+                  <h3 className="font-bold flex justify-between">
+                    {item.question}
+                    <span className="text-[#CF881D]">
+                      {openQuestions[item.question] ? "▲" : "▼"}
+                    </span>
+                  </h3>
+                  {/* Hiển thị câu trả lời nếu câu hỏi đang mở */}
+                  {openQuestions[item.question] && (
+                    <p className="mt-2 text-gray-800">{item.answer}</p>
+                  )}
+                </div>
+              ))}
             </div>
           </div>
           <div className="flex-1 p-8">
