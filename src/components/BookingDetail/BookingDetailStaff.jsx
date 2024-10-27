@@ -1,12 +1,16 @@
-import { Card, message, Spin, Col, Row, Tag } from "antd";
+import { Card, message, Spin, Col, Row, Tag, Button } from "antd";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { CalendarOutlined, ClockCircleOutlined, HomeOutlined, UserOutlined, DollarCircleOutlined } from "@ant-design/icons";
+import SockJS from "sockjs-client";
+import { WebSocketContext } from "../../services/config/provider/WebSocketProvider";
 
 const BookingDetailStaff = () => {
+    const { stompClient } = useContext(WebSocketContext);
     const [booking, setBooking] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [updating, setUpdating] = useState(false);
 
     const getToken = () => localStorage.getItem('token');
     const { id } = useParams();
@@ -21,6 +25,7 @@ const BookingDetailStaff = () => {
                 },
             });
             setBooking(response.data.data);
+            console.log(response.data.data);
         } catch (error) {
             console.error(error);
             message.error("Failed to fetch booking details.");
@@ -72,10 +77,57 @@ const BookingDetailStaff = () => {
         return { formattedDate, formattedTime };
     };
 
-    const { service, user, payment, startedAt, endAt, address, bookingDetail, duration } = booking;
+    const markAsCompleted = async (e) => {
+        e.preventDefault();
+        setUpdating(true);
+        try {
+            const token = getToken();
+            const response = await axios.put(
+                `v1/bookings/chang-booking-status/${id}/COMPLETED`,
+                {},
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            );
 
-    const startTime = formatDateTime(startedAt);
-    const endTime = formatDateTime(endAt);
+            console.log(response);
+            
+            if (response.status === 200 || response.status === 201) {
+                const bookingResponse = await axios.get(
+                    `v1/bookings/staff/${id}`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+                    }
+                )
+                console.log(bookingResponse.data.data);
+                stompClient.send(
+                    "/app/feedbacks",
+                    {},
+                    JSON.stringify(bookingResponse.data.data)
+                );
+            }else{
+                message.error("Failed to update booking status");
+            }
+
+            message.success("Booking status updated to COMPLETED.");
+            setBooking((prevBooking) => ({ ...prevBooking, status: "COMPLETED" }));
+        } catch (error) {
+            console.log(error);
+            message.error("Failed to update booking status");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const { service, address, duration, endDate, startDate, status, user } = booking;
+    const { payment } = booking.bookingDetailResponseDto;
+
+    const startTime = formatDateTime(startDate);
+    const endTime = formatDateTime(endDate);
 
     const wage = duration.price + service.basePrice;
 
@@ -137,12 +189,8 @@ const BookingDetailStaff = () => {
                         </div>
                         <div className="grid grid-cols-2 gap-4 mt-4">
                             <div>
-                                <p className="font-semibold">Area:</p>
-                                <p className="text-md">{duration.area}</p>
-                            </div>
-                            <div>
-                                <p className="font-semibold">Number of Workers:</p>
-                                <p className="text-md">{duration.numberOfWork ? 1 : duration.numberOfWork}</p>
+                                <p className="font-semibold">Duration Price:</p>
+                                <p className="text-md">{duration.price}</p>
                             </div>
                         </div>
                     </Card>
@@ -166,12 +214,22 @@ const BookingDetailStaff = () => {
                             <DollarCircleOutlined className="mr-2" /> Payment Information
                         </h2>
                         <div className="border-b-2 border-dashed pb-4 mb-4">
-                            <p className="text-lg font-semibold">Total Price: <span className="text-xl font-bold text-red-600">{bookingDetail.payment?.finalPrice} USD</span></p>
+                            <p className="text-lg font-semibold">Total Price: <span className="text-xl font-bold text-red-600">{payment?.finalPrice} USD</span></p>
                             <p className="text-lg font-semibold">Your Wage: <span className="text-xl font-bold text-green-600">{wage} USD</span></p>
                         </div>
-                        <p className="text-lg font-semibold">Status: {getStatusTag(bookingDetail.payment?.paymentStatus)}</p>
-                        <p className="text-lg font-semibold mt-2">Method: <span className="text-md">{bookingDetail.payment?.paymentMethod}</span></p>
+                        <p className="text-lg font-semibold">Status: {getStatusTag(payment?.paymentStatus)}</p>
+                        <p className="text-lg font-semibold mt-2">Method: <span className="text-md">{payment?.paymentMethod}</span></p>
                     </Card>
+                    {status !== "COMPLETED" && (
+                        <Button
+                            type="primary"
+                            onClick={markAsCompleted}
+                            loading={updating}
+                            className="mt-4"
+                        >
+                            Mark as Completed
+                        </Button>
+                    )}
                 </Col>
             </Row>
         </div>

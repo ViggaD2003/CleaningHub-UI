@@ -1,15 +1,17 @@
 import "./App.css";
-import BookingNotificationComponent from "./components/BookingNotification/BookingNotificationComponent";
 import AppRoutes from "./routes/AppRoutes";
 import React from "react";
 import { BrowserRouter as Router } from "react-router-dom";
+import { WebSocketProvider } from "./services/config/provider/WebSocketProvider";
 
 function App() {
 
   return (
     <>
       <Router>
-        <AppRoutes />
+        <WebSocketProvider>
+          <AppRoutes />
+        </WebSocketProvider>
       </Router>
     </>
   );
