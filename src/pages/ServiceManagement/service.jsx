@@ -22,7 +22,7 @@ const ServiceManagement = () => {
   const [form] = Form.useForm();
   const [searchTerm, setSearchTerm] = useState("");
   const [categories, setCategories] = useState([]);
-  const [uploading, setUploading] = useState(false);
+  const [uploading, setUploading] = useState(false);  
   const [uploadedImageURL, setUploadedImageURL] = useState("");
 
   useEffect(() => {

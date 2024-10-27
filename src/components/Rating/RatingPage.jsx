@@ -1,16 +1,45 @@
+import { message } from "antd";
+import TextArea from "antd/es/input/TextArea";
+import axios from "axios";
 import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
 
 // Component chính
 const RatingPage = () => {
+  const { state } = useLocation();
+  const bookingId = state?.bookingId;
   const [rating, setRating] = useState(0);
+  const [comments, setComments] = useState("");
   const [submitted, setSubmitted] = useState(false);
 
   const handleRating = (rate) => {
     setRating(rate);
   };
 
-  const handleSubmit = () => {
-    setSubmitted(true);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if(bookingId && rating > 0){
+      const ratingRequest = {
+        bookingId,
+        stars: rating,
+        comments
+      };
+
+      try{
+        const jwtToken = localStorage.getItem('token');
+        await axios.post(`v1/ratings`, ratingRequest, {
+          headers: {
+            Authorization: `Bearer ${jwtToken}`
+          }
+        });
+        setSubmitted(true);
+      }catch(error){
+        console.log(error);
+        message.error(error);
+      }
+    }else{
+      message.info("Please select a rating");
+    }
   };
 
   return (
@@ -32,6 +61,9 @@ const RatingPage = () => {
                   onClick={() => handleRating(star)}
                 />
               ))}
+            </div>
+            <div className="mb-6"> 
+              <TextArea value={comments} onChange={(e) => setComments(e.target.value)} rows={4} placeholder="Vui lòng nêu cảm nhận của bạn về nhân viên" />
             </div>
             <button
               className={`w-full py-3 text-lg font-semibold text-white rounded-lg transition duration-300 ease-in-out ${

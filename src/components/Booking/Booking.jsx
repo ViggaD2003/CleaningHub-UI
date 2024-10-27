@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
 import axiosClient from "../../services/config/axios";
@@ -10,13 +10,15 @@ import { DollarOutlined } from "@ant-design/icons";
 import { message, Card, Tag, Radio, Button } from "antd";
 import icon from "../../assets/image/images-removebg-preview.png";
 import { Select } from "antd";
+import { WebSocketContext } from "../../services/config/provider/WebSocketProvider";
+
 const Booking = () => {
+  const { stompClient } = useContext(WebSocketContext)
   const navigate = useNavigate();
   const [durations, setDurations] = useState([]);
   const [vouchers, setVouchers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [stompClient, setStompClient] = useState(null);
   const [address, setAddress] = useState(null);
   const [longitude, setLongitude] = useState(null);
   const [latitude, setLatitude] = useState(null);
@@ -51,19 +53,6 @@ const Booking = () => {
         const serviceResponse = await axiosClient.get(`/v1/services/${id}`);
         setService(serviceResponse.data.data);
 
-        const socket = new SockJS("http://localhost:8080/ws");
-        const stompClientInstance = Stomp.over(socket);
-        const jwtToken = localStorage.getItem("token");
-        stompClientInstance.connect(
-          { Authorization: `Bearer ${jwtToken}` },
-          (frame) => {
-            setStompClient(stompClientInstance);
-          }
-        );
-
-        return () => {
-          if (stompClientInstance) stompClientInstance.disconnect();
-        };
       } catch (error) {
         console.error("Error during data fetching:", error);
         setError("Failed to load data. Please try again later.");
