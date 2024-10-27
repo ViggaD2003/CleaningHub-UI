@@ -8,12 +8,12 @@ import Mapbox from "../../components/Map/Map";
 import "react-toastify/dist/ReactToastify.css";
 import { DollarOutlined } from "@ant-design/icons";
 import { message, Card, Tag, Radio, Button } from "antd";
-
+import icon from "../../assets/image/images-removebg-preview.png";
+import { Select } from "antd";
 const Booking = () => {
-  
   const navigate = useNavigate();
   const [durations, setDurations] = useState([]);
-  const [vourchers, setVourchers] = useState([]);
+  const [vouchers, setVouchers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [stompClient, setStompClient] = useState(null);
@@ -22,9 +22,11 @@ const Booking = () => {
   const [latitude, setLatitude] = useState(null);
   const [service, setService] = useState(null);
   const { id } = useParams();
-  const vnTime = new Date().toLocaleString("en-CA", { timeZone: "Asia/Ho_Chi_Minh" });
-    const [date, time] = vnTime.split(", ");
-    const formattedDateTime = `${date}T${time.slice(0, 5)}`;
+  const vnTime = new Date().toLocaleString("en-CA", {
+    timeZone: "Asia/Ho_Chi_Minh",
+  });
+  const [date, time] = vnTime.split(", ");
+  const formattedDateTime = `${date}T${time.slice(0, 5)}`;
   const [bookingDetails, setBookingDetails] = useState({
     serviceId: parseInt(id, 10),
     durationId: 1,
@@ -38,29 +40,17 @@ const Booking = () => {
   });
 
   useEffect(() => {
-  
     const fetchData = async () => {
       try {
-        // Fetch durations
+        const voucherResponse = await axiosClient.get("/v1/vouchers");
+        setVouchers(voucherResponse.data.data || []);
+
         const durationsResponse = await axiosClient.get(`/v1/durations/getAll`);
-        if (durationsResponse.status === 204) {
-          setDurations([]);
-        } else if (Array.isArray(durationsResponse.data)) {
-          setDurations(durationsResponse.data);
-        } else {
-          console.warn("Unexpected response format:", durationsResponse.data);
-          setDurations([]);
-        }
+        setDurations(durationsResponse.data || []);
 
-        // Fetch service information
         const serviceResponse = await axiosClient.get(`/v1/services/${id}`);
-        if (serviceResponse.status === 200) {
-          setService(serviceResponse.data.data);
-        } else {
-          setService(null); // Clear the service if there's an error
-        }
+        setService(serviceResponse.data.data);
 
-        // Initialize WebSocket connection
         const socket = new SockJS("http://localhost:8080/ws");
         const stompClientInstance = Stomp.over(socket);
         const jwtToken = localStorage.getItem("token");
@@ -71,15 +61,11 @@ const Booking = () => {
           }
         );
 
-        // Cleanup WebSocket connection on unmount
         return () => {
           if (stompClientInstance) stompClientInstance.disconnect();
         };
       } catch (error) {
-        console.error(
-          "Error during data fetching or WebSocket initialization:",
-          error
-        );
+        console.error("Error during data fetching:", error);
         setError("Failed to load data. Please try again later.");
       } finally {
         setLoading(false);
@@ -87,23 +73,20 @@ const Booking = () => {
     };
 
     fetchData();
-  }, [id]); // Fetch data and initialize WebSocket whenever `id` changes
+  }, [id]);
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target || e;
     let updatedValue = value;
     if (["durationId", "numberOfWorker", "voucherId"].includes(name)) {
-      updatedValue = value === "" ? "" : parseInt(value, 10);
+      updatedValue = value === "" ? null : parseInt(value, 10);
     }
-    e.target.blur();
 
     setBookingDetails({ ...bookingDetails, [name]: updatedValue });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(bookingDetails);
-
     if (
       (bookingDetails.latitude === 0 &&
         bookingDetails.latitude === 0 &&
@@ -112,47 +95,33 @@ const Booking = () => {
         !bookingDetails.latitude &&
         !bookingDetails.address)
     ) {
-      console.log(bookingDetails.latitude);
-      message.error({
-        content: "Please choose location !!!",
-        duration: 2,
-      });
+      message.error("Please choose location !!!", 2);
       return;
     }
 
-    console.log(bookingDetails.latitude);
-
     const isoStartTime = new Date(bookingDetails.startTime).toISOString();
     try {
+      const bookingData = {
+        serviceId: bookingDetails.serviceId,
+        durationId: bookingDetails.durationId,
+        numberOfWorker: bookingDetails.numberOfWorker,
+        address: bookingDetails.address,
+        latitude: bookingDetails.latitude,
+        longitude: bookingDetails.longitude,
+        voucherId: bookingDetails.voucherId || null,
+        paymentMethod: bookingDetails.paymentMethod,
+        startTime: isoStartTime,
+      };
+
       if (bookingDetails.paymentMethod === "PAYOS") {
-        const payOSResponse = await axiosClient.post("/v1/payOS", {
-          serviceId: bookingDetails.serviceId,
-          durationId: bookingDetails.durationId,
-          numberOfWorker: bookingDetails.numberOfWorker,
-          address: bookingDetails.address,
-          latitude: bookingDetails.latitude,
-          longitude: bookingDetails.longitude,
-          voucherId: bookingDetails.voucherId || null,
-          paymentMethod: bookingDetails.paymentMethod,
-          startTime: isoStartTime,
-        });
+        const payOSResponse = await axiosClient.post("/v1/payOS", bookingData);
         if (payOSResponse.status === 201 && payOSResponse.data.code === 200) {
           window.location.href = payOSResponse.data.data;
         } else {
           setError("Failed to initiate PayOS payment. Please try again.");
         }
       } else {
-        const response = await axiosClient.post("/v1/bookings", {
-          serviceId: bookingDetails.serviceId,
-          durationId: bookingDetails.durationId,
-          numberOfWorker: bookingDetails.numberOfWorker,
-          address: bookingDetails.address,
-          latitude: bookingDetails.latitude,
-          longitude: bookingDetails.longitude,
-          voucherId: bookingDetails.voucherId || null,
-          paymentMethod: bookingDetails.paymentMethod,
-          startTime: isoStartTime,
-        });
+        const response = await axiosClient.post("/v1/bookings", bookingData);
         if (response.status === 201 || response.status === 200) {
           stompClient.send(
             "/app/notifications",
@@ -168,7 +137,6 @@ const Booking = () => {
       const errorMessage =
         error.response?.data?.error ||
         "Failed to process your request. Please try again.";
-
       toast.error(errorMessage);
     }
   };
@@ -185,13 +153,8 @@ const Booking = () => {
     });
   };
 
-  if (loading) {
-    return <p className="text-center">Loading...</p>;
-  }
-
-  if (error) {
-    return <p className="text-center text-red-500">{error}</p>;
-  }
+  if (loading) return <p className="text-center">Loading...</p>;
+  if (error) return <p className="text-center text-red-500">{error}</p>;
 
   return (
     <div className="container mx-auto py-12 flex space-x-8">
@@ -218,17 +181,11 @@ const Booking = () => {
               required
             >
               <option value="">Select Duration</option>
-              {Array.isArray(durations) && durations.length > 0 ? (
-                durations.map((duration) => (
-                  <option key={duration.id} value={duration.id}>
-                    {duration.durationInHours} hours - ${duration.price}
-                  </option>
-                ))
-              ) : (
-                <option value="" disabled>
-                  No durations available
+              {durations.map((duration) => (
+                <option key={duration.id} value={duration.id}>
+                  {duration.durationInHours} hours - ${duration.price}
                 </option>
-              )}
+              ))}
             </select>
           </div>
 
@@ -255,7 +212,9 @@ const Booking = () => {
             <Radio.Group
               name="paymentMethod"
               value={bookingDetails.paymentMethod}
-              onChange={handleInputChange}
+              onChange={(e) =>
+                handleInputChange({ name: "paymentMethod", value: e.target.value })
+              }
               className="w-full"
             >
               <Radio value="CASH">CASH</Radio>
@@ -263,31 +222,32 @@ const Booking = () => {
             </Radio.Group>
           </div>
 
-          {/* <div className="mb-4">
-          <label className="block text-gray-700 font-bold mb-2">
-              Select voucherId:
-            </label>
-            <select
-              name="durationId"
-              value={bookingDetails.voucherId}
-              onChange={handleInputChange}
-              className="w-full p-3 border rounded-lg"
-              required
-            >
-              <option value="">Select Duration</option>
-              {Array.isArray(durations) && durations.length > 0 ? (
-                durations.map((duration) => (
-                  <option key={duration.id} value={duration.id}>
-                    {duration.durationInHours} hours - ${duration.price}
-                  </option>
-                ))
-              ) : (
-                <option value="" disabled>
-                  No durations available
-                </option>
-              )}
-            </select>
-          </div> */}
+          <div className="mb-4">
+        <label className="block text-gray-700 font-bold mb-2">
+          Select Voucher:
+        </label>
+        <Select
+          placeholder="Select Voucher"
+          value={bookingDetails.voucherId}
+          onChange={(value) =>
+            handleInputChange({ name: "voucherId", value: value })
+          }
+          className="w-full"
+        >
+          {vouchers.map((voucher) => (
+            <Option key={voucher.id} value={voucher.id}>
+              <div className="flex items-center">
+                <img
+                  src={icon}
+                  alt="Voucher Icon"
+                  style={{ width: "20px", marginRight: "8px" }}
+                />
+                <span>{voucher.percentage}% - left {voucher.amount}</span>
+              </div>
+            </Option>
+          ))}
+        </Select>
+      </div>
 
           <div className="mb-4">
             <label className="block text-gray-700 font-bold mb-2">
@@ -299,22 +259,22 @@ const Booking = () => {
               value={bookingDetails.startTime}
               onChange={handleInputChange}
               className="w-full p-3 border rounded-lg"
-              required
             />
           </div>
 
-          <div className="text-center">
+          <div className="text-center mt-6">
             <Button
               type="primary"
               htmlType="submit"
-              className="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600"
+              icon={<DollarOutlined />}
+              loading={loading}
             >
-              Confirm Booking
+              Book Now
             </Button>
           </div>
         </form>
       </Card>
-      {/* Service Information Card */}
+
       <Card
         title={
           <div>
@@ -345,6 +305,7 @@ const Booking = () => {
           </div>
         </div>
       </Card>
+      <ToastContainer />
     </div>
   );
 };
