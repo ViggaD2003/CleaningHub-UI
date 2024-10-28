@@ -13,6 +13,8 @@ import { Select } from "antd";
 import { WebSocketContext } from "../../services/config/provider/WebSocketProvider";
 import { motion } from "framer-motion";
 import image from "../../assets/image/image.png";
+import "./Button.css"
+
 
 const Booking = () => {
   const { stompClient } = useContext(WebSocketContext)
@@ -149,6 +151,8 @@ console.log(serviceResponse.data.data);
   if (error) return <p className="text-center text-red-500">{error}</p>;
 
   return (
+
+    
     <motion.div className="container mx-auto py-12 flex space-x-8"
     initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
@@ -156,7 +160,7 @@ console.log(serviceResponse.data.data);
     >
       <Card
         title="Booking Information"
-        className="w-3/5 bg-white p-6 rounded-lg shadow-md"
+        className="w-3/5 bg-slate-200 p-6 rounded-lg shadow-md"
       >
         <section className="text-center mb-6">
           <div className="mt-2">
@@ -260,10 +264,10 @@ console.log(serviceResponse.data.data);
 
           <div className="text-center mt-6">
             <Button
-              type="primary"
               htmlType="submit"
               icon={<DollarOutlined />}
               loading={loading}
+              className="custom-button"
             >
               Book Now
             </Button>
@@ -279,7 +283,7 @@ console.log(serviceResponse.data.data);
             </Tag>
           </div>
         }
-        className="w-2/5 size-min bg-white p-6 rounded-lg shadow-md"
+        className="w-2/5 size-min bg-slate-200 p-6 rounded-lg shadow-md"
       >
         <div className="flex">
           {/* Image Section */}

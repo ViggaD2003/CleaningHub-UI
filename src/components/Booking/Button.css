@@ -1,0 +1,16 @@
+.custom-button {
+    background: linear-gradient(to right, #93c5fd, #e5e7eb); /* from-blue-300 to-gray-200 */
+    color: #4a5568 !important; /* Màu chữ */
+    border: none;
+    padding: 8px 16px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease; /* Thêm hiệu ứng chuyển */
+    
+  }
+  
+  .custom-button:hover {
+    background: linear-gradient(to right, #d1d5db, #e5e7eb) !important; /* from-gray-300 to-gray-200 khi hover */
+}
+  

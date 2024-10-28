@@ -58,7 +58,7 @@ const AllServicesPage = () => {
             {services[category].map((service) => (
               <div
                 key={service.id}
-                className="p-6 rounded-lg bg-white shadow-lg transform hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer"
+                className="p-6 rounded-lg bg-slate-200 shadow-lg transform hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer"
                 onClick={() => handleServiceClick(service.id)}
               >
                 <div className="mb-4">
