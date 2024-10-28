@@ -31,6 +31,7 @@ import StaffLayout from "../pages/Staff/StaffLayout.jsx";
 import BookingStaff from "../components/Booking/BookingStaff.jsx";
 import BookingDetailStaff from "../components/BookingDetail/BookingDetailStaff.jsx";
 import AccountComponent from "../pages/AccountManagement/AccountManagement.jsx";
+import BookingCancel from "../components/Booking/BookingCancel.jsx";
 
 export default function AppRoutes() {
   const { auth, loading } = useAuth();

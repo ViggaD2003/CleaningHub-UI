@@ -43,7 +43,7 @@ const HomePage = () => {
     const fetchTopStaff = async () => {
       try {
         const response = await axiosClient.get(
-          "/v1/user/get-highest-average-staff"
+          "/v1/users/get-highest-average-staff"
         );
         setTopStaff(response.data.data);
       } catch (error) {

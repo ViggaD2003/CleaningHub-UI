@@ -11,6 +11,8 @@ import { message, Card, Tag, Radio, Button } from "antd";
 import icon from "../../assets/image/images-removebg-preview.png";
 import { Select } from "antd";
 import { WebSocketContext } from "../../services/config/provider/WebSocketProvider";
+import { motion } from "framer-motion";
+import image from "../../assets/image/image.png";
 
 const Booking = () => {
   const { stompClient } = useContext(WebSocketContext)
@@ -52,6 +54,7 @@ const Booking = () => {
 
         const serviceResponse = await axiosClient.get(`/v1/services/${id}`);
         setService(serviceResponse.data.data);
+console.log(serviceResponse.data.data);
 
       } catch (error) {
         console.error("Error during data fetching:", error);
@@ -146,7 +149,11 @@ const Booking = () => {
   if (error) return <p className="text-center text-red-500">{error}</p>;
 
   return (
-    <div className="container mx-auto py-12 flex space-x-8">
+    <motion.div className="container mx-auto py-12 flex space-x-8"
+    initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.2, duration: 0.5 }}
+    >
       <Card
         title="Booking Information"
         className="w-3/5 bg-white p-6 rounded-lg shadow-md"
@@ -272,13 +279,13 @@ const Booking = () => {
             </Tag>
           </div>
         }
-        className="w-2/5 bg-white p-6 rounded-lg shadow-md"
+        className="w-2/5 size-min bg-white p-6 rounded-lg shadow-md"
       >
         <div className="flex">
           {/* Image Section */}
           <div className="w-2/5 pr-4">
             <img
-              src={service.imageUrl} // Assuming service.imageUrl is the correct image URL
+              src={service.img || image} // Assuming service.imageUrl is the correct image URL
               alt={service.name}
               className="w-full h-auto rounded-lg"
             />
@@ -295,7 +302,7 @@ const Booking = () => {
         </div>
       </Card>
       <ToastContainer />
-    </div>
+    </motion.div>
   );
 };
 
