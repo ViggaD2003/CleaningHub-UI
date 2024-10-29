@@ -54,7 +54,7 @@ export default function AppRoutes() {
             </Route>
         
           <Route element={<HomeLayout />}>
-          <Route path="/"/>
+          <Route path=""/>
           <Route path="/services/:id" element={<ServiceDetail />} />
           <Route path="/services/all" element={<AllServicesPage />} />
           <Route index element={<HomePage />} />
@@ -73,7 +73,7 @@ export default function AppRoutes() {
         ) : (auth.role === "ROLE_USER") ? (
           <>
           <Route element={<HomeLayout />}>
-          <Route path="/"/>
+          <Route path=""/>
           <Route path="/services/:id" element={<ServiceDetail />} />
           <Route path="/services/all" element={<AllServicesPage />} />
           <Route index element={<HomePage />} />
