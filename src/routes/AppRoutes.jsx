@@ -41,73 +41,76 @@ export default function AppRoutes() {
   return (
     <>
       <Routes>
-        {(!auth?.role) ? (
+        {!auth?.role ? (
           <>
             <Route element={<PageLayout />}>
-              <Route path="login" element={<SignIn />} />
-              <Route path="register" element={<SignUp />} />
-              <Route path="login-success" element={<SignInGoogle />} />
-              <Route path="activate-account" element={<ActivateAccount />} />
-              <Route path="confirm-email" element={<ConfirmEmail />} />
-              <Route path="activate-email" element={<ActivateEmail />} />
+              <Route path="/login" element={<SignIn />} />
+              <Route path="/register" element={<SignUp />} />
+              <Route path="/login-success" element={<SignInGoogle />} />
+              <Route path="/activate-account" element={<ActivateAccount />} />
+              <Route path="/confirm-email" element={<ConfirmEmail />} />
+              <Route path="/activate-email" element={<ActivateEmail />} />
               <Route path="forgot-password" element={<ForgotPassowrd />} />
             </Route>
-        
-          <Route element={<HomeLayout />}>
-          <Route path=""/>
-          <Route path="/services/:id" element={<ServiceDetail />} />
-          <Route path="/services/all" element={<AllServicesPage />} />
-          <Route index element={<HomePage />} />
-          <Route path="/bookings/:id" element={<Booking />} />
-            <Route
-              path="/map"
-              element={
-                <div className="h-screen w-screen">
-                  <Map />
-                </div>
-              }
-            />
-          </Route>
-        
-          </> 
-        ) : (auth.role === "ROLE_USER") ? (
+
+            <Route element={<HomeLayout />}>
+              <Route path="" />
+              <Route path="/services/:id" element={<ServiceDetail />} />
+              <Route path="/services/all" element={<AllServicesPage />} />
+              <Route index element={<HomePage />} />
+              <Route path="/bookings/:id" element={<Booking />} />
+              <Route
+                path="/map"
+                element={
+                  <div className="h-screen w-screen">
+                    <Map />
+                  </div>
+                }
+              />
+            </Route>
+          </>
+        ) : auth.role === "ROLE_USER" ? (
           <>
-          <Route element={<HomeLayout />}>
-          <Route path=""/>
-          <Route path="/services/:id" element={<ServiceDetail />} />
-          <Route path="/services/all" element={<AllServicesPage />} />
-          <Route index element={<HomePage />} />
-          <Route path="/bookings/:id" element={<Booking />} />
-          <Route path="getInformation" element={<GetInfo />} />
-          <Route path="change-password" element={<ChangePassword />} />
-          <Route path="/booking-history" element={<BookingHistory />} />
-          <Route path="/booking-success" element={<BookingSuccess />} />
-          <Route path="/rating" element={<RatingPage/>}/>
-          </Route>
+            <Route element={<HomeLayout />}>
+              <Route path="" />
+              <Route path="/services/:id" element={<ServiceDetail />} />
+              <Route path="/services/all" element={<AllServicesPage />} />
+              <Route index element={<HomePage />} />
+              <Route path="/bookings/:id" element={<Booking />} />
+              <Route path="/getInformation" element={<GetInfo />} />
+              <Route path="/change-password" element={<ChangePassword />} />
+              <Route path="/booking-history" element={<BookingHistory />} />
+              <Route path="/booking-success" element={<BookingSuccess />} />
+              <Route path="/rating" element={<RatingPage />} />
+            </Route>
           </>
         ) : auth?.role === "ROLE_ADMIN" ? (
-            <Route
-              path="/*"
-              element={
-                  <div className="flex h-screen bg-gray-900 text-gray-100 overflow-hidden">
-                    <div className="fixed inset-0 z-0">
-                      <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 opacity-80" />
-                      <div className="absolute inset-0 backdrop-blur-sm" />
-                    </div>
-                    <Sidebar />
-                    <Routes>
-                       <Route index path="/" element={<OverviewPage />} />
-                       <Route path="calendar" element={<CalendarComponent/>} />
-                      <Route path="categories" element={<CategoryComponent/>} />
-                       <Route path="services" element={<ServiceComponent/>} />   
-                    </Routes>       
-                       </div>
-                }/>
+          <Route
+            path="/*"
+            element={
+              <div className="flex h-screen bg-gray-900 text-gray-100 overflow-hidden">
+                <div className="fixed inset-0 z-0">
+                  <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 opacity-80" />
+                  <div className="absolute inset-0 backdrop-blur-sm" />
+                </div>
+                <Sidebar />
+                <Routes>
+                  <Route index path="/" element={<OverviewPage />} />
+                  <Route path="calendar" element={<CalendarComponent />} />
+                  <Route path="categories" element={<CategoryComponent />} />
+                  <Route path="services" element={<ServiceComponent />} />
+                </Routes>
+              </div>
+            }
+          />
         ) : auth.role === "ROLE_STAFF" ? (
           <Route path="/staff/*" element={<StaffLayout />}>
             <Route element={<RequireAuth allowedRoles={["ROLE_STAFF"]} />}>
               <Route path="bookings" element={<BookingStaff />} />
-              <Route path="bookings/booking/:id" element={<BookingDetailStaff />} />
+              <Route
+                path="bookings/booking/:id"
+                element={<BookingDetailStaff />}
+              />
               <Route path="feedbacks" />
               <Route path="dashboard" />
               <Route path="getInformation" element={<GetInfo />} />
