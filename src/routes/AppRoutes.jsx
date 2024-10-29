@@ -50,7 +50,7 @@ export default function AppRoutes() {
               <Route path="/activate-account" element={<ActivateAccount />} />
               <Route path="/confirm-email" element={<ConfirmEmail />} />
               <Route path="/activate-email" element={<ActivateEmail />} />
-              <Route path="forgot-password" element={<ForgotPassowrd />} />
+              <Route path="/forgot-password" element={<ForgotPassowrd />} />
             </Route>
 
             <Route element={<HomeLayout />}>
