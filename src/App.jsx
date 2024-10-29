@@ -1,16 +1,16 @@
+import React from "react";
 import "./App.css";
 import AppRoutes from "./routes/AppRoutes";
-import React from "react";
-import { HashRouter as Router } from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
+import { WebSocketProvider } from "./services/config/provider/WebSocketProvider";
 
 function App() {
-
   return (
-    <>
-      <Router>
+    <Router>
+      {/* <WebSocketProvider> */}
         <AppRoutes />
-      </Router>
-    </>
+      {/* </WebSocketProvider> */}
+    </Router>
   );
 }
 
