@@ -8,26 +8,28 @@ const BookingNotificationComponent = () => {
   const { stompClient } = useContext(WebSocketContext);
 
   useEffect(() => {
-    stompClient.subscribe("/user/queue/notifications", (message) => {
-      if (message.body) {
-        const booking = JSON.parse(message.body);
-        console.log(booking);
-        notification.success({
-          message: 'New Booking Information',
-          description: (
-            <div>
-              <p><strong>Booking ID:</strong> {booking.id}</p>
-              <p><strong>Service:</strong> {booking.service.name}</p>
-              <p><strong>Duration:</strong> {booking.duration.durationInHours} hours</p>
-              <p><strong>User:</strong> {booking.user.email}</p>
-              <p><strong>Started At:</strong> {booking.startedAt}</p>
-              <p><strong>End At:</strong> {booking.endAt}</p>
-            </div>
-          ),
-          duration: 10
-        });
-      }
-    });
+    if (stompClient) {
+      stompClient.subscribe("/user/queue/notifications", (message) => {
+        if (message.body) {
+          const booking = JSON.parse(message.body);
+          console.log(booking);
+          notification.success({
+            message: 'New Booking Information',
+            description: (
+              <div>
+                <p><strong>Booking ID:</strong> {booking.id}</p>
+                <p><strong>Service:</strong> {booking.service.name}</p>
+                <p><strong>Duration:</strong> {booking.duration.durationInHours} hours</p>
+                <p><strong>User:</strong> {booking.user.email}</p>
+                <p><strong>Started At:</strong> {booking.startedAt}</p>
+                <p><strong>End At:</strong> {booking.endAt}</p>
+              </div>
+            ),
+            duration: 10
+          });
+        }
+      });
+    }
   });
 
   return null;

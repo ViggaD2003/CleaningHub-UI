@@ -7,14 +7,16 @@ import Header from "./Header";
 import Footer from "./Footer";
 import "./styles/HomeLayout.scss";
 import FeedbackNotificationComponent from "../../components/Notifications/FeedbackNotification/FeedbackNotificationComponent";
+import useAuth from "../../services/config/provider/useAuth"; // Import auth hook
 
 export default function HomeLayout() {
+  const { auth } = useAuth();
 
   return (
     <Layout>
       <Header />
       <Content className="layout-background" style={{ padding: `0` }}>
-        <FeedbackNotificationComponent />
+        {auth?.role && <FeedbackNotificationComponent />}
         <Outlet />
       </Content>
       <Footer />

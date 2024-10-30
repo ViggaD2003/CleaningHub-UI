@@ -14,7 +14,7 @@ const RequireAuth = ({ allowedRoles }) => {
   ) : auth?.role === "ROLE_STAFF" ? (
     <Navigate to="/staff/dashboard" state={{ from: location }} replace />
   ) : (
-    <Navigate to="/login" state={{ from: location }} replace />
+    <Navigate to="/" state={{ from: location }} replace />
   );
 };
 

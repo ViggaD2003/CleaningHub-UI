@@ -1,17 +1,16 @@
 import { notification } from "antd";
-import { useContext, useEffect, useState } from "react";
-import SockJS from "sockjs-client";
-import Stomp from "stompjs";
+import { useContext, useEffect } from "react";
 import { WebSocketContext } from "../../../services/config/provider/WebSocketProvider";
 import { useNavigate } from "react-router-dom";
-
 
 const FeedbackNotificationComponent = () => {
     const { stompClient } = useContext(WebSocketContext);
     const navigate = useNavigate();
 
     useEffect(() => {
-            stompClient.subscribe("/user/topic/feedbacks", (message) => {
+        // Check if stompClient is available before subscribing
+        if (stompClient) {
+            const subscription = stompClient.subscribe("/user/topic/feedbacks", (message) => {
                 if (message.body) {
                     const booking = JSON.parse(message.body);
                     console.log("Feedback message received:", booking);
@@ -24,14 +23,18 @@ const FeedbackNotificationComponent = () => {
                             </div>
                         ),
                         onClick: () => {
-                            navigate("/rating", {state: {bookingId: booking.id} });
+                            navigate("/rating", { state: { bookingId: booking.id } });
                         },
                         duration: 10
                     });
                 }
             });
-    });
-    
+
+            // Cleanup the subscription on component unmount
+            return () => subscription.unsubscribe();
+        }
+    }, [stompClient, navigate]); // Add stompClient and navigate as dependencies
+
     return null;
 };
 

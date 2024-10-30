@@ -7,13 +7,14 @@ import { toast, ToastContainer } from "react-toastify";
 import Mapbox from "../../components/Map/Map";
 import "react-toastify/dist/ReactToastify.css";
 import { DollarOutlined } from "@ant-design/icons";
-import { message, Card, Tag, Radio, Button } from "antd";
+import { message, Card, Tag, Radio, Button, notification } from "antd";
 import icon from "../../assets/image/images-removebg-preview.png";
 import { Select } from "antd";
 import { WebSocketContext } from "../../services/config/provider/WebSocketProvider";
 import { motion } from "framer-motion";
 import image from "../../assets/image/image.png";
 import "./Button.css"
+import { div } from "framer-motion/client";
 
 
 const Booking = () => {
@@ -56,7 +57,7 @@ const Booking = () => {
 
         const serviceResponse = await axiosClient.get(`/v1/services/${id}`);
         setService(serviceResponse.data.data);
-console.log(serviceResponse.data.data);
+        console.log(serviceResponse.data.data);
 
       } catch (error) {
         console.error("Error during data fetching:", error);
@@ -116,7 +117,8 @@ console.log(serviceResponse.data.data);
         }
       } else {
         const response = await axiosClient.post("/v1/bookings", bookingData);
-        if (response.status === 201 || response.status === 200) {
+        console.log('response cuar order: ', response.data);
+        if (response.code === 201 || response.code === 200) {
           stompClient.send(
             "/app/notifications",
             {},
@@ -124,7 +126,16 @@ console.log(serviceResponse.data.data);
           );
           navigate("/booking-success");
         } else {
-          setError("Failed to create booking. Please try again.");
+          // setError(response.data.message);
+          notification.error({
+            message: "Failed to create booking",
+            description: (
+              <div>
+                {response.data.error}
+              </div>
+            ),
+            duration: 5
+          });
         }
       }
     } catch (error) {
@@ -152,9 +163,9 @@ console.log(serviceResponse.data.data);
 
   return (
 
-    
+
     <motion.div className="container mx-auto py-12 flex space-x-8"
-    initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.2, duration: 0.5 }}
     >
@@ -223,31 +234,31 @@ console.log(serviceResponse.data.data);
           </div>
 
           <div className="mb-4">
-        <label className="block text-gray-700 font-bold mb-2">
-          Select Voucher:
-        </label>
-        <Select
-          placeholder="Select Voucher"
-          value={bookingDetails.voucherId}
-          onChange={(value) =>
-            handleInputChange({ name: "voucherId", value: value })
-          }
-          className="w-full"
-        >
-          {vouchers.map((voucher) => (
-            <Option key={voucher.id} value={voucher.id}>
-              <div className="flex items-center">
-                <img
-                  src={icon}
-                  alt="Voucher Icon"
-                  style={{ width: "20px", marginRight: "8px" }}
-                />
-                <span>{voucher.percentage}% - left {voucher.amount}</span>
-              </div>
-            </Option>
-          ))}
-        </Select>
-      </div>
+            <label className="block text-gray-700 font-bold mb-2">
+              Select Voucher:
+            </label>
+            <Select
+              placeholder="Select Voucher"
+              value={bookingDetails.voucherId}
+              onChange={(value) =>
+                handleInputChange({ name: "voucherId", value: value })
+              }
+              className="w-full"
+            >
+              {vouchers.map((voucher) => (
+                <Option key={voucher.id} value={voucher.id}>
+                  <div className="flex items-center">
+                    <img
+                      src={icon}
+                      alt="Voucher Icon"
+                      style={{ width: "20px", marginRight: "8px" }}
+                    />
+                    <span>{voucher.percentage}% - left {voucher.amount}</span>
+                  </div>
+                </Option>
+              ))}
+            </Select>
+          </div>
 
           <div className="mb-4">
             <label className="block text-gray-700 font-bold mb-2">

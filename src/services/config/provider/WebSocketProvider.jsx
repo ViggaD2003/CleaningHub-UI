@@ -6,22 +6,23 @@ export const WebSocketContext = createContext();
 
 export const WebSocketProvider = ({ children }) => {
     const [stompClient, setStompClient] = useState(null);
+    const jwtToken = localStorage.getItem("token"); 
 
     useEffect(() => {
-        const socket = new SockJS("http://localhost:8080/ws");
-        const client = Stomp.over(socket);
-        const jwtToken = localStorage.getItem("token");
+        if (jwtToken) { 
+            const socket = new SockJS("http://localhost:8080/ws");
+            const client = Stomp.over(socket);
 
-        client.connect({ Authorization: `Bearer ${jwtToken}` }, (frame) => {
-            setStompClient(client);
-            console.log("Connected to WebSocket server");
-        });
+            client.connect({ Authorization: `Bearer ${jwtToken}` }, (frame) => {
+                setStompClient(client);
+                console.log("Connected to WebSocket server");
+            });
 
-        // Cleanup on component unmount
-        return () => {
-            if (client) client.disconnect();
-        };
-    }, []);
+            return () => {
+                if (client) client.disconnect();
+            };
+        }
+    }, [jwtToken]);
 
     return (
         <WebSocketContext.Provider value={{ stompClient }}>

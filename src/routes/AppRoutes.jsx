@@ -60,7 +60,6 @@ export default function AppRoutes() {
           <Route path="/services/:id" element={<ServiceDetail />} />
           <Route path="/services/all" element={<AllServicesPage />} />
           <Route index element={<HomePage />} />
-          <Route path="/bookings/:id" element={<Booking />} />
             <Route
               path="/map"
               element={
