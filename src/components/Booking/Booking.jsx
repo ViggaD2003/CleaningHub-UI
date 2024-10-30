@@ -61,7 +61,7 @@ const Booking = () => {
         }
 
         // Initialize WebSocket connection
-        const socket = new SockJS("http://localhost:8080/ws");
+        const socket = new SockJS("https://ch-api.arisavinh.dev/ws");
         const stompClientInstance = Stomp.over(socket);
         const jwtToken = localStorage.getItem("token");
         stompClientInstance.connect(

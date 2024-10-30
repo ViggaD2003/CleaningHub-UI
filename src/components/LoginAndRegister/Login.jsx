@@ -10,7 +10,7 @@ const LoginPage = () => {
 
   const handleGoogleLogin = async () => {
     window.location.href =
-      "http://localhost:8080/oauth2/authorization/google";
+      "https://ch-api.arisavinh.dev/oauth2/authorization/google";
   };
 
   const handleSubmit = async (values) => {

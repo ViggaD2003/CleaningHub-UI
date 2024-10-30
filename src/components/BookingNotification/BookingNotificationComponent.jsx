@@ -8,7 +8,7 @@ const BookingNotificationComponent = () => {
 
   useEffect(() => {
     // Kết nối tới WebSocket server qua SockJS
-    const socket = new SockJS("http://localhost:8080/ws");
+    const socket = new SockJS("https://ch-api.arisavinh.dev/ws");
     const stompClient = Stomp.over(socket);
 
     const jwtToken = localStorage.getItem('token');
