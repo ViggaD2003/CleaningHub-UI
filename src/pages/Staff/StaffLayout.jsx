@@ -5,9 +5,9 @@ import 'antd/dist/reset.css'; // Import Ant Design styles
 import { Content } from "antd/es/layout/layout";
 import { Outlet, Link, useNavigate } from "react-router-dom";
 import BookingNotificationComponent from '../../components/Notifications/BookingNotification/BookingNotificationComponent';
-import StaffLocationTracker from '../../components/AutoGetLocationOfStaff/StaffLocaltionTracker'; // Import component
-import jwtDecode from 'jwt-decode'; // Correct import
+import { jwtDecode } from 'jwt-decode'; // Correct import
 import axios from 'axios';
+import StaffTracker from "../../components/AutoGetLocationOfStaff/StaffLocaltionTracker"
 
 const { Sider } = Layout;
 
@@ -159,8 +159,8 @@ const StaffLayout = () => {
             </Sider>
             <Layout style={{ marginLeft: collapsed ? 80 : 200 }}>
                 <Content>
-                    <StaffLocationTracker /> {/* Add StaffLocationTracker here */}
-                    <BookingNotificationComponent />
+                <StaffTracker/>
+                    <BookingNotificationComponent></BookingNotificationComponent>
                     <Outlet />
                 </Content>
             </Layout>
