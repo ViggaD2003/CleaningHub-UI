@@ -5,7 +5,7 @@ import 'antd/dist/reset.css'; // Import Ant Design styles
 import { Content } from "antd/es/layout/layout";
 import { Outlet, Link, useNavigate } from "react-router-dom";
 import BookingNotificationComponent from '../../components/Notifications/BookingNotification/BookingNotificationComponent';
-import StaffLocationTracker from '../../components/StaffLocationTracker'; // Import component
+import StaffLocationTracker from '../../components/AutoGetLocationOfStaff/StaffLocaltionTracker'; // Import component
 import jwtDecode from 'jwt-decode'; // Correct import
 import axios from 'axios';
 
