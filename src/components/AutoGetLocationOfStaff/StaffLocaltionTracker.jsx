@@ -25,7 +25,7 @@ const StaffLocationTracker = () => {
 
                     // Gửi yêu cầu cập nhật vị trí đến backend
                     axiosClient
-                        .patch("/v1/user/update-location-staff", {
+                        .patch("/v1/users/update-location-staff", {
                             latitude: lat,
                             longitude: lon
                         })
