@@ -91,7 +91,6 @@ export default function AppRoutes() {
                     <Sidebar />
                     <Routes>
                        <Route index path="/" element={<OverviewPage />} />
-                       <Route path="calendar" element={<CalendarComponent/>} />
                       <Route path="categories" element={<CategoryComponent/>} />
                        <Route path="services" element={<ServiceComponent/>} />   
                        <Route path="accounts" element={<AccountComponent/>} />
@@ -104,6 +103,7 @@ export default function AppRoutes() {
               <Route path="bookings" element={<BookingStaff />} />
               <Route path="bookings/booking/:id" element={<BookingDetailStaff />} />
               <Route path="feedbacks" />
+              <Route path="calendar" element={<CalendarComponent/>} />
               <Route path="dashboard" />
               <Route path="getInformation" element={<GetInfo />} />
             </Route>
