@@ -90,13 +90,11 @@ const Booking = () => {
   }, [id]); // Fetch data and initialize WebSocket whenever `id` changes
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target || e;
     let updatedValue = value;
     if (["durationId", "numberOfWorker", "voucherId"].includes(name)) {
-      updatedValue = value === "" ? "" : parseInt(value, 10);
+      updatedValue = value === "" ? null : parseInt(value, 10);
     }
-    e.target.blur();
-
     setBookingDetails({ ...bookingDetails, [name]: updatedValue });
   };
 
