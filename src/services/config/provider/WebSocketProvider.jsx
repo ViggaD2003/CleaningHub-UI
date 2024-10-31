@@ -10,7 +10,7 @@ export const WebSocketProvider = ({ children }) => {
 
     useEffect(() => {
         if (jwtToken) { 
-            const socket = new SockJS("http://localhost:8080/ws");
+            const socket = new SockJS("https://ch-api.arisavinh.dev/ws");
             const client = Stomp.over(socket);
 
             client.connect({ Authorization: `Bearer ${jwtToken}` }, (frame) => {

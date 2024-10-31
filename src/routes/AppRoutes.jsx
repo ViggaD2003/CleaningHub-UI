@@ -56,18 +56,10 @@ export default function AppRoutes() {
             </Route>
         
           <Route element={<HomeLayout />}>
-          <Route path="/"/>
-          <Route path="/services/:id" element={<ServiceDetail />} />
-          <Route path="/services/all" element={<AllServicesPage />} />
+          <Route path=""/>
+          <Route path="services/:id" element={<ServiceDetail />} />
+          <Route path="services/all" element={<AllServicesPage />} />
           <Route index element={<HomePage />} />
-            <Route
-              path="/map"
-              element={
-                <div className="h-screen w-screen">
-                  <Map />
-                </div>
-              }
-            />
           </Route>
         
           </> 
@@ -75,16 +67,16 @@ export default function AppRoutes() {
           <>
           <Route element={<HomeLayout />}>
           <Route path="/"/>
-          <Route path="/services/:id" element={<ServiceDetail />} />
-          <Route path="/services/all" element={<AllServicesPage />} />
+          <Route path="services/:id" element={<ServiceDetail />} />
+          <Route path="services/all" element={<AllServicesPage />} />
           <Route index element={<HomePage />} />
-          <Route path="/bookings/:id" element={<Booking />} />
+          <Route path="bookings/:id" element={<Booking />} />
           <Route path="getInformation" element={<GetInfo />} />
           <Route path="change-password" element={<ChangePassword />} />
-          <Route path="/booking-history" element={<BookingHistory />} />
-          <Route path="/booking-success" element={<BookingSuccess />} />
-          <Route path="/booking-cancel" element={<BookingCancel/>}/>
-          <Route path="/rating" element={<RatingPage/>}/>
+          <Route path="booking-cancel" element={<BookingCancel/>}/>
+          <Route path="booking-history" element={<BookingHistory />} />
+          <Route path="booking-success" element={<BookingSuccess />} />
+          <Route path="rating" element={<RatingPage/>}/>
           </Route>
           </>
         ) : auth?.role === "ROLE_ADMIN" ? (
@@ -107,7 +99,7 @@ export default function AppRoutes() {
                        </div>
                 }/>
         ) : auth.role === "ROLE_STAFF" ? (
-          <Route path="/staff/*" element={<StaffLayout />}>
+          <Route path="staff/*" element={<StaffLayout />}>
             <Route element={<RequireAuth allowedRoles={["ROLE_STAFF"]} />}>
               <Route path="bookings" element={<BookingStaff />} />
               <Route path="bookings/booking/:id" element={<BookingDetailStaff />} />

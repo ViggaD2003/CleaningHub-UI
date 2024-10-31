@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // Set the base URL for your API
-axios.defaults.baseURL = "http://localhost:8080/api";
+axios.defaults.baseURL = "https://ch-api.arisavinh.dev/api";
 
 // Create an axios instance with custom headers
 const axiosClient = axios.create({
@@ -69,7 +69,7 @@ axiosClient.interceptors.response.use(
       try {
         // Gửi request để lấy token mới bằng refresh token
         const refreshToken = localStorage.getItem("refresh_token");
-        const response = await axios.post("http://localhost:8080/api/v1/auth/refresh", {
+        const response = await axios.post("https://ch-api.arisavinh.dev/api/v1/auth/refresh", {
           token: refreshToken,
         });
 
