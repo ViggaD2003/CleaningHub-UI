@@ -110,7 +110,7 @@ const Booking = () => {
 
       if (bookingDetails.paymentMethod === "PAYOS") {
         const payOSResponse = await axiosClient.post("/v1/payOS", bookingData);
-        if (payOSResponse.status === 201 && payOSResponse.data.code === 200) {
+        if (payOSResponse.data.status === 1 && payOSResponse.data.code === 201) {
           window.location.href = payOSResponse.data.data;
         } else {
           setError("Failed to initiate PayOS payment. Please try again.");
@@ -118,7 +118,7 @@ const Booking = () => {
       } else {
         const response = await axiosClient.post("/v1/bookings", bookingData);
         console.log('response cuar order: ', response.data);
-        if (response.code === 201 || response.code === 200) {
+        if (response.data.code === 200 && response.data.status === 1) {
           stompClient.send(
             "/app/notifications",
             {},
