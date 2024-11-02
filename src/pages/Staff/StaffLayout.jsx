@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Layout, Menu, Dropdown, message, notification } from 'antd';
-import { UserOutlined, LaptopOutlined, BookOutlined, MessageOutlined, LogoutOutlined, DownOutlined } from '@ant-design/icons';
+import { UserOutlined, LaptopOutlined, BookOutlined, MessageOutlined, LogoutOutlined, DownOutlined, CalendarOutlined} from '@ant-design/icons';
 import 'antd/dist/reset.css'; // Import Ant Design styles
 import { Content } from "antd/es/layout/layout";
 import { Outlet, Link, useNavigate } from "react-router-dom";
@@ -110,7 +110,7 @@ const StaffLayout = () => {
         {
             key: '2',
             icon: <LaptopOutlined />,
-            label: <Link to="/staff/dashboard">Dashboard</Link>,
+            label: <Link to="/dashboard">Dashboard</Link>,
             style: {
                 backgroundColor: selectedKey === '2' ? 'white' : 'transparent',
                 color: selectedKey === '2' ? '#fb923c' : '#fff',
@@ -119,7 +119,7 @@ const StaffLayout = () => {
         {
             key: '3',
             icon: <BookOutlined />,
-            label: <Link to="/staff/bookings">Bookings</Link>,
+            label: <Link to="/bookings">Bookings</Link>,
             style: {
                 backgroundColor: selectedKey === '3' ? 'white' : 'transparent',
                 color: selectedKey === '3' ? '#fb923c' : '#fff',
@@ -128,12 +128,21 @@ const StaffLayout = () => {
         {
             key: '4',
             icon: <MessageOutlined />,
-            label: <Link to="/staff/feedbacks">Feedbacks</Link>,
+            label: <Link to="/feedbacks">Feedbacks</Link>,
             style: {
                 backgroundColor: selectedKey === '4' ? 'white' : 'transparent',
                 color: selectedKey === '4' ? '#fb923c' : '#fff',
             },
         },
+        {
+            key: '5',
+            icon: <CalendarOutlined/>,
+            label: <Link to="/calendar">Calendar</Link>,
+            style: {
+                backgroundColor: selectedKey === '5' ? 'white' : 'transparent',
+                color: selectedKey === '5' ? '#fb923c' : '#fff',
+            },
+        }
     ];
 
     return (

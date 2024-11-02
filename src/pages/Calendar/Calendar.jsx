@@ -55,7 +55,7 @@ const CalendarComponent = () => {
 
   return (
     <motion.div
-      className="bg-gray-900 text-black p-10 flex-1 relative"
+      className="bg-orange-200 text-black p-10 flex-1 relative"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}

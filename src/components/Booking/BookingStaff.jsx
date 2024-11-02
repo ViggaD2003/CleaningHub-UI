@@ -1,8 +1,9 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
-import { Table, message, Select, Empty, Tag, Card, Typography } from "antd";
+import { Table, message, Select, Empty, Tag, Card, Typography, Button } from "antd";
 import moment from "moment"; // For date formatting
 import { Link } from "react-router-dom";
+import axiosClient from "../../services/config/axios";
 
 const { Option } = Select;
 const { Title } = Typography;
@@ -11,42 +12,9 @@ const BookingStaff = () => {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
-  const [size, setSize] = useState(10); // Default page size
-  const [total, setTotal] = useState(0); // Total bookings
+  const [size, setSize] = useState(10);
+  const [total, setTotal] = useState(0);
   const [bookingStatus, setBookingStatus] = useState("PENDING");
-
-  const getToken = () => localStorage.getItem("token");
-
-  const fetchBookings = async (status, currentPage, pageSize) => {
-    setLoading(true);
-    try {
-      const token = getToken();
-      const response = await axios.get(`/v1/bookings/get-by-current-staff`, {
-        params: { bookingStatus: status, page: currentPage - 1, size: pageSize },
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      const data = response.data.data.content.map((booking) => ({
-        id: booking.id,
-        service: booking.service.name,
-        email: booking.user.email,
-        phone: booking.user.phoneNumber || "N/A",
-        address: booking.address,
-        bookingDate: booking.startDate,
-        status: booking.status,
-      }));
-
-      setBookings(data);
-      setTotal(response.data.data.totalElements);
-    } catch (error) {
-      message.error("Failed to fetch bookings.");
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const getStatusTag = (status) => {
     let color;
@@ -73,12 +41,72 @@ const BookingStaff = () => {
   };
 
   useEffect(() => {
+    const fetchBookings = async (status, currentPage, pageSize) => {
+      setLoading(true);
+      try {
+        const response = await axiosClient.get(`/v1/bookings/get-by-current-staff`, {
+          params: { bookingStatus: status, page: currentPage - 1, size: pageSize },
+        });
+  
+        const data = response.data.data.content.map((booking) => ({
+          id: booking.id,
+          service: booking.service.name,
+          email: booking.user.email,
+          phone: booking.user.phoneNumber || "N/A",
+          address: booking.address,
+          bookingDate: booking.startDate,
+          status: booking.status,
+        }));
+  
+        setBookings(data);
+        setTotal(response.data.data.totalElements);
+      } catch (error) {
+        message.error("Failed to fetch bookings.");
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchBookings(bookingStatus, page, size);
   }, [bookingStatus, page, size]);
 
   const handleTableChange = (pagination) => {
     setPage(pagination.current);
     setSize(pagination.pageSize);
+  };
+
+  const updateStatus = async (bookingId, currentStatus) => {
+    let newStatus;
+    switch (currentStatus) {
+      case "PENDING":
+        newStatus = "CONFIRMED";
+        break;
+      case "CONFIRMED":
+        newStatus = "IN_PROGRESS";
+        break;
+      case "IN_PROGRESS":
+        newStatus = "COMPLETED";
+        break;
+      default:
+        return;
+    }
+
+    try {
+      await axiosClient.patch(
+        `/v1/bookings/update-booking-status?status=${newStatus}&bookingId=${bookingId}`
+      );
+
+      setBookings((prevBookings) =>
+        prevBookings.map((booking) =>
+          booking.id === bookingId ? { ...booking, status: newStatus } : booking
+        )
+      );
+      message.success("Booking status updated successfully!");
+    } catch (error) {
+      message.error("Failed to update booking status.");
+      console.error(error);
+    }
   };
 
   const columns = [
@@ -104,6 +132,23 @@ const BookingStaff = () => {
       key: "status",
       render: (status) => getStatusTag(status),
     },
+    {
+      title: "Actions",
+      key: "actions",
+      render: (_, record) => (
+        <Button
+          type="primary"
+          onClick={() => updateStatus(record.id, record.status)}
+          disabled={record.status === "COMPLETED"} // Disable button if status is "COMPLETED"
+        >
+          {record.status === "PENDING"
+            ? "Confirm"
+            : record.status === "CONFIRMED"
+            ? "Start"
+            : "Complete"}
+        </Button>
+      ),
+    },
   ];
 
   return (
@@ -121,7 +166,7 @@ const BookingStaff = () => {
             <Option value="CONFIRMED">Confirmed</Option>
             <Option value="IN_PROGRESS">In progress</Option>
             <Option value="COMPLETED">Completed</Option>
-            <Option value="CANCELED">Canceled</Option>
+            <Option value="CANCELLED">Canceled</Option>
           </Select>
         </div>
         <Table

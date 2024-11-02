@@ -98,7 +98,7 @@ export default function AppRoutes() {
                        </div>
                 }/>
         ) : auth.role === "ROLE_STAFF" ? (
-          <Route path="staff/*" element={<StaffLayout />}>
+          <Route path="/*" element={<StaffLayout />}>
             <Route element={<RequireAuth allowedRoles={["ROLE_STAFF"]} />}>
               <Route path="bookings" element={<BookingStaff />} />
               <Route path="bookings/booking/:id" element={<BookingDetailStaff />} />
