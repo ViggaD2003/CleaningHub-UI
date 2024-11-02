@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import axiosClient from "../../services/config/axios";
 import { Spin } from "antd"; // Optional: for loading spinner if needed
 import logo from "../../assets/image/462553616_977405051091530_8584369157051684469_n-removebg-preview.png"
+import NotificationIconComponent from "../../components/Notifications/NotificationIcon/NotificationIconComponent";
 const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
   const [userInfo, setUserInfo] = useState({});
@@ -121,7 +122,7 @@ const Header = () => {
   return (
     <HeaderAntd
       className="flex justify-between items-center h-24 px-8 shadow-md bg-gradient-to-r from-blue-100 to-blue-300 p-4"
-      // style={{ backgroundColor: "#CF881D" }}
+    // style={{ backgroundColor: "#CF881D" }}
     >
       {/* Logo */}
       <div className="flex items-center">
@@ -148,7 +149,7 @@ const Header = () => {
         >
           About
         </a>
-       
+
         <Link
           to="/services/all"
           className="text-white hover:text-blue-300 font-bold text-xl"
@@ -159,50 +160,53 @@ const Header = () => {
 
       {/* Right side: Login, Register, or User Menu */}
       {isLoggedIn ? (
-        <Dropdown menu={{ items }}>
-          <a onClick={(e) => e.preventDefault()}>
-            <Space>
-              {loading ? (
-                <Spin />
-              ) : (
-                <Avatar
-                  size={42}
-                  src={img || "https://joeschmoe.io/api/v1/random"}
-                  className="ml-5"
-                />
-              )}
-              <DownOutlined className="text-xl ml-2" />
-            </Space>
-          </a>
-        </Dropdown>
+        <div className="flex items-center space-x-4">
+          <NotificationIconComponent />
+          <Dropdown menu={{ items }}>
+            <a onClick={(e) => e.preventDefault()}>
+              <Space>
+                {loading ? (
+                  <Spin />
+                ) : (
+                  <Avatar
+                    size={42}
+                    src={img || "https://joeschmoe.io/api/v1/random"}
+                    className="ml-5"
+                  />
+                )}
+                <DownOutlined className="text-xl ml-2" />
+              </Space>
+            </a>
+          </Dropdown>
+        </div>
       ) : (
         <div className="flex items-center space-x-4">
-        <ConfigProvider
-  theme={{
-    token: {
-      colorPrimaryHover:"#333",
-      colorPrimaryBgHover:"#333",
-      // colorPrimaryHover:"#333",
-      },
-  }}
->
-  
-          <Button
-            // type="primary"
-            className="px-10 py-6 text-white  font-extrabold bg-gradient-to-r from-blue-500 to-green-500 shadow-lg"
-            onClick={handleLoginPage}
+          <ConfigProvider
+            theme={{
+              token: {
+                colorPrimaryHover: "#333",
+                colorPrimaryBgHover: "#333",
+                // colorPrimaryHover:"#333",
+              },
+            }}
           >
-            Login
-          </Button>
 
-          <Button
-            // type="primary"
-            className="px-8 py-6 text-white font-extrabold   bg-gradient-to-r from-blue-500 to-green-500 shadow-lg"
-            onClick={handleRegisterPage}
-          >
-            Sign Up
-          </Button>
-</ConfigProvider>
+            <Button
+              // type="primary"
+              className="px-10 py-6 text-white  font-extrabold bg-gradient-to-r from-blue-500 to-green-500 shadow-lg"
+              onClick={handleLoginPage}
+            >
+              Login
+            </Button>
+
+            <Button
+              // type="primary"
+              className="px-8 py-6 text-white font-extrabold   bg-gradient-to-r from-blue-500 to-green-500 shadow-lg"
+              onClick={handleRegisterPage}
+            >
+              Sign Up
+            </Button>
+          </ConfigProvider>
         </div>
       )}
     </HeaderAntd>
