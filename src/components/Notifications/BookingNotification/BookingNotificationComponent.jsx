@@ -3,13 +3,15 @@ import { notification } from "antd";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
 import { WebSocketContext } from "../../../services/config/provider/WebSocketProvider";
+import db from "../NotificationIcon/DexieDB";
+import { endAt } from "firebase/database";
 
 const BookingNotificationComponent = () => {
   const { stompClient } = useContext(WebSocketContext);
 
   useEffect(() => {
     if (stompClient) {
-      stompClient.subscribe("/user/queue/notifications", (message) => {
+      stompClient.subscribe("/user/queue/notifications", async (message) => {
         if (message.body) {
           const booking = JSON.parse(message.body);
           console.log(booking);
@@ -27,6 +29,25 @@ const BookingNotificationComponent = () => {
             ),
             duration: 10
           });
+
+          const staffEmails = booking.staff
+            .map((staffMember) => staffMember.staffName)
+            .join(", ");
+
+          await db.notifications.add({
+            bookingId: booking.id,
+            service: booking.service.name,
+            duration: booking.duration.durationInHours,
+            createdDate: booking.createdDate,
+            updatedDate: booking.updatedDate,
+            startedAt: booking.startedAt,
+            endAt: booking.endAt,
+            address: booking.address,
+            userEmail: booking.user.email,
+            staffEmail: staffEmails,
+            isRead: false,
+            role: 'STAFF'
+          })
         }
       });
     }

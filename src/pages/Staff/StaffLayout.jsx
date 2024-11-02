@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Layout, Menu, Dropdown, message, notification } from 'antd';
 import { UserOutlined, LaptopOutlined, BookOutlined, MessageOutlined, LogoutOutlined, DownOutlined, CalendarOutlined} from '@ant-design/icons';
 import 'antd/dist/reset.css'; // Import Ant Design styles
-import { Content } from "antd/es/layout/layout";
+import { Content, Header } from "antd/es/layout/layout";
 import { Outlet, Link, useNavigate } from "react-router-dom";
 import BookingNotificationComponent from '../../components/Notifications/BookingNotification/BookingNotificationComponent';
 import { jwtDecode } from 'jwt-decode'; // Correct import
@@ -88,7 +88,8 @@ const StaffLayout = () => {
                                 ),
                                 style: {
                                     backgroundColor: 'red',
-                                    color: 'white'}                                    
+                                    color: 'white'
+                                }
                             },
                         ],
                     }}
