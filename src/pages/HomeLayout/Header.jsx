@@ -6,7 +6,7 @@ import { Header as HeaderAntd } from "antd/es/layout/layout";
 import { useNavigate } from "react-router-dom";
 import axiosClient from "../../services/config/axios";
 import { Spin } from "antd"; // Optional: for loading spinner if needed
-
+import logo from "../../assets/image/462553616_977405051091530_8584369157051684469_n-removebg-preview.png"
 const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
   const [userInfo, setUserInfo] = useState({});
@@ -127,9 +127,9 @@ const Header = () => {
       <div className="flex items-center">
         <Link to="/">
           <img
-            src="https://www.btaskee.com/wp-content/uploads/2020/10/btaskee_logo_02.png"
+            src={logo}
             alt="Logo"
-            className="h-12"
+            className="h-28"
           />
         </Link>
       </div>
