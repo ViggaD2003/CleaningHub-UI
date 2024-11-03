@@ -2,7 +2,6 @@ import axios from "axios";
 
 // Set the base URL for your API
 axios.defaults.baseURL = "https://ch-api.arisavinh.dev/api";
-
 // Create an axios instance with custom headers
 const axiosClient = axios.create({
   baseURL: axios.defaults.baseURL,

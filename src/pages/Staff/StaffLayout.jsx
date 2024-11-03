@@ -79,7 +79,7 @@ const StaffLayout = () => {
                 <Dropdown
                     menu={{
                         items: [
-                            { key: 'profile', label: <Link to="/staff/getInformation">Profile</Link>, icon: <UserOutlined /> },
+                            { key: 'profile', label: <Link to="/getInformation">Profile</Link>, icon: <UserOutlined /> },
                             {
                                 key: 'logout',
                                 label: (
@@ -170,7 +170,7 @@ const StaffLayout = () => {
             </Sider>
             <Layout style={{ marginLeft: collapsed ? 80 : 200 }}>
                 <Header style={{ backgroundColor: 'white', display: 'flex', justifyContent: 'flex-end', alignItems: 'center', padding: '0 20px' }}>
-                    <NotificationIconComponent />
+                    <NotificationIconComponent/>
                 </Header>
                 <Content>
                     <StaffTracker />

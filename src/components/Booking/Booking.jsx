@@ -10,7 +10,7 @@ import { DollarOutlined } from "@ant-design/icons";
 import { message, Card, Tag, Radio, Button } from "antd";
 
 const Booking = () => {
-  
+
   const navigate = useNavigate();
   const [durations, setDurations] = useState([]);
   const [vourchers, setVourchers] = useState([]);
@@ -23,8 +23,8 @@ const Booking = () => {
   const [service, setService] = useState(null);
   const { id } = useParams();
   const vnTime = new Date().toLocaleString("en-CA", { timeZone: "Asia/Ho_Chi_Minh" });
-    const [date, time] = vnTime.split(", ");
-    const formattedDateTime = `${date}T${time.slice(0, 5)}`;
+  const [date, time] = vnTime.split(", ");
+  const formattedDateTime = `${date}T${time.slice(0, 5)}`;
   const [bookingDetails, setBookingDetails] = useState({
     serviceId: parseInt(id, 10),
     durationId: 1,
@@ -38,7 +38,7 @@ const Booking = () => {
   });
 
   useEffect(() => {
-  
+
     const fetchData = async () => {
       try {
         // Fetch durations
@@ -151,6 +151,29 @@ const Booking = () => {
           paymentMethod: bookingDetails.paymentMethod,
           startTime: isoStartTime,
         });
+
+        const booking = response.data.data;
+
+        const description = `You have a new booking ${booking.id} on ${booking.startedAt} for ${booking.service.name}.`;
+
+        const staff = booking.staff.find(staff => staff.status === true);
+
+        const notificationData = {
+          email: staff.email,
+          bookingId: booking.id,
+          message: description,
+          type: 'booking',
+          status: 'unread'
+        };
+        
+        const token = localStorage.getItem('token');
+
+        await axiosClient.post(`/v1/notifications`, notificationData, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        
         if (response.data.code === 200 && response.data.status === 1) {
           stompClient.send(
             "/app/notifications",

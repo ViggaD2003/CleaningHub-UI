@@ -161,7 +161,7 @@ const Header = () => {
       {/* Right side: Login, Register, or User Menu */}
       {isLoggedIn ? (
         <div className="flex items-center space-x-4">
-          <NotificationIconComponent />
+          <NotificationIconComponent/>
           <Dropdown menu={{ items }}>
             <a onClick={(e) => e.preventDefault()}>
               <Space>

@@ -92,8 +92,26 @@ const BookingDetailStaff = () => {
                 }
             );
 
+            const description = `
+                            Your booking ${booking.id} is now ${booking.status}. Please feel free to share your feedback about
+                            our service ${booking.service.name} and staff ${booking.staff.firstName} ${booking.staff.lastName}.
+                    `;
+
+            const notificationData = {
+                email: booking.user.email,
+                bookingId: booking.id,
+                message: description,
+                type: 'feedback',
+                status: 'unread'
+            };
+            await axios.post(`/v1/notifications`, notificationData, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
             console.log(response);
-            
+
             if (response.status === 200 || response.status === 201) {
                 const bookingResponse = await axios.get(
                     `v1/bookings/staff/${id}`,
@@ -109,7 +127,7 @@ const BookingDetailStaff = () => {
                     {},
                     JSON.stringify(bookingResponse.data.data)
                 );
-            }else{
+            } else {
                 message.error("Failed to update booking status");
             }
 
