@@ -8,7 +8,8 @@ import Mapbox from "../../components/Map/Map";
 import "react-toastify/dist/ReactToastify.css";
 import { DollarOutlined } from "@ant-design/icons";
 import { message, Card, Tag, Radio, Button } from "antd";
-
+import icon from "../../assets/image/images-removebg-preview.png";
+import { Select } from "antd";
 const Booking = () => {
 
   const navigate = useNavigate();
