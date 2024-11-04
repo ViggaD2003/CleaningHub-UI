@@ -6,12 +6,9 @@ import { Header as HeaderAntd } from "antd/es/layout/layout";
 import { useNavigate } from "react-router-dom";
 import axiosClient from "../../services/config/axios";
 import { Spin } from "antd"; // Optional: for loading spinner if needed
-<<<<<<< HEAD
 import logo from "../../assets/image/462553616_977405051091530_8584369157051684469_n-removebg-preview.png"
 import NotificationIconComponent from "../../components/Notifications/NotificationIcon/NotificationIconComponent";
-=======
 
->>>>>>> parent of 6072227 (upload logo)
 const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
   const [userInfo, setUserInfo] = useState({});
