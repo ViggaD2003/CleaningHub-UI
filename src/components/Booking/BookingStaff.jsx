@@ -139,7 +139,7 @@ const BookingStaff = () => {
         <Button
           type="primary"
           onClick={() => updateStatus(record.id, record.status)}
-          disabled={record.status === "COMPLETED" || "CANCELLED"} // Disable button if status is "COMPLETED"
+          disabled={record.status === "COMPLETED" || record.status === "CANCELLED"} // Disable button if status is "COMPLETED"
         >
           {record.status === "PENDING"
             ? "Confirm"
