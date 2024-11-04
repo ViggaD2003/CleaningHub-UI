@@ -50,8 +50,8 @@ const BookingStaff = () => {
   
         const data = response.data.data.content.map((booking) => ({
           id: booking.id,
-          service: booking.service.name || "N/A",
-          email: booking.user.email || "N/A",
+          service: booking.service.name,
+          email: booking.user.email,
           phone: booking.user.phoneNumber || "N/A",
           address: booking.address || "N/A",
           bookingDate: booking.startDate|| "N/A",
