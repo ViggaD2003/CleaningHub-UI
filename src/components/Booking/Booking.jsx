@@ -14,7 +14,7 @@ const Booking = () => {
 
   const navigate = useNavigate();
   const [durations, setDurations] = useState([]);
-  const [vourchers, setVourchers] = useState([]);
+  const [vouchers, setVouchers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [stompClient, setStompClient] = useState(null);
@@ -42,7 +42,8 @@ const Booking = () => {
 
     const fetchData = async () => {
       try {
-        // Fetch durations
+        const voucherResponse = await axiosClient.get("/v1/vouchers");
+        setVouchers(voucherResponse.data.data || []);
         const durationsResponse = await axiosClient.get(`/v1/durations/getAll`);
         if (durationsResponse.status === 204) {
           setDurations([]);
