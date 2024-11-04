@@ -28,7 +28,7 @@ const BookingStaff = () => {
       case "IN_PROGRESS":
         color = "purple";
         break;
-      case "COMPLETED":
+      case "  ":
         color = "green";
         break;
       case "CANCELED":
@@ -50,12 +50,12 @@ const BookingStaff = () => {
   
         const data = response.data.data.content.map((booking) => ({
           id: booking.id,
-          service: booking.service.name,
-          email: booking.user.email,
+          service: booking.service.name || "N/A",
+          email: booking.user.email || "N/A",
           phone: booking.user.phoneNumber || "N/A",
-          address: booking.address,
-          bookingDate: booking.startDate,
-          status: booking.status,
+          address: booking.address || "N/A",
+          bookingDate: booking.startDate|| "N/A",
+          status: booking.status || "N/A",
         }));
   
         setBookings(data);
