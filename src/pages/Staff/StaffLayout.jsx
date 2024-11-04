@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Layout, Menu, Dropdown, message, notification } from 'antd';
-import { UserOutlined, LaptopOutlined, BookOutlined, MessageOutlined, LogoutOutlined, DownOutlined, CalendarOutlined} from '@ant-design/icons';
+import { UserOutlined, LaptopOutlined, BookOutlined, MessageOutlined, LogoutOutlined, DownOutlined, CalendarOutlined } from '@ant-design/icons';
 import 'antd/dist/reset.css'; // Import Ant Design styles
-import { Content } from "antd/es/layout/layout";
+import { Content, Header } from "antd/es/layout/layout";
 import { Outlet, Link, useNavigate } from "react-router-dom";
 import BookingNotificationComponent from '../../components/Notifications/BookingNotification/BookingNotificationComponent';
 import { jwtDecode } from 'jwt-decode'; // Correct import
 import axios from 'axios';
-import StaffTracker from "../../components/AutoGetLocationOfStaff/StaffLocaltionTracker"
+import StaffTracker from "../../components/AutoGetLocationOfStaff/StaffLocaltionTracker";
+import NotificationIconComponent from "../../components/Notifications/NotificationIcon/NotificationIconComponent";
 
 const { Sider } = Layout;
 
@@ -78,7 +79,7 @@ const StaffLayout = () => {
                 <Dropdown
                     menu={{
                         items: [
-                            { key: 'profile', label: <Link to="/staff/getInformation">Profile</Link>, icon: <UserOutlined /> },
+                            { key: 'profile', label: <Link to="/getInformation">Profile</Link>, icon: <UserOutlined /> },
                             {
                                 key: 'logout',
                                 label: (
@@ -88,7 +89,8 @@ const StaffLayout = () => {
                                 ),
                                 style: {
                                     backgroundColor: 'red',
-                                    color: 'white'}                                    
+                                    color: 'white'
+                                }
                             },
                         ],
                     }}
@@ -136,7 +138,7 @@ const StaffLayout = () => {
         },
         {
             key: '5',
-            icon: <CalendarOutlined/>,
+            icon: <CalendarOutlined />,
             label: <Link to="/calendar">Calendar</Link>,
             style: {
                 backgroundColor: selectedKey === '5' ? 'white' : 'transparent',
@@ -167,8 +169,11 @@ const StaffLayout = () => {
                 />
             </Sider>
             <Layout style={{ marginLeft: collapsed ? 80 : 200 }}>
+                <Header style={{ backgroundColor: 'white', display: 'flex', justifyContent: 'flex-end', alignItems: 'center', padding: '0 20px' }}>
+                    <NotificationIconComponent/>
+                </Header>
                 <Content>
-                <StaffTracker/>
+                    <StaffTracker />
                     <BookingNotificationComponent></BookingNotificationComponent>
                     <Outlet />
                 </Content>
