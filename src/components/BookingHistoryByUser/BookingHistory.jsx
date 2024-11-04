@@ -1,5 +1,14 @@
 import { useState, useEffect } from "react";
-import { Table, Spin, notification, Modal, Button, Tag, Dropdown, Menu} from "antd";
+import {
+  Table,
+  Spin,
+  notification,
+  Modal,
+  Button,
+  Tag,
+  Dropdown,
+  Menu,
+} from "antd";
 import { DownOutlined, EyeOutlined } from "@ant-design/icons";
 import { motion } from "framer-motion";
 import axiosClient from "../../services/config/axios";
@@ -102,10 +111,11 @@ const BookingHistory = () => {
               )}
             </Menu>
           }
-          trigger={['click']}
+          trigger={["click"]}
         >
           <span style={{ cursor: "pointer", color: "#1890ff" }}>
-            {staffName && staffName.length > 0 ? staffName[0] : "N/A"} <DownOutlined />
+            {staffName && staffName.length > 0 ? staffName[0] : "N/A"}{" "}
+            <DownOutlined />
           </span>
         </Dropdown>
       ),
@@ -125,6 +135,12 @@ const BookingHistory = () => {
             break;
           case "CANCELLED":
             color = "red";
+            break;
+          case "CONFIRMED":
+            color = "blue";
+            break;
+          case "IN_PROGRESS":
+            color = "purple";
             break;
           default:
             color = "gray";

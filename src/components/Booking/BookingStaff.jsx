@@ -28,10 +28,10 @@ const BookingStaff = () => {
       case "IN_PROGRESS":
         color = "purple";
         break;
-      case "  ":
+      case "COMPLETED":
         color = "green";
         break;
-      case "CANCELED":
+      case "CANCELLED":
         color = "red";
         break;
       default:
@@ -55,7 +55,7 @@ const BookingStaff = () => {
           phone: booking.user.phoneNumber || "N/A",
           address: booking.address || "N/A",
           bookingDate: booking.startDate|| "N/A",
-          status: booking.status || "N/A",
+          status: booking.status,
         }));
   
         setBookings(data);
@@ -139,7 +139,7 @@ const BookingStaff = () => {
         <Button
           type="primary"
           onClick={() => updateStatus(record.id, record.status)}
-          disabled={record.status === "COMPLETED"} // Disable button if status is "COMPLETED"
+          disabled={record.status === "COMPLETED" || "CANCELLED"} // Disable button if status is "COMPLETED"
         >
           {record.status === "PENDING"
             ? "Confirm"
