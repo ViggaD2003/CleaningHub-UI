@@ -284,31 +284,32 @@ const Booking = () => {
             </Radio.Group>
           </div>
 
-          {/* <div className="mb-4">
-          <label className="block text-gray-700 font-bold mb-2">
-              Select voucherId:
-            </label>
-            <select
-              name="durationId"
-              value={bookingDetails.voucherId}
-              onChange={handleInputChange}
-              className="w-full p-3 border rounded-lg"
-              required
-            >
-              <option value="">Select Duration</option>
-              {Array.isArray(durations) && durations.length > 0 ? (
-                durations.map((duration) => (
-                  <option key={duration.id} value={duration.id}>
-                    {duration.durationInHours} hours - ${duration.price}
-                  </option>
-                ))
-              ) : (
-                <option value="" disabled>
-                  No durations available
-                </option>
-              )}
-            </select>
-          </div> */}
+          <div className="mb-4">
+        <label className="block text-gray-700 font-bold mb-2">
+          Select Voucher:
+        </label>
+        <Select
+          placeholder="Select Voucher"
+          value={bookingDetails.voucherId}
+          onChange={(value) =>
+            handleInputChange({ name: "voucherId", value: value })
+          }
+          className="w-full"
+        >
+          {vouchers.map((voucher) => (
+            <Option key={voucher.id} value={voucher.id}>
+              <div className="flex items-center">
+                <img
+                  src={icon}
+                  alt="Voucher Icon"
+                  style={{ width: "20px", marginRight: "8px" }}
+                />
+                <span>{voucher.percentage}% - left {voucher.amount}</span>
+              </div>
+            </Option>
+          ))}
+        </Select>
+      </div>
 
           <div className="mb-4">
             <label className="block text-gray-700 font-bold mb-2">
