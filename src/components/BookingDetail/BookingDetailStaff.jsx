@@ -171,7 +171,7 @@ const BookingDetailStaff = () => {
             message.success("Booking status updated successfully!");
 
             const description = `
-                            Your booking ${booking.id} is now ${booking.status}. Please feel free to share your feedback about
+                            Your booking ${booking.id} is now ${newStatus}. Please feel free to share your feedback about
                             our service ${booking.service.name} and staff ${booking.staff.firstName} ${booking.staff.lastName}.
                     `;
             let typeUpdated;
