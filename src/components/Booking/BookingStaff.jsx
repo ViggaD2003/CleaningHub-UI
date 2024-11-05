@@ -4,6 +4,8 @@ import { Table, message, Select, Empty, Tag, Card, Typography, Button } from "an
 import moment from "moment"; // For date formatting
 import { Link } from "react-router-dom";
 import axiosClient from "../../services/config/axios";
+import { EyeOutlined } from "@ant-design/icons";
+
 
 const { Option } = Select;
 const { Title } = Typography;
@@ -149,6 +151,16 @@ const BookingStaff = () => {
         </Button>
       ),
     },
+    {
+      title: "View",
+      key: "view",
+      render: (_, record) => (
+        <EyeOutlined
+          style={{ fontSize: "18px", color: "#1890ff", cursor: "pointer" }}
+          onClick={() => <Link to={`/bookings/booking/${record.id}`}></Link>}
+        />
+      )
+    }
   ];
 
   return (

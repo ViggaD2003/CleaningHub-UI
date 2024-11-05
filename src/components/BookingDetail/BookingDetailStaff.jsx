@@ -77,69 +77,69 @@ const BookingDetailStaff = () => {
         return { formattedDate, formattedTime };
     };
 
-    const markAsCompleted = async (e) => {
-        e.preventDefault();
-        setUpdating(true);
-        try {
-            const token = getToken();
-            const response = await axios.put(
-                `v1/bookings/chang-booking-status/${id}/COMPLETED`,
-                {},
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                }
-            );
+    // const markAsCompleted = async (e) => {
+    //     e.preventDefault();
+    //     setUpdating(true);
+    //     try {
+    //         const token = getToken();
+    //         const response = await axios.put(
+    //             `v1/bookings/chang-booking-status/${id}/COMPLETED`,
+    //             {},
+    //             {
+    //                 headers: {
+    //                     Authorization: `Bearer ${token}`
+    //                 }
+    //             }
+    //         );
 
-            const description = `
-                            Your booking ${booking.id} is now ${booking.status}. Please feel free to share your feedback about
-                            our service ${booking.service.name} and staff ${booking.staff.firstName} ${booking.staff.lastName}.
-                    `;
+    //         const description = `
+    //                         Your booking ${booking.id} is now ${booking.status}. Please feel free to share your feedback about
+    //                         our service ${booking.service.name} and staff ${booking.staff.firstName} ${booking.staff.lastName}.
+    //                 `;
 
-            const notificationData = {
-                email: booking.user.email,
-                bookingId: booking.id,
-                message: description,
-                type: 'feedback',
-                status: 'unread'
-            };
-            await axios.post(`/v1/notifications`, notificationData, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
+    //         const notificationData = {
+    //             email: booking.user.email,
+    //             bookingId: booking.id,
+    //             message: description,
+    //             type: 'feedback',
+    //             status: 'unread'
+    //         };
+    //         await axios.post(`/v1/notifications`, notificationData, {
+    //             headers: {
+    //                 Authorization: `Bearer ${token}`
+    //             }
+    //         });
 
-            console.log(response);
+    //         console.log(response);
 
-            if (response.status === 200 || response.status === 201) {
-                const bookingResponse = await axios.get(
-                    `v1/bookings/staff/${id}`,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`
-                        }
-                    }
-                )
-                console.log(bookingResponse.data.data);
-                stompClient.send(
-                    "/app/feedbacks",
-                    {},
-                    JSON.stringify(bookingResponse.data.data)
-                );
-            } else {
-                message.error("Failed to update booking status");
-            }
+    //         if (response.status === 200 || response.status === 201) {
+    //             const bookingResponse = await axios.get(
+    //                 `v1/bookings/staff/${id}`,
+    //                 {
+    //                     headers: {
+    //                         Authorization: `Bearer ${token}`
+    //                     }
+    //                 }
+    //             )
+    //             console.log(bookingResponse.data.data);
+    //             stompClient.send(
+    //                 "/app/feedbacks",
+    //                 {},
+    //                 JSON.stringify(bookingResponse.data.data)
+    //             );
+    //         } else {
+    //             message.error("Failed to update booking status");
+    //         }
 
-            message.success("Booking status updated to COMPLETED.");
-            setBooking((prevBooking) => ({ ...prevBooking, status: "COMPLETED" }));
-        } catch (error) {
-            console.log(error);
-            message.error("Failed to update booking status");
-        } finally {
-            setLoading(false);
-        }
-    };
+    //         message.success("Booking status updated to COMPLETED.");
+    //         setBooking((prevBooking) => ({ ...prevBooking, status: "COMPLETED" }));
+    //     } catch (error) {
+    //         console.log(error);
+    //         message.error("Failed to update booking status");
+    //     } finally {
+    //         setLoading(false);
+    //     }
+    // };
 
     const { service, address, duration, endDate, startDate, status, user } = booking;
     const { payment } = booking.bookingDetailResponseDto;
@@ -238,7 +238,7 @@ const BookingDetailStaff = () => {
                         <p className="text-lg font-semibold">Status: {getStatusTag(payment?.paymentStatus)}</p>
                         <p className="text-lg font-semibold mt-2">Method: <span className="text-md">{payment?.paymentMethod}</span></p>
                     </Card>
-                    {status !== "COMPLETED" && (
+                    {/* {status !== "COMPLETED" && (
                         <Button
                             type="primary"
                             onClick={markAsCompleted}
@@ -247,7 +247,7 @@ const BookingDetailStaff = () => {
                         >
                             Mark as Completed
                         </Button>
-                    )}
+                    )} */}
                 </Col>
             </Row>
         </div>
