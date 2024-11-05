@@ -29,7 +29,9 @@ const FeedbackNotificationComponent = () => {
                             </div>
                         ),
                         onClick: () => {
-                            navigate("/rating", { state: { bookingId: booking.id } });
+                            if (booking.status === "COMPLETED") {
+                                navigate("/rating", { state: { bookingId: booking.id } });
+                            }
                         },
                         duration: 10
                     });
