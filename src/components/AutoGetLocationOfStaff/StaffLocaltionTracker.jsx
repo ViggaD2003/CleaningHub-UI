@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import useAuth from "../../services/config/provider/useAuth";
 import axiosClient from "../../services/config/axios";
-import message from antd;
+import {message} from "antd";
 const StaffLocationTracker = () => {
     const { auth } = useAuth();
 
