@@ -1,19 +1,20 @@
 import { Card, message, Spin, Col, Row, Tag, Button } from "antd";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { CalendarOutlined, ClockCircleOutlined, HomeOutlined, UserOutlined, DollarCircleOutlined } from "@ant-design/icons";
 import SockJS from "sockjs-client";
 import { WebSocketContext } from "../../services/config/provider/WebSocketProvider";
+import axiosClient from "../../services/config/axios";
 
 const BookingDetailStaff = () => {
     const { stompClient } = useContext(WebSocketContext);
     const [booking, setBooking] = useState(null);
     const [loading, setLoading] = useState(true);
     const [updating, setUpdating] = useState(false);
+    const location = useLocation();
+    const { id, status } = location.state || {};
 
-    const getToken = () => localStorage.getItem('token');
-    const { id } = useParams();
 
     const fetchBooking = async (bookingId) => {
         setLoading(true);
@@ -77,20 +78,102 @@ const BookingDetailStaff = () => {
         return { formattedDate, formattedTime };
     };
 
-    const markAsCompleted = async (e) => {
-        e.preventDefault();
-        setUpdating(true);
+    // const markAsCompleted = async (e) => {
+    //     e.preventDefault();
+    //     setUpdating(true);
+    //     try {
+    //         const token = getToken();
+    //         const response = await axios.put(
+    //             `v1/bookings/chang-booking-status/${id}/COMPLETED`,
+    //             {},
+    //             {
+    //                 headers: {
+    //                     Authorization: `Bearer ${token}`
+    //                 }
+    //             }
+    //         );
+
+    //         const description = `
+    //                         Your booking ${booking.id} is now ${booking.status}. Please feel free to share your feedback about
+    //                         our service ${booking.service.name} and staff ${booking.staff.firstName} ${booking.staff.lastName}.
+    //                 `;
+
+    //         const notificationData = {
+    //             email: booking.user.email,
+    //             bookingId: booking.id,
+    //             message: description,
+    //             type: 'feedback',
+    //             status: 'unread'
+    //         };
+    //         await axios.post(`/v1/notifications`, notificationData, {
+    //             headers: {
+    //                 Authorization: `Bearer ${token}`
+    //             }
+    //         });
+
+    //         console.log(response);
+
+    //         if (response.status === 200 || response.status === 201) {
+    //             const bookingResponse = await axios.get(
+    //                 `v1/bookings/staff/${id}`,
+    //                 {
+    //                     headers: {
+    //                         Authorization: `Bearer ${token}`
+    //                     }
+    //                 }
+    //             )
+    //             console.log(bookingResponse.data.data);
+    //             stompClient.send(
+    //                 "/app/feedbacks",
+    //                 {},
+    //                 JSON.stringify(bookingResponse.data.data)
+    //             );
+    //         } else {
+    //             message.error("Failed to update booking status");
+    //         }
+
+    //         message.success("Booking status updated to COMPLETED.");
+    //         setBooking((prevBooking) => ({ ...prevBooking, status: "COMPLETED" }));
+    //     } catch (error) {
+    //         console.log(error);
+    //         message.error("Failed to update booking status");
+    //     } finally {
+    //         setLoading(false);
+    //     }
+    // };
+
+    const updateStatus = async (bookingId, currentStatus) => {
+        let newStatus;
+        switch (currentStatus) {
+            case "PENDING":
+                newStatus = "CONFIRMED";
+                break;
+            case "CONFIRMED":
+                newStatus = "IN_PROGRESS";
+                break;
+            case "IN_PROGRESS":
+                newStatus = "COMPLETED";
+                break;
+            default:
+                return;
+        }
+
         try {
-            const token = getToken();
-            const response = await axios.put(
-                `v1/bookings/chang-booking-status/${id}/COMPLETED`,
-                {},
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                }
+            await axiosClient.patch(
+                `/v1/bookings/update-booking-status?status=${newStatus}&bookingId=${bookingId}`
             );
+
+            // setBookings((prevBookings) =>
+            //     prevBookings.map((booking) =>
+            //         booking.id === bookingId ? { ...booking, status: newStatus } : booking
+            //     )
+            // );
+
+            setBooking((prevBooking) => ({
+                ...prevBooking, status: newStatus
+            }));
+
+            message.success("Booking status updated successfully!");
 
             const description = `
                             Your booking ${booking.id} is now ${booking.status}. Please feel free to share your feedback about
@@ -104,44 +187,19 @@ const BookingDetailStaff = () => {
                 type: 'feedback',
                 status: 'unread'
             };
-            await axios.post(`/v1/notifications`, notificationData, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
+            await axiosClient.post(`/v1/notifications`, notificationData);
 
-            console.log(response);
-
-            if (response.status === 200 || response.status === 201) {
-                const bookingResponse = await axios.get(
-                    `v1/bookings/staff/${id}`,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`
-                        }
-                    }
-                )
-                console.log(bookingResponse.data.data);
-                stompClient.send(
-                    "/app/feedbacks",
-                    {},
-                    JSON.stringify(bookingResponse.data.data)
-                );
-            } else {
-                message.error("Failed to update booking status");
-            }
-
-            message.success("Booking status updated to COMPLETED.");
-            setBooking((prevBooking) => ({ ...prevBooking, status: "COMPLETED" }));
+            stompClient.send(
+                "/app/feedbacks",
+                {},
+                JSON.stringify(booking));
         } catch (error) {
-            console.log(error);
-            message.error("Failed to update booking status");
-        } finally {
-            setLoading(false);
+            message.error("Failed to update booking status.");
+            console.error(error);
         }
     };
 
-    const { service, address, duration, endDate, startDate, status, user } = booking;
+    const { service, address, duration, endDate, startDate, user } = booking;
     const { payment } = booking.bookingDetailResponseDto;
 
     const startTime = formatDateTime(startDate);
@@ -238,7 +296,7 @@ const BookingDetailStaff = () => {
                         <p className="text-lg font-semibold">Status: {getStatusTag(payment?.paymentStatus)}</p>
                         <p className="text-lg font-semibold mt-2">Method: <span className="text-md">{payment?.paymentMethod}</span></p>
                     </Card>
-                    {status !== "COMPLETED" && (
+                    {/* {status !== "COMPLETED" && (
                         <Button
                             type="primary"
                             onClick={markAsCompleted}
@@ -247,8 +305,20 @@ const BookingDetailStaff = () => {
                         >
                             Mark as Completed
                         </Button>
-                    )}
+                    )} */}
                 </Col>
+
+                <Button
+                    type="primary"
+                    onClick={() => updateStatus(id, status)}
+                    disabled={status === "COMPLETED" || status === "CANCELLED"} // Disable button if status is "COMPLETED"
+                >
+                    {status === "PENDING"
+                        ? "Confirm"
+                        : status === "CONFIRMED"
+                            ? "Start"
+                            : "Complete"}
+                </Button>
             </Row>
         </div>
     );
