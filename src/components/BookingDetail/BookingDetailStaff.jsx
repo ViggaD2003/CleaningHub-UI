@@ -19,12 +19,7 @@ const BookingDetailStaff = () => {
     const fetchBooking = async (bookingId) => {
         setLoading(true);
         try {
-            const token = getToken();
-            const response = await axios.get(`v1/bookings/staff/${bookingId}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
+            const response = await axiosClient.get(`v1/bookings/staff/${bookingId}`);
             setBooking(response.data.data);
             console.log(response.data.data);
         } catch (error) {
