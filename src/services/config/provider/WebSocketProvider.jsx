@@ -15,7 +15,6 @@ export const WebSocketProvider = ({ children }) => {
 
             client.connect({ Authorization: `Bearer ${jwtToken}` }, (frame) => {
                 setStompClient(client);
-                console.log("Connected to WebSocket server");
             });
 
             return () => {

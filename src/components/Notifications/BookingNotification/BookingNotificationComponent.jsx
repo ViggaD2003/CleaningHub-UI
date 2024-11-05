@@ -14,8 +14,6 @@ const BookingNotificationComponent = () => {
       stompClient.subscribe("/user/queue/notifications", async (message) => {
         if (message.body) {
           const booking = JSON.parse(message.body);
-          console.log(booking);
-
           const description = `You have a new booking ${booking.id} on{" "}
                 ${booking.startedAt} for ${booking.service.name}.`;
 

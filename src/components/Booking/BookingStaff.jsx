@@ -142,7 +142,7 @@ const BookingStaff = () => {
         <EyeOutlined
           style={{ fontSize: "18px", color: "#1890ff", cursor: "pointer" }}
           onClick={() => navigate(`/bookings/booking/${record.id}`, {
-            state: { id: record.id, status: record.status }
+            state: { id: record.id}
           })}
         />
       ),

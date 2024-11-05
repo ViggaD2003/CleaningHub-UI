@@ -14,8 +14,6 @@ const FeedbackNotificationComponent = () => {
             const subscription = stompClient.subscribe("/user/topic/feedbacks", async (message) => {
                 if (message.body) {
                     const booking = JSON.parse(message.body);
-                    console.log("Feedback message received:", booking);
-
                     const description = `
                             Your booking ${booking.id} is now ${booking.status}. Please feel free to share your feedback about
                             our service ${booking.service.name} and staff ${booking.staff.firstName} ${booking.staff.lastName}.

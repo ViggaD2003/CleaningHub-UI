@@ -26,7 +26,6 @@ const BookingHistory = () => {
   useEffect(() => {
     const fetchBookingsHistory = async () => {
       setLoading(true);
-      console.log(pageIndex);
       try {
         const response = await axiosClient.get("/v1/bookings/history", {
           params: {

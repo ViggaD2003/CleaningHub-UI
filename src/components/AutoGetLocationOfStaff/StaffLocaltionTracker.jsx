@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import useAuth from "../../services/config/provider/useAuth";
 import axiosClient from "../../services/config/axios";
-
+import message from antd;
 const StaffLocationTracker = () => {
     const { auth } = useAuth();
 
@@ -29,11 +29,8 @@ const StaffLocationTracker = () => {
                             latitude: lat,
                             longitude: lon
                         })
-                        .then((response) => {
-                            console.log("Location updated:", response.data);
-                        })
                         .catch((error) => {
-                            console.error("Error updating location:", error);
+                            message.error(error.message);
                         });
                 },
                 (error) => {
@@ -41,7 +38,8 @@ const StaffLocationTracker = () => {
                 }
             );
         } else {
-            console.log("Trình duyệt không hỗ trợ Geolocation.");
+            message.error("Trình duyệt không hỗ trợ Geolocation.");
+
         }
     };
 
