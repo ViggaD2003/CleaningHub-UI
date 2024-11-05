@@ -117,7 +117,7 @@ const BookingStaff = () => {
       title: "Booking ID",
       dataIndex: "id",
       key: "id",
-      render: (id) => <Link to={`/bookings/booking/${id}`}>{id}</Link>,
+      render: (id) => {id},
     },
     { title: "Service", dataIndex: "service", key: "service" },
     { title: "Customer Email", dataIndex: "email", key: "email" },
