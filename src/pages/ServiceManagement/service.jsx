@@ -191,7 +191,7 @@ const ServiceManagement = () => {
   const handleUpload = async (file, id) => {
     setUploading(true);
     try {
-      const imgRef = ref(storage, `services/${uuidv4()}_${file.name}`);
+      const imgRef = ref(storage, `file/${uuidv4()}`);
       await uploadBytes(imgRef, file);
       const downloadURL = await getDownloadURL(imgRef);
       setUploadedImageURL(downloadURL);
