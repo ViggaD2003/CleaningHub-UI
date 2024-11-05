@@ -174,12 +174,17 @@ const BookingDetailStaff = () => {
                             Your booking ${booking.id} is now ${booking.status}. Please feel free to share your feedback about
                             our service ${booking.service.name} and staff ${booking.staff.firstName} ${booking.staff.lastName}.
                     `;
-
+            let typeUpdated;
+            if(booking.status === "COMPLETED"){
+                typeUpdated = 'feedback';
+            }else{
+                typeUpdated = 'readonly';
+            }
             const notificationData = {
                 email: booking.user.email,
                 bookingId: booking.id,
                 message: description,
-                type: 'feedback',
+                type: typeUpdated,
                 status: 'unread'
             };
             await axiosClient.post(`/v1/notifications`, notificationData);
