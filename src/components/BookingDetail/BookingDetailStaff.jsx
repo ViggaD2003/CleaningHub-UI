@@ -175,9 +175,9 @@ const BookingDetailStaff = () => {
                             our service ${booking.service.name} and staff ${booking.staff.firstName} ${booking.staff.lastName}.
                     `;
             let typeUpdated;
-            if(booking.status === "COMPLETED"){
+            if (booking.status === "COMPLETED") {
                 typeUpdated = 'feedback';
-            }else{
+            } else {
                 typeUpdated = 'readonly';
             }
             const notificationData = {
