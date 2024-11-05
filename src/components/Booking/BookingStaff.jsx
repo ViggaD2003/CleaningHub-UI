@@ -2,10 +2,10 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { Table, message, Select, Empty, Tag, Card, Typography, Button } from "antd";
 import moment from "moment"; // For date formatting
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axiosClient from "../../services/config/axios";
+import BookingDetailStaff from "../BookingDetail/BookingDetailStaff";
 import { EyeOutlined } from "@ant-design/icons";
-
 
 const { Option } = Select;
 const { Title } = Typography;
@@ -17,6 +17,7 @@ const BookingStaff = () => {
   const [size, setSize] = useState(10);
   const [total, setTotal] = useState(0);
   const [bookingStatus, setBookingStatus] = useState("PENDING");
+  const navigate = useNavigate();
 
   const getStatusTag = (status) => {
     let color;
@@ -138,29 +139,14 @@ const BookingStaff = () => {
       title: "Actions",
       key: "actions",
       render: (_, record) => (
-        <Button
-          type="primary"
-          onClick={() => updateStatus(record.id, record.status)}
-          disabled={record.status === "COMPLETED" || record.status === "CANCELLED"} // Disable button if status is "COMPLETED"
-        >
-          {record.status === "PENDING"
-            ? "Confirm"
-            : record.status === "CONFIRMED"
-            ? "Start"
-            : "Complete"}
-        </Button>
-      ),
-    },
-    {
-      title: "View",
-      key: "view",
-      render: (_, record) => (
         <EyeOutlined
           style={{ fontSize: "18px", color: "#1890ff", cursor: "pointer" }}
-          onClick={() => <Link to={`/bookings/booking/${record.id}`}></Link>}
+          onClick={() => navigate(`/bookings/booking/${record.id}`, {
+            state: { id: record.id, status: record.status }
+          })}
         />
-      )
-    }
+      ),
+    },
   ];
 
   return (

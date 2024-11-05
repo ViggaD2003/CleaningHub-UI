@@ -1,19 +1,20 @@
 import { Card, message, Spin, Col, Row, Tag, Button } from "antd";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { CalendarOutlined, ClockCircleOutlined, HomeOutlined, UserOutlined, DollarCircleOutlined } from "@ant-design/icons";
 import SockJS from "sockjs-client";
 import { WebSocketContext } from "../../services/config/provider/WebSocketProvider";
+import axiosClient from "../../services/config/axios";
 
 const BookingDetailStaff = () => {
     const { stompClient } = useContext(WebSocketContext);
     const [booking, setBooking] = useState(null);
     const [loading, setLoading] = useState(true);
     const [updating, setUpdating] = useState(false);
+    const location = useLocation();
+    const { id, status } = location.state || {};
 
-    const getToken = () => localStorage.getItem('token');
-    const { id } = useParams();
 
     const fetchBooking = async (bookingId) => {
         setLoading(true);
@@ -141,7 +142,64 @@ const BookingDetailStaff = () => {
     //     }
     // };
 
-    const { service, address, duration, endDate, startDate, status, user } = booking;
+    const updateStatus = async (bookingId, currentStatus) => {
+        let newStatus;
+        switch (currentStatus) {
+            case "PENDING":
+                newStatus = "CONFIRMED";
+                break;
+            case "CONFIRMED":
+                newStatus = "IN_PROGRESS";
+                break;
+            case "IN_PROGRESS":
+                newStatus = "COMPLETED";
+                break;
+            default:
+                return;
+        }
+
+        try {
+            await axiosClient.patch(
+                `/v1/bookings/update-booking-status?status=${newStatus}&bookingId=${bookingId}`
+            );
+
+            // setBookings((prevBookings) =>
+            //     prevBookings.map((booking) =>
+            //         booking.id === bookingId ? { ...booking, status: newStatus } : booking
+            //     )
+            // );
+
+            setBooking((prevBooking) => ({
+                ...prevBooking, status: newStatus
+            }));
+
+            message.success("Booking status updated successfully!");
+
+            const description = `
+                            Your booking ${booking.id} is now ${booking.status}. Please feel free to share your feedback about
+                            our service ${booking.service.name} and staff ${booking.staff.firstName} ${booking.staff.lastName}.
+                    `;
+
+            const notificationData = {
+                email: booking.user.email,
+                bookingId: booking.id,
+                message: description,
+                type: 'feedback',
+                status: 'unread'
+            };
+            await axiosClient.post(`/v1/notifications`, notificationData);
+
+            stompClient.send(
+                "/app/feedbacks",
+                {},
+                JSON.stringify(booking));
+        } catch (error) {
+            message.error("Failed to update booking status.");
+            console.error(error);
+        }
+    };
+
+    const { service, address, duration, endDate, startDate, user } = booking;
     const { payment } = booking.bookingDetailResponseDto;
 
     const startTime = formatDateTime(startDate);
@@ -249,6 +307,18 @@ const BookingDetailStaff = () => {
                         </Button>
                     )} */}
                 </Col>
+
+                <Button
+                    type="primary"
+                    onClick={() => updateStatus(id, status)}
+                    disabled={status === "COMPLETED" || status === "CANCELLED"} // Disable button if status is "COMPLETED"
+                >
+                    {status === "PENDING"
+                        ? "Confirm"
+                        : status === "CONFIRMED"
+                            ? "Start"
+                            : "Complete"}
+                </Button>
             </Row>
         </div>
     );
