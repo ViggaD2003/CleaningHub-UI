@@ -188,7 +188,8 @@ const ServiceManagement = () => {
     setUploadedImageURL("");
   };
 
-  const handleUpload = async (file, id) => {
+  const handleUpload = async (info) => {
+    const file = info.file;
     setUploading(true);
     try {
       const imgRef = ref(storage, `file/${uuidv4()}`);
