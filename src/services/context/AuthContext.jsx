@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }) => {
           setAuth({ role });
         }
       } catch (error) {
-        console.error("Token parsing error:", error);
+          ("Token parsing error:", error);
       }
     }
 

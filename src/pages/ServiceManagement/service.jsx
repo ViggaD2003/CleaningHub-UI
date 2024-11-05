@@ -188,10 +188,11 @@ const ServiceManagement = () => {
     setUploadedImageURL("");
   };
 
-  const handleUpload = async (file, id) => {
+  const handleUpload = async (info) => {
+    const file = info.file;
     setUploading(true);
     try {
-      const imgRef = ref(storage, `services/${uuidv4()}_${file.name}`);
+      const imgRef = ref(storage, `file/${uuidv4()}`);
       await uploadBytes(imgRef, file);
       const downloadURL = await getDownloadURL(imgRef);
       setUploadedImageURL(downloadURL);
@@ -431,7 +432,7 @@ const ServiceManagement = () => {
             name="img"
             rules={[
               { type: "url", message: "Please enter a valid URL!" },
-              { required: true, message: "Please upload an image!" },
+              { required: true, message: "Please upload an image!" }, 
             ]}
           >
             <Input placeholder="Service Image URL" readOnly />
@@ -439,10 +440,8 @@ const ServiceManagement = () => {
           <Form.Item label="Upload Image">
             <Upload
               showUploadList={false}
-              beforeUpload={(file) => {
-                handleUpload(file);
-                return false; // Prevent automatic upload
-              }}
+              beforeUpload={() => false}
+              onChange={handleUpload}
             >
               <Button
                 icon={<UploadOutlined />}
