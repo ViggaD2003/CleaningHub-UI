@@ -239,7 +239,7 @@ const Booking = () => {
               {Array.isArray(durations) && durations.length > 0 ? (
                 durations.map((duration) => (
                   <option key={duration.id} value={duration.id}>
-                    {duration.durationInHours} hours - ${duration.price}
+                    {duration.durationInHours} hours - {duration.price} vnđ
                   </option>
                 ))
               ) : (
@@ -359,7 +359,7 @@ const Booking = () => {
             <p className="mb-4 text-gray-600">{service.description}</p>
             <p className="text-lg font-semibold">
               <DollarOutlined className="mr-2 text-green-600" />
-              {service.basePrice} $
+              {service.basePrice} vnđ
             </p>
           </div>
         </div>

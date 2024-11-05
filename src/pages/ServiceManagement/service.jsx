@@ -188,8 +188,7 @@ const ServiceManagement = () => {
     setUploadedImageURL("");
   };
 
-  // Function to upload image to Firebase and get URL
-  const handleUpload = async (file) => {
+  const handleUpload = async (file, id) => {
     setUploading(true);
     try {
       const imgRef = ref(storage, `services/${uuidv4()}_${file.name}`);
@@ -197,9 +196,9 @@ const ServiceManagement = () => {
       const downloadURL = await getDownloadURL(imgRef);
       setUploadedImageURL(downloadURL);
       form.setFieldsValue({ img: downloadURL }); // Auto-fill the img field
+      await axiosClient.patch(`/v1/services/update-img-service/${selectedService.id}?img=${downloadURL}`)
       message.success("Image uploaded successfully.");
     } catch (error) {
-      console.error("Failed to upload image:", error);
       message.error("Failed to upload image.");
     } finally {
       setUploading(false);
