@@ -195,6 +195,7 @@ const ServiceManagement = () => {
       const imgRef = ref(storage, `file/${uuidv4()}`);
       await uploadBytes(imgRef, file);
       const downloadURL = await getDownloadURL(imgRef);
+      console.log(downloadURL);
       setUploadedImageURL(downloadURL);
       form.setFieldsValue({ img: downloadURL }); // Auto-fill the img field
       await axiosClient.patch(`/v1/services/update-img-service/${selectedService.id}?img=${downloadURL}`)
