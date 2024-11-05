@@ -73,70 +73,6 @@ const BookingDetailStaff = () => {
         return { formattedDate, formattedTime };
     };
 
-    // const markAsCompleted = async (e) => {
-    //     e.preventDefault();
-    //     setUpdating(true);
-    //     try {
-    //         const token = getToken();
-    //         const response = await axios.put(
-    //             `v1/bookings/chang-booking-status/${id}/COMPLETED`,
-    //             {},
-    //             {
-    //                 headers: {
-    //                     Authorization: `Bearer ${token}`
-    //                 }
-    //             }
-    //         );
-
-    //         const description = `
-    //                         Your booking ${booking.id} is now ${booking.status}. Please feel free to share your feedback about
-    //                         our service ${booking.service.name} and staff ${booking.staff.firstName} ${booking.staff.lastName}.
-    //                 `;
-
-    //         const notificationData = {
-    //             email: booking.user.email,
-    //             bookingId: booking.id,
-    //             message: description,
-    //             type: 'feedback',
-    //             status: 'unread'
-    //         };
-    //         await axios.post(`/v1/notifications`, notificationData, {
-    //             headers: {
-    //                 Authorization: `Bearer ${token}`
-    //             }
-    //         });
-
-    //         console.log(response);
-
-    //         if (response.status === 200 || response.status === 201) {
-    //             const bookingResponse = await axios.get(
-    //                 `v1/bookings/staff/${id}`,
-    //                 {
-    //                     headers: {
-    //                         Authorization: `Bearer ${token}`
-    //                     }
-    //                 }
-    //             )
-    //             console.log(bookingResponse.data.data);
-    //             stompClient.send(
-    //                 "/app/feedbacks",
-    //                 {},
-    //                 JSON.stringify(bookingResponse.data.data)
-    //             );
-    //         } else {
-    //             message.error("Failed to update booking status");
-    //         }
-
-    //         message.success("Booking status updated to COMPLETED.");
-    //         setBooking((prevBooking) => ({ ...prevBooking, status: "COMPLETED" }));
-    //     } catch (error) {
-    //         console.log(error);
-    //         message.error("Failed to update booking status");
-    //     } finally {
-    //         setLoading(false);
-    //     }
-    // };
-
     const updateStatus = async (bookingId, currentStatus) => {
         let newStatus;
         switch (currentStatus) {
@@ -158,15 +94,8 @@ const BookingDetailStaff = () => {
                 `/v1/bookings/update-booking-status?status=${newStatus}&bookingId=${bookingId}`
             );
 
-            // setBookings((prevBookings) =>
-            //     prevBookings.map((booking) =>
-            //         booking.id === bookingId ? { ...booking, status: newStatus } : booking
-            //     )
-            // );
-
-            setBooking((prevBooking) => ({
-                ...prevBooking, status: newStatus
-            }));
+            const updatedBooking = { ...booking, status: newStatus };
+            setBooking(updatedBooking);
 
             message.success("Booking status updated successfully!");
 
@@ -174,17 +103,12 @@ const BookingDetailStaff = () => {
                             Your booking ${booking.id} is now ${newStatus}. Please feel free to share your feedback about
                             our service ${booking.service.name} and staff ${booking.staff.firstName} ${booking.staff.lastName}.
                     `;
-            let typeUpdated;
-            if (booking.status === "COMPLETED") {
-                typeUpdated = 'feedback';
-            } else {
-                typeUpdated = 'readonly';
-            }
+
             const notificationData = {
                 email: booking.user.email,
                 bookingId: booking.id,
                 message: description,
-                type: typeUpdated,
+                type: newStatus === "COMPLETED" ? 'feedback' : 'readonly',
                 status: 'unread'
             };
             await axiosClient.post(`/v1/notifications`, notificationData);
@@ -192,7 +116,7 @@ const BookingDetailStaff = () => {
             stompClient.send(
                 "/app/feedbacks",
                 {},
-                JSON.stringify(booking));
+                JSON.stringify(updatedBooking));
         } catch (error) {
             message.error("Failed to update booking status.");
             console.error(error);
@@ -296,31 +220,20 @@ const BookingDetailStaff = () => {
                         <p className="text-lg font-semibold">Status: {getStatusTag(payment?.paymentStatus)}</p>
                         <p className="text-lg font-semibold mt-2">Method: <span className="text-md">{payment?.paymentMethod}</span></p>
                     </Card>
-                    {/* {status !== "COMPLETED" && (
-                        <Button
-                            type="primary"
-                            onClick={markAsCompleted}
-                            loading={updating}
-                            className="mt-4"
-                        >
-                            Mark as Completed
-                        </Button>
-                    )} */}
+                    <Button
+                        type="primary"
+                        onClick={() => updateStatus(booking.id, booking.status)}
+                        disabled={booking.status === "COMPLETED" || booking.status === "CANCELLED"}
+                    >
+                        {booking.status === "PENDING"
+                            ? "Confirm"
+                            : booking.status === "CONFIRMED"
+                                ? "Start"
+                                : booking.status === "IN_PROGRESS"
+                                    ? "Complete"
+                                    : "Completed"}
+                    </Button>
                 </Col>
-
-                <Button
-                    type="primary"
-                    onClick={() => updateStatus(booking.id, booking.status)}
-                    disabled={booking.status === "COMPLETED" || booking.status === "CANCELLED"}
-                >
-                    {booking.status === "PENDING"
-                        ? "Confirm"
-                        : booking.status === "CONFIRMED"
-                            ? "Start"
-                            : booking.status === "IN_PROGRESS"
-                                ? "Complete"
-                                : "Completed"}
-                </Button>
             </Row>
         </div>
     );
