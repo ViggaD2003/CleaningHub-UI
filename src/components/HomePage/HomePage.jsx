@@ -134,7 +134,7 @@ const HomePage = () => {
               </h3>
               <p className="text-gray-500 mt-2">{service.description}</p>
               <p className="text-gray-800 font-bold mt-2">
-                ${service.basePrice}
+                {service.basePrice} vnđ
               </p>
             </div>
           ))}
