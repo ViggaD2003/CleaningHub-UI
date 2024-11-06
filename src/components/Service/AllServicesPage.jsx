@@ -64,14 +64,19 @@ const AllServicesPage = () => {
       className="container mx-auto py-12"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.2, duration: 0.5 }}
+      transition={{ delay: 0.4, duration: 0.5 }}
     >
       <div className="text-center mb-12">
         <h2 className="text-4xl font-semibold text-gray-800">All Services</h2>
         <p className="text-gray-600 mt-2">Explore our wide range of available services.</p>
       </div>
       {Object.keys(services).map((category) => (
-        <div key={category} className="mb-12">
+        <motion.div
+      className="container mx-auto py-12"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.4, duration: 0.5 }}
+     key={category} className="mb-12">
           <h3 className="text-2xl font-medium mb-6 text-gray-700">{category}</h3>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             {services[category].map((service) => (
@@ -89,11 +94,11 @@ const AllServicesPage = () => {
                 </div>
                 <h3 className="font-semibold text-xl text-gray-800">{service.name}</h3>
                 <p className="text-gray-500 mt-3 line-clamp-2">{service.description}</p>
-                <p className="text-gray-900 font-semibold mt-3">${service.basePrice}</p>
+                <p className="text-gray-900 font-semibold mt-3">{service.basePrice} vnđ</p>
               </div>
             ))}
           </div>
-        </div>
+        </motion.div>
       ))}
 
       {/* Phân trang */}
@@ -101,7 +106,7 @@ const AllServicesPage = () => {
         <button
           onClick={handlePreviousPage}
           disabled={pageIndex === 0}
-          className="px-4 py-2 mx-2 bg-blue-500 text-white rounded disabled:bg-gray-300"
+          className="bg-gradient-to-r from-blue-300 to-gray-200 hover:from-gray-300 hover:to-gray-200 text-gray-600 font-bold px-6 py-2 rounded-md cursor-pointer"
         >
           Previous
         </button>
@@ -109,7 +114,7 @@ const AllServicesPage = () => {
         <button
           onClick={handleNextPage}
           disabled={pageIndex === totalPages - 1}
-          className="px-4 py-2 mx-2 bg-blue-500 text-white rounded disabled:bg-gray-300"
+          className="bg-gradient-to-r from-blue-300 to-gray-200 hover:from-gray-300 hover:to-gray-200 text-gray-600 font-bold px-6 py-2 rounded-md cursor-pointer"
         >
           Next
         </button>
