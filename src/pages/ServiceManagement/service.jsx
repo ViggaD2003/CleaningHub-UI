@@ -197,7 +197,7 @@ const ServiceManagement = () => {
       const downloadURL = await getDownloadURL(imgRef);
       setUploadedImageURL(downloadURL);
       form.setFieldsValue({ img: downloadURL }); // Auto-fill the img field
-      await axiosClient.patch(`/v1/services/update-img-service/${selectedService.id}?img=${downloadURL}`)
+      await axiosClient.patch(`/v1/services/update-img-service/${selectedService.id}`, downloadURL)
       message.success("Image uploaded successfully.");
     } catch (error) {
       message.error("Failed to upload image.");
