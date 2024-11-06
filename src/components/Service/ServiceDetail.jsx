@@ -77,7 +77,7 @@ const ServiceDetail = () => {
                 Basic Package
               </h2>
               <p className="text-gray-800 text-xl font-bold">
-                ${service.basePrice}
+                {service.basePrice} vnđ
               </p>
             </div>
 

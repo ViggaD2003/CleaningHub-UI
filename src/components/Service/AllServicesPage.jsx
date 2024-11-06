@@ -6,15 +6,25 @@ import { motion } from "framer-motion";
 
 const AllServicesPage = () => {
   const [services, setServices] = useState([]);
+  const [pageIndex, setPageIndex] = useState(0); // Trang hiện tại
+  const [pageSize] = useState(10); // Số mục trên mỗi trang
+  const [totalPages, setTotalPages] = useState(0); // Tổng số trang
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const response = await axiosClient.get("/v1/services/available");
+        const response = await axiosClient.get("/v1/services/available", {
+          params: {
+            pageIndex,
+            pageSize,
+          },
+        });
+        
         if (Array.isArray(response.data.data.content)) {
           const servicesByCategory = groupByCategory(response.data.data.content);
           setServices(servicesByCategory);
+          setTotalPages(response.data.data.totalPages); // Lưu tổng số trang từ API
         } else {
           console.error("Expected an array in 'content', but got:", response.data.data);
         }
@@ -24,7 +34,7 @@ const AllServicesPage = () => {
     };
 
     fetchServices();
-  }, []);
+  }, [pageIndex]); // Gọi lại API khi pageIndex thay đổi
 
   const groupByCategory = (services) => {
     return services.reduce((acc, service) => {
@@ -41,9 +51,18 @@ const AllServicesPage = () => {
     navigate(`/services/${id}`);
   };
 
+  const handlePreviousPage = () => {
+    if (pageIndex > 0) setPageIndex(pageIndex - 1);
+  };
+
+  const handleNextPage = () => {
+    if (pageIndex < totalPages - 1) setPageIndex(pageIndex + 1);
+  };
+
   return (
-    <motion.div className="container mx-auto py-12"
-     initial={{ opacity: 0, y: 20 }}
+    <motion.div
+      className="container mx-auto py-12"
+      initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.2, duration: 0.5 }}
     >
@@ -76,6 +95,25 @@ const AllServicesPage = () => {
           </div>
         </div>
       ))}
+
+      {/* Phân trang */}
+      <div className="flex justify-center mt-8">
+        <button
+          onClick={handlePreviousPage}
+          disabled={pageIndex === 0}
+          className="px-4 py-2 mx-2 bg-blue-500 text-white rounded disabled:bg-gray-300"
+        >
+          Previous
+        </button>
+        <span className="px-4 py-2">Page {pageIndex + 1} of {totalPages}</span>
+        <button
+          onClick={handleNextPage}
+          disabled={pageIndex === totalPages - 1}
+          className="px-4 py-2 mx-2 bg-blue-500 text-white rounded disabled:bg-gray-300"
+        >
+          Next
+        </button>
+      </div>
     </motion.div>
   );
 };
