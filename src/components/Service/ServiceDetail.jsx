@@ -3,8 +3,10 @@ import { useParams, useNavigate } from "react-router-dom";
 import axiosClient from "../../services/config/axios";
 import image from "../../assets/image/image.png";
 import { motion } from "framer-motion";
+import useAuth from "../../services/config/provider/useAuth";
 
 const ServiceDetail = () => {
+  const {auth} = useAuth();
   const { id } = useParams();
   const [service, setService] = useState(null);
   const navigate = useNavigate();
@@ -27,7 +29,7 @@ const ServiceDetail = () => {
   }
 
   const handleBookNow = () => {
-    navigate(`/bookings/${id}`); // Điều hướng tới trang booking
+    !auth?.role ? navigate("/login") : navigate(`/bookings/${id}`);
   };
 
   return (
