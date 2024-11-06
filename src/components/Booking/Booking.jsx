@@ -348,7 +348,7 @@ const Booking = () => {
           {/* Image Section */}
           <div className="w-2/5 pr-4">
             <img
-              src={service.imageUrl} // Assuming service.imageUrl is the correct image URL
+              src={service.img} // Assuming service.imageUrl is the correct image URL
               alt={service.name}
               className="w-full h-auto rounded-lg"
             />

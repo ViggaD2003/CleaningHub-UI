@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axiosClient from "../../services/config/axios";
-import image from "../../assets/image/image.png";
 import { motion } from "framer-motion";
 import useAuth from "../../services/config/provider/useAuth";
 
@@ -46,7 +45,7 @@ const ServiceDetail = () => {
         <div className="md:w-1/2 mb-6 md:mb-0 md:mr-6">
           <div className="rounded-lg overflow-hidden w-full h-full flex items-center justify-center">
             <img
-              src={image}
+              src={service.img}
               className="w-full h-full object-cover"
               alt="Service"
             />
