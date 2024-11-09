@@ -136,7 +136,7 @@ const Booking = () => {
         } else {
           setError("Failed to initiate PayOS payment. Please try again.");
         }
-      } else {
+      } else if (bookingDetails.paymentMethod === "CASH"){
         const response = await axiosClient.post("/v1/bookings", {
           serviceId: bookingDetails.serviceId,
           durationId: bookingDetails.durationId,
@@ -181,13 +181,14 @@ const Booking = () => {
         } else {
           setError("Failed to create booking. Please try again.");
         }
-      }
+      } 
     } catch (error) {
-      const errorMessage =
-        error.response?.data?.error ||
+      message.error({
+        content: error.response?.data?.error ||
         "Failed to process your request. Please try again.";
-
-      toast.error(errorMessage);
+        duration: 2,
+      });
+      return;
     }
   };
 
@@ -306,9 +307,8 @@ const Booking = () => {
               </div>
             </Option>
           ))}
-        </Select>
-      </div>
-
+           </Select>
+           </div>
           <div className="mb-4">
             <label className="block text-gray-700 font-bold mb-2">
               Start Time:
