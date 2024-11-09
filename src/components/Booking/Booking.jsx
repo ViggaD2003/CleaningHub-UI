@@ -259,6 +259,7 @@ const Booking = () => {
               name="numberOfWorker"
               value={bookingDetails.numberOfWorker}
               onChange={handleInputChange}
+              max={5}
               className="w-full p-3 border rounded-lg"
               required
               min="1"
