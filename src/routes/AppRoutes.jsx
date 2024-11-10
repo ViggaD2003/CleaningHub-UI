@@ -33,6 +33,7 @@ import BookingDetailStaff from "../components/BookingDetail/BookingDetailStaff.j
 import AccountComponent from "../pages/AccountManagement/AccountManagement.jsx";
 import BookingCancel from "../components/Booking/BookingCancel.jsx";
 import Blogs from "../components/Blogs/Blogs.jsx";
+import BlogsAdmin from "../components/Blogs/BlogAdmin.jsx";
 
 export default function AppRoutes() {
   const { auth, loading } = useAuth();
@@ -97,6 +98,7 @@ export default function AppRoutes() {
                       <Route path="categories" element={<CategoryComponent/>} />
                        <Route path="services" element={<ServiceComponent/>} />   
                        <Route path="accounts" element={<AccountComponent/>} />
+                       <Route path="blogs" element={<BlogsAdmin/>} />
                     </Routes>       
                        </div>
                 }/>

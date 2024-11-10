@@ -1,4 +1,4 @@
-import { BarChart2, Menu, Calendar, LogOut, AppWindowIcon, BookCheck, User} from "lucide-react";
+import { BarChart2, Menu, Coffee, LogOut, AppWindowIcon, BookCheck, User} from "lucide-react";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Link } from "react-router-dom";
@@ -37,6 +37,10 @@ const Sidebar = () => {
 		}
 	  };
 
+	const handleBlog = async () => {
+
+	}
+
 
 	  const SIDEBAR_ITEMS = [
 		{
@@ -69,6 +73,13 @@ const Sidebar = () => {
 		},
 		{
 			id: 5,
+			name: "Blog",
+			icon: Coffee,
+			color: "#6366f1",
+			href: "/blogs"
+		},
+		{
+			id: 6,
 			name: "Log Out",
 			icon: LogOut,
 			color: "#6366f1",

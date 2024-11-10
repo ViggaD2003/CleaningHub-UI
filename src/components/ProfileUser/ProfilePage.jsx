@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import axiosClient from "../../services/config/axios";
-import { Button, Input, Form, message, Upload, Spin, Radio } from "antd";
+import { Input, Form, message, Upload, Spin, Radio } from "antd";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
 import { UploadOutlined } from "@ant-design/icons";
@@ -34,7 +34,6 @@ const GetInfo = () => {
       await uploadBytes(imgRef, file);
       const downloadURL = await getDownloadURL(imgRef);
       await axiosClient.put("/v1/auth/update/img", downloadURL);
-
       setImg(downloadURL);
       message.success("Profile photo updated successfully.");
     } catch (error) {
@@ -180,8 +179,7 @@ const GetInfo = () => {
 
         <Form.Item>
           <button
-            type="primary"
-            htmlType="submit"
+            type="submit"
             loading={loading}
             className="bg-gradient-to-r from-blue-300 to-gray-200 hover:from-gray-300 hover:to-gray-200 text-gray-600 font-bold px-6 py-2 rounded-md cursor-pointer transition-colors duration-300"
           >
