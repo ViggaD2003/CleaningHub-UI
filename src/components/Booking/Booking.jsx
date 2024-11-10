@@ -185,7 +185,7 @@ const Booking = () => {
     } catch (error) {
       message.error({
         content: error.response?.data?.error ||
-        "Failed to process your request. Please try again.";
+        "Failed to process your request. Please try again.",
         duration: 2,
       });
       return;
