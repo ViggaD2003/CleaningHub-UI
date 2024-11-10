@@ -10,8 +10,8 @@ import { DollarOutlined } from "@ant-design/icons";
 import { message, Card, Tag, Radio, Button } from "antd";
 import icon from "../../assets/image/images-removebg-preview.png";
 import { Select } from "antd";
-
 const Booking = () => {
+
   const navigate = useNavigate();
   const [durations, setDurations] = useState([]);
   const [vouchers, setVouchers] = useState([]);
@@ -23,11 +23,9 @@ const Booking = () => {
   const [latitude, setLatitude] = useState(null);
   const [service, setService] = useState(null);
   const { id } = useParams();
-  
   const vnTime = new Date().toLocaleString("en-CA", { timeZone: "Asia/Ho_Chi_Minh" });
   const [date, time] = vnTime.split(", ");
   const formattedDateTime = `${date}T${time.slice(0, 5)}`;
-
   const [bookingDetails, setBookingDetails] = useState({
     serviceId: parseInt(id, 10),
     durationId: 1,
@@ -37,10 +35,11 @@ const Booking = () => {
     address: "",
     voucherId: null,
     paymentMethod: "CASH",
-    startTime: formattedDateTime,  // Đã gắn thời gian vào đây
+    startTime: formattedDateTime,
   });
 
   useEffect(() => {
+
     const fetchData = async () => {
       try {
         const voucherResponse = await axiosClient.get("/v1/vouchers");
@@ -186,7 +185,7 @@ const Booking = () => {
     } catch (error) {
       message.error({
         content: error.response?.data?.error ||
-        "Failed to process your request. Please try again.",
+        "Failed to process your request. Please try again.";
         duration: 2,
       });
       return;
@@ -261,33 +260,12 @@ const Booking = () => {
               name="numberOfWorker"
               value={bookingDetails.numberOfWorker}
               onChange={handleInputChange}
+              max={5}
               className="w-full p-3 border rounded-lg"
-              min={1}
+              required
+              min="1"
+              placeholder="Enter number of workers"
             />
-          </div>
-
-          <div className="mb-4">
-            <label className="block text-gray-700 font-bold mb-2">
-              Select Voucher (Optional):
-            </label>
-            <Select
-              name="voucherId"
-              value={bookingDetails.voucherId}
-              onChange={handleInputChange}
-              className="w-full p-3 border rounded-lg"
-            >
-              {vouchers.length > 0 ? (
-                vouchers.map((voucher) => (
-                  <Select.Option key={voucher.id} value={voucher.id}>
-                    {voucher.name}
-                  </Select.Option>
-                ))
-              ) : (
-                <Select.Option value="" disabled>
-                  No vouchers available
-                </Select.Option>
-              )}
-            </Select>
           </div>
 
           <div className="mb-4">
@@ -300,17 +278,93 @@ const Booking = () => {
               onChange={handleInputChange}
               className="w-full"
             >
-              <Radio value="CASH">Cash</Radio>
-              <Radio value="PAYOS">PayOS</Radio>
+              <Radio value="CASH">CASH</Radio>
+              <Radio value="PAYOS">PAYOS</Radio>
             </Radio.Group>
           </div>
 
-          <Button type="primary" htmlType="submit" className="w-full">
-            Book Now
-          </Button>
+          <div className="mb-4">
+        <label className="block text-gray-700 font-bold mb-2">
+          Select Voucher:
+        </label>
+        <Select
+          placeholder="Select Voucher"
+          value={bookingDetails.voucherId}
+          onChange={(value) =>
+            handleInputChange({ name: "voucherId", value: value })
+          }
+          className="w-full"
+        >
+          {vouchers.map((voucher) => (
+            <Option key={voucher.id} value={voucher.id}>
+              <div className="flex items-center">
+                <img
+                  src={icon}
+                  alt="Voucher Icon"
+                  style={{ width: "20px", marginRight: "8px" }}
+                />
+                <span>{voucher.percentage}% - left {voucher.amount}</span>
+              </div>
+            </Option>
+          ))}
+           </Select>
+           </div>
+          <div className="mb-4">
+            <label className="block text-gray-700 font-bold mb-2">
+              Start Time:
+            </label>
+            <input
+              type="datetime-local"
+              name="startTime"
+              value={bookingDetails.startTime}
+              onChange={handleInputChange}
+              className="w-full p-3 border rounded-lg"
+              required
+            />
+          </div>
+
+          <div className="text-center">
+            <Button
+              type="primary"
+              htmlType="submit"
+              className="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600"
+            >
+              Confirm Booking
+            </Button>
+          </div>
         </form>
       </Card>
-      <ToastContainer />
+      {/* Service Information Card */}
+      <Card
+        title={
+          <div>
+            <Tag color="yellow" className="text-gray-800">
+              {service.category.name}
+            </Tag>
+          </div>
+        }
+        className="w-2/5 bg-white p-6 rounded-lg shadow-m d"
+      >
+        <div className="flex">
+          {/* Image Section */}
+          <div className="w-2/5 pr-4">
+            <img
+              src={service.img} // Assuming service.imageUrl is the correct image URL
+              alt={service.name}
+              className="w-full h-auto rounded-lg"
+            />
+          </div>
+          {/* Content Section */}
+          <div className="w-3/5">
+            <h2 className="text-xl font-bold mb-2">{service.name}</h2>
+            <p className="mb-4 text-gray-600">{service.description}</p>
+            <p className="text-lg font-semibold">
+              <DollarOutlined className="mr-2 text-green-600" />
+              {service.basePrice} vnđ
+            </p>
+          </div>
+        </div>
+      </Card>
     </div>
   );
 };

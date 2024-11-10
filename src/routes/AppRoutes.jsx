@@ -32,6 +32,7 @@ import BookingStaff from "../components/Booking/BookingStaff.jsx";
 import BookingDetailStaff from "../components/BookingDetail/BookingDetailStaff.jsx";
 import AccountComponent from "../pages/AccountManagement/AccountManagement.jsx";
 import BookingCancel from "../components/Booking/BookingCancel.jsx";
+import Blogs from "../components/Blogs/Blogs.jsx";
 
 export default function AppRoutes() {
   const { auth, loading } = useAuth();
@@ -60,6 +61,7 @@ export default function AppRoutes() {
           <Route path="services/:id" element={<ServiceDetail />} />
           <Route path="services/all" element={<AllServicesPage />} />
           <Route index element={<HomePage />} />
+          <Route path="blogs" element={<Blogs/>}/>
           </Route>
         
           </> 
@@ -76,6 +78,7 @@ export default function AppRoutes() {
           <Route path="booking-cancel" element={<BookingCancel/>}/>
           <Route path="booking-history" element={<BookingHistory />} />
           <Route path="booking-success" element={<BookingSuccess />} />
+          <Route path="blogs" element={<Blogs/>}/>
           <Route path="rating" element={<RatingPage/>}/>
           </Route>
           </>
