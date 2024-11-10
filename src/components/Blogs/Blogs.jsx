@@ -38,6 +38,7 @@ const Blogs = () => {
                     <div key={index} className="p-4 border rounded-lg shadow">
                         <h3 className="text-xl font-semibold">{blog.title}</h3>
                         <p className="text-gray-600">{blog.content}</p>
+                        <img src={blog.img}/>
                     </div>
                 ))}
             </div>
