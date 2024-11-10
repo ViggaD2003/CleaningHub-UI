@@ -156,6 +156,13 @@ const Header = () => {
         >
           Service
         </Link>
+
+        <Link
+          to="/blogs"
+          className="text-white hover:text-blue-300 font-bold text-xl"
+        >
+          Blogs
+        </Link>
       </div>
 
       {/* Right side: Login, Register, or User Menu */}
