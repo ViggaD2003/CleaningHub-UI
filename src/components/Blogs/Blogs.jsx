@@ -14,7 +14,16 @@ const Blogs = () => {
       const response = await axiosClient.get(
         `/v1/blogs?pageIndex=${page}&searchTerm=${searchKeyword}`
       );
-      setBlogs(response.data.data.content);
+      
+      const blogs = response.data.data.content;
+      
+      // Kiểm tra xem blogs có phải là mảng không
+      if (Array.isArray(blogs)) {
+        setBlogs(blogs.reverse()); // Đảo ngược nếu blogs là mảng
+      } else {
+        console.warn("blogs is not an array");
+      }
+      
       setTotalPages(response.data.data.totalPages);
     } catch (error) {
       console.error("Error fetching blogs:", error);
