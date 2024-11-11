@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 const AllServicesPage = () => {
   const [services, setServices] = useState([]);
   const [pageIndex, setPageIndex] = useState(0); // Trang hiện tại
-  const [pageSize] = useState(10); // Số mục trên mỗi trang
+  const [pageSize] = useState(12); // Số mục trên mỗi trang
   const [totalPages, setTotalPages] = useState(0); // Tổng số trang
   const navigate = useNavigate();
 
