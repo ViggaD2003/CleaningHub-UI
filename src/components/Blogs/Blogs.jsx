@@ -59,10 +59,10 @@ const Blogs = () => {
             blogs.map((blog, index) => (
               <div key={index} className="shadow p-6 bg-white rounded-lg">
                 <h3 className="text-2xl font-semibold mb-2">
-                  Title: {blog.title}
+                  {blog.title}
                 </h3>
                 <p className="text-gray-700 font-medium mb-4">
-                  <span className="font-bold">Content:</span> {blog.content}
+                  {blog.content}
                 </p>
                 {blog.img && (
                   <img
