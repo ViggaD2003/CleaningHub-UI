@@ -183,8 +183,13 @@ const BlogsAdmin = () => {
           className="border rounded-l-md px-4 py-2 w-80"
         />
       </div>
-
-      {/* Table for displaying blogs */}
+      <button
+        className="mb-8 bg-blue-500 hover:bg-blue-400 text-white px-6 py-3 rounded-md flex items-center"
+        onClick={() => openModal()}
+      >
+        <PlusOutlined className="mr-2" /> Create New Blog
+      </button>
+      
       <div className="flex justify-center">
         <div className="w-full max-w-full bg-slate-100 border rounded-lg p-6">
           {blogs && blogs.length > 0 ? (
@@ -258,12 +263,7 @@ const BlogsAdmin = () => {
           Next
         </button>
       </div>
-      <button
-        className="mt-8 bg-blue-500 hover:bg-blue-400 text-white px-6 py-3 rounded-md flex items-center"
-        onClick={() => openModal()}
-      >
-        <PlusOutlined className="mr-2" /> Create New Blog
-      </button>
+      
       <Modal
         title={selectedBlog ? "Update Blog" : "Create Blog"}
         visible={isModalVisible}
